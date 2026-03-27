@@ -13,6 +13,12 @@ body{
   min-height:100vh;display:flex;flex-direction:column;
 }
 
+/* Hide download button in ReDoc */
+button[download],
+a[download] {
+  display: none !important;
+}
+
 /* ── TOP BAR ── */
 .topbar{
   background:rgba(5,8,16,0.97);
