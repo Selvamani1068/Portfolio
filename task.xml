@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+
+<task id="install-sdk" xml:lang="en-US">
+  <title>Install the Messaging SDK</title>
+
+  <shortdesc>
+    Follow these steps to install and verify the NX Messaging SDK on your system.
+  </shortdesc>
+
+  <taskbody>
+
+    <prereq>
+      <p>Ensure the following before installation:</p>
+      <ul>
+        <li>Node.js version 18 or higher</li>
+        <li>Internet connectivity</li>
+        <li>Access to terminal or command prompt</li>
+      </ul>
+    </prereq>
+
+    <steps>
+
+      <step>
+        <cmd>Open your terminal.</cmd>
+      </step>
+
+      <step>
+        <cmd>Run the installation command:</cmd>
+        <info>
+          <codeblock outputclass="language-bash">
+npm install @nxplatform/messaging-sdk
+          </codeblock>
+        </info>
+      </step>
+
+      <step>
+        <cmd>Verify installation by checking version:</cmd>
+        <info>
+          <codeblock outputclass="language-bash">
+npm list @nxplatform/messaging-sdk
+          </codeblock>
+        </info>
+      </step>
+
+    </steps>
+
+    <result>
+      <p>The SDK is successfully installed and ready for use.</p>
+    </result>
+
+    <postreq>
+      <p>Proceed to configure authentication using API keys.</p>
+    </postreq>
+
+  </taskbody>
+</task>

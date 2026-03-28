@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+
+<reference id="error-codes" xml:lang="en-US">
+  <title>Error Codes Reference</title>
+
+  <shortdesc>
+    This reference lists common error codes returned by the NX Messaging SDK.
+  </shortdesc>
+
+  <refbody>
+
+    <section>
+      <title>Authentication Errors</title>
+
+      <table>
+        <tgroup cols="3">
+          <thead>
+            <row>
+              <entry>Code</entry>
+              <entry>Description</entry>
+              <entry>Resolution</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>AUTH_001</entry>
+              <entry>Invalid API key</entry>
+              <entry>Regenerate your API key</entry>
+            </row>
+            <row>
+              <entry>AUTH_002</entry>
+              <entry>Expired token</entry>
+              <entry>Refresh OAuth token</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section>
+      <title>Network Errors</title>
+
+      <table>
+        <tgroup cols="3">
+          <thead>
+            <row>
+              <entry>Code</entry>
+              <entry>Description</entry>
+              <entry>Resolution</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>NET_001</entry>
+              <entry>Connection timeout</entry>
+              <entry>Retry with increased timeout</entry>
+            </row>
+            <row>
+              <entry>NET_002</entry>
+              <entry>DNS failure</entry>
+              <entry>Check network settings</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+  </refbody>
+</reference>

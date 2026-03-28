@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+
+<concept id="sdk-auth-overview" xml:lang="en-US">
+  <title>SDK Authentication Overview</title>
+
+  <shortdesc>
+    Learn how authentication works in the NX Messaging SDK.
+  </shortdesc>
+
+  <conbody>
+
+    <p>
+      The NX Messaging SDK uses API keys and OAuth 2.0 tokens to authenticate requests.
+      Authentication ensures secure communication between your application and the API.
+    </p>
+
+    <section>
+      <title>API Key Authentication</title>
+      <p>
+        API keys are unique identifiers generated from the developer portal.
+        They must be included in every request header.
+      </p>
+    </section>
+
+    <section>
+      <title>OAuth 2.0</title>
+      <p>
+        OAuth provides token-based authentication and is recommended for enterprise applications.
+      </p>
+    </section>
+
+    <note type="important">
+      Never expose API keys in frontend applications. Use environment variables or secure storage.
+    </note>
+
+  </conbody>
+</concept>
