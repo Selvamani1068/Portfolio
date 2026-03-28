@@ -23,23 +23,15 @@ a[download] {
 .topbar{
   background:rgba(5,8,16,0.97);
   border-bottom:1px solid rgba(99,179,237,0.15);
-  padding:0 5%;height:66px;
+  padding:0 2% 0 1%;;height:66px;
   display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:9999;
   backdrop-filter:blur(24px);flex-shrink:0;
 }
-.topbar-left{display:flex;align-items:center;gap:1.2rem;}
+.topbar-left{display:flex;align-items:center;gap:0.4rem;}
 .topbar-right{display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;margin-left:auto;}
-.back-btn{
-  display:inline-flex;align-items:center;gap:0.45rem;
-  padding:0.45rem 1.1rem;
-  background:transparent;
-  border:1px solid rgba(99,179,237,0.2);border-radius:7px;
-  color:#8892b0;font-size:0.82rem;font-weight:500;
-  cursor:pointer;text-decoration:none;
-  transition:all 0.2s;font-family:'DM Sans',sans-serif;
-}
-.back-btn:hover{border-color:rgba(0,212,255,0.5);color:#00d4ff;background:rgba(0,212,255,0.04);}
+.back-btn{display:inline-flex;align-items:center;gap:1px;color:var(--text2);text-decoration:none;font-size:.82rem;letter-spacing:.06em;transition:color .2s}
+.back-btn:hover{color:#464849;}
 .topbar-divider{width:1px;height:24px;background:rgba(255,255,255,0.1);}
 .topbar-brand{
   font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:630;
@@ -354,7 +346,7 @@ li[class*="active"] span:not([class*="label"]) {
   <div class="topbar-left">
     <a href="index.html" class="back-btn">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-      Back to Portfolio
+      Back
     </a>
     <div class="topbar-divider"></div>
     <div class="topbar-brand"><span class="grad">Sample</span> API Reference</div>
