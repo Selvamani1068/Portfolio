@@ -90,7 +90,7 @@
 
 
 
-  .page-hero{min-height:200px;display:flex;align-items:center;padding:5px 5px 20px 100px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0d1a0d 0%,#0a2818 40%,var(--bg) 100%)}
+  .page-hero{min-height:150px;display:flex;align-items:center;padding:5px 5px 20px 100px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0d1a0d 0%,#0a2818 40%,var(--bg) 100%)}
   .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(251,191,36,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(251,191,36,.04) 1px,transparent 1px);background-size:50px 50px}
   .hero-glow{position:absolute;top:0;right:10%;width:500px;height:300px;background:radial-gradient(circle,rgba(251,191,36,.09) 0%,transparent 70%)}
   .hero-content{position:relative;z-index:2}
@@ -101,7 +101,7 @@
   .hero-badges{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
   .hbadge{font-family:var(--ff-m);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border:1px solid;border-radius:0}
 
-  main{max-width:1100px;margin:0 auto;padding:60px 60px 100px}
+  main{width:100%;max-width:1192px;margin:0;padding:10px 40px 20px 97px}
 
   
 /* DOWNLOAD SECTION */
@@ -148,6 +148,19 @@ body{
 .layout{
   display:flex;
   height:100vh;
+  width:100%;
+  overflow:hidden;
+}
+.CodeMirror{
+  height:100% !important;
+  max-height: 100% !important;
+  background:#020408;
+  color:#e8f4f8;
+}
+
+.CodeMirror-gutters{
+  background:#020408;
+  border-right:1px solid rgba(251,191,36,0.1);
 }
 
 /* Sidebar */
@@ -155,7 +168,7 @@ body{
   width:260px; /* slightly bigger for tree */
   min-width:260px;
   max-width:260px;
-  background:#020617;
+  background:linear-gradient(135deg,#0d1a0d 0%,#0a2818 40%,var(--bg) 100%);
   border-right:1px solid #1e293b;
   padding:12px;
   overflow-y:auto; /* scroll if needed */
@@ -179,15 +192,17 @@ body{
   flex:1;
   display:flex;
   flex-direction:column;
+  min-height:0;        /* 🔥 CRITICAL */
+  overflow:hidden;     /* 🔥 stops growing */
 }
 
 /* Toolbar */
 .toolbar{
   display:flex;
   justify-content:space-between;
-  padding:10px 20px;
+  padding:15px 20px 5px 20px;
   border-bottom:1px solid #1e293b;
-  background:#020617;
+  background:linear-gradient(135deg,#0d1a0d 0%,#0a2818 40%,var(--bg) 100%);
 }
 
 .tabs button{
@@ -207,17 +222,21 @@ body{
 /* Panels */
 .panel{
   display:none;
-  height:100%;
+  flex:1;              /* 🔥 take remaining space */
+  overflow:auto;       /* 🔥 enable scroll */
+  min-height:0;  
+  max-height: 100%;       /* 🔥 prevents expansion */
 }
 
 .panel.active{
-  display:block;
+  display:flex;        /* 🔥 MUST be flex */
+  flex-direction:column;
 }
 
   /* VIEWER TOGGLE */
   .viewer-container{margin-bottom:48px}
   .viewer-toolbar{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-bottom:none;padding:14px 20px;gap:16px;flex-wrap:wrap}
-  .viewer-tabs{display:flex;gap:0}
+  .viewer-tabs{display:flex;gap:0;margin-top:6px}
   .vtab{font-family:var(--ff-m);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 20px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .25s;position:relative}
   .vtab.active{background:var(--cyan);color:var(--bg);border-color:var(--cyan)}
   .vtab:not(.active):hover{color:var(--text);border-color:var(--border2)}
@@ -230,8 +249,8 @@ body{
 
 /* Author View */
 #author-view{
-  background:#fff;
-  color:#111;
+  background:#fff !important;
+  color:#111 !important;
   padding:40px;
   overflow:auto;
   height:100%;
@@ -249,6 +268,20 @@ body{
   padding:10px;
   overflow:auto;
 }
+  /* FOOTER */
+  footer{background:var(--bg);border-top:1px solid var(--border);padding:24px 60px;display:flex;align-items:center;justify-content:space-between}
+  .footer-copy{font-family:var(--ff-m);font-size:.66rem;letter-spacing:.08em;color:var(--text3)}
+  .footer-link{font-family:var(--ff-m);font-size:.66rem;letter-spacing:.08em;color:var(--cyan);text-decoration:none}
+  .footer-link:hover{text-decoration:underline}
+
+  @media(max-width:900px){
+    nav{padding:0 24px}
+    .page-hero{padding:80px 24px 48px}
+    main{padding:40px 24px 80px}
+    .download-section{grid-template-columns:1fr}
+    .info-grid{grid-template-columns:1fr}
+  }
+
 </style>
 </head>
 
@@ -286,7 +319,7 @@ body{
   <div class="hero-content">
     <h1 class="hero-title">Postman User Guide</h1>
     <div class="dl-meta">
-        <div class="dl-meta-item"><span class="dl-meta-dot"></span>task.xml (Master)</div>
+        <div class="dl-meta-item"><span class="dl-meta-dot"></span>task.xml</div>
         <div class="dl-meta-item"><span class="dl-meta-dot"></span>concept.xml</div>
         <div class="dl-meta-item"><span class="dl-meta-dot"></span>reference.xml</div>
       </div>
@@ -334,7 +367,7 @@ body{
 
     <!-- XML Panel -->
     <div id="panel-xml" class="panel active">
-      <div id="xml-editor" style="height:100%"></div>
+      <div id="xml-editor" style="flex:1; min-height:0;"></div>
     </div>
 
     <!-- Author Panel -->
@@ -345,13 +378,32 @@ body{
   </div>
 
 </div>
-
+</main>
+<script>
+window.onload = function(){
+  const first = document.querySelector('.tree-item');
+  if(first){
+    first.click();
+  }
+}
+</script>
 <script>
 function switchView(view, btn){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
 
+  // Toggle panels
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-' + view).classList.add('active');
+
+  // Toggle toolbar buttons (XML / Author inside viewer)
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  if(view === 'xml'){
+    document.querySelector('.tabs button:nth-child(1)').classList.add('active');
+  } else {
+    document.querySelector('.tabs button:nth-child(2)').classList.add('active');
+  }
+
+  // ✅ Toggle HERO buttons (THIS WAS MISSING)
+  document.querySelectorAll('.viewer-tabs .vtab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
 </script>
@@ -427,6 +479,11 @@ function renderAuthorView(xmlString){
   document.getElementById("author-view").innerHTML = html;
 }
 </script>
+
+<footer>
+  <div class="footer-copy">© 2026 Selvamani Madhaiyan</div>
+  <a href="index.html#portfolio" class="footer-link">← Back to Portfolio</a>
+</footer>
 
 </body>
 </html>
