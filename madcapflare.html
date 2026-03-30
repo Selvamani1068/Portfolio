@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MadCap Flare Viewer — Healthcare Application User Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/xml/xml.js"></script>
+
+<style>
+
+  :root {
+    --bg:#020408;--bg2:#080d14;--bg3:#0c1420;--surface:#0f1a28;--surface2:#162233;
+    --border:rgba(0,200,255,0.1);--border2:rgba(0,200,255,0.28);
+    --cyan:#00c8ff;--gold:#f0b429;--green:#00ffb3;--pink:#ff4d8d;--amber:#fbbf24;
+    --text:#e8f4f8;--text2:#8baab8;--text3:#4d7a8a;
+    --ff-d:'Cormorant Garamond',serif;--ff-u:'Syne',sans-serif;--ff-m:'DM Mono',monospace;
+    --topbar-h: 66px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--ff-u);overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:0.5}
+
+/* ── TOP BAR ── */
+.topbar{
+  background:rgba(5,8,16,0.97);
+  border-bottom:1px solid rgba(99,179,237,0.15);
+  padding:0 2% 0 1%;
+  height:var(--topbar-h);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:9999;
+  backdrop-filter:blur(24px);flex-shrink:0;
+  font-family: 'Inter', sans-serif;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.topbar.hide {
+  transform: translateY(-100%);
+}
+.topbar-left{display:flex;align-items:center;gap:0.4rem;}
+.topbar-right{display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;margin-left:auto;}
+.back-btn{display:inline-flex;align-items:center;gap:1px;color:var(--text2);text-decoration:none;font-size:.82rem;letter-spacing:.06em;transition:color .2s;font-family: 'Inter', sans-serif;}
+.back-btn:hover{color:#464849;}
+.topbar-divider{width:1px;height:24px;background:rgba(255,255,255,0.1);}
+.topbar-brand{
+  font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:630;
+  letter-spacing:-0.01em;
+}
+.grad{
+  background:linear-gradient(135deg,#0a2818,#ede1e8);
+  background-clip: text;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+/* Page title in topbar */
+.topbar-page-title {
+  font-family: var(--ff-d);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text2);
+  letter-spacing: 0.01em;
+  padding-left: 0.3rem;
+}
+.topbar-page-title span {
+  color: var(--text);
+}
+
+/* Meta pill */
+.meta-pill{
+  display:flex;align-items:center;gap:0.45rem;
+  padding:0.42rem 1rem;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);border-radius:8px;
+  font-size:0.82rem;color:#8892b0;transition:border-color 0.2s;
+}
+.meta-pill:hover{border-color:rgba(0,212,255,0.18);}
+.meta-pill strong{color:#ccd6f6;}
+.mdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.md-b{background:#62dddd;box-shadow:0 0 7px #69daf0;}
+.md-p{background:#48627a;box-shadow:0 0 7px #79b1ec;}
+.md-pink{background:#ff4d8d;box-shadow:0 0 7px #ff4d8d;}
+
+/* ── Disclaimer ── */
+.hero-disc{
+  background:
+    linear-gradient(135deg,rgba(0,212,255,0.06) 0%,rgba(123,97,255,0.07) 50%,transparent 100%),
+    radial-gradient(ellipse 50% 70% at 85% 60%,rgba(0,255,170,0.04),transparent);
+  border-bottom:1px solid rgba(99,179,237,0.1);
+  padding:0.3rem 5% 0.3rem;flex-shrink:0;
+  position:relative;overflow:hidden;
+}
+.full-width-disclaimer {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0.5rem;
+  color: #f4f8f7 !important;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+/* hero-grid and hero-glow */
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,77,141,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,77,141,.04) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;}
+.hero-glow{position:absolute;top:0;right:10%;width:500px;height:300px;background:radial-gradient(circle,rgba(255,77,141,.09) 0%,transparent 70%);pointer-events:none;}
+
+/* ── Layout ── */
+main {
+  padding: 0 !important;
+  max-width: 100% !important;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.layout{
+  display:flex;
+  height: calc(104.75vh - var(--topbar-h));
+  width:100%;
+  overflow:hidden;
+}
+
+/* CodeMirror */
+.CodeMirror{
+  height:100% !important;
+  max-height: 100% !important;
+  background:#020408;
+  color:#e8f4f8;
+}
+.CodeMirror-gutters{
+  background:#020408;
+  border-right:1px solid rgba(255,77,141,0.1);
+}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:220px;
+  min-width:220px;
+  max-width:220px;
+  background:linear-gradient(135deg,#1a0a0e 0%,#2a0d18 40%,var(--bg) 100%);
+  border-right:1px solid #1e293b;
+  padding:12px;
+  overflow-y:auto;
+}
+
+.tree-title{
+  font-weight:600;
+  font-size:13px;
+  margin-bottom:10px;
+  color:#e2e8f0;
+}
+
+.tree-item{
+  padding:6px 10px;
+  cursor:pointer;
+  font-family:'DM Mono', monospace;
+  font-size:12px;
+  color:#94a3b8;
+  border-left: 2px solid transparent;
+  border-radius: 0 4px 4px 0;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+  padding-left: 20px;
+  text-indent: -10px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.tree-item:hover{
+  background:#0f172a;
+  color:#fff;
+}
+.tree-item.active {
+  background: rgba(255,77,141, 0.08);
+  color: #e2e8f0;
+  border-left: 2px solid var(--pink);
+}
+.tree-item.active:hover {
+  background: rgba(255,77,141, 0.13);
+}
+
+/* ── Viewer ── */
+.viewer{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  overflow:hidden;
+}
+
+/* ── Toolbar ── */
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:6px 20px 4px 20px;
+  border-bottom:1px solid rgba(255,77,141,0.18);
+  background:linear-gradient(135deg,#1a0a0e 0%,#2a0d18 40%,var(--bg) 100%);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.toolbar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  z-index: 2;
+}
+.toolbar-title {
+  font-family: var(--ff-d);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+.toolbar-eyebrow {
+  font-family: var(--ff-m);
+  font-size: .65rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── View panels ── */
+.panel{
+  display:none;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  height: 100%;
+}
+.panel.active{
+  display:flex;
+  flex-direction:column;
+}
+#panel-xml {
+  overflow: hidden;
+}
+#panel-rendered {
+  overflow-y: auto;
+  background: #f5f6fa;
+}
+
+/* ── Viewer tabs ── */
+.viewer-tabs{display:flex;gap:0;}
+.vtab{
+  font-family:var(--ff-m);
+  font-size:.7rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  padding:8px 18px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text3);
+  cursor:pointer;
+  transition:all .25s;
+}
+.vtab.active{
+  background: var(--pink);
+  color:#fff;
+  border-color:var(--pink);
+}
+.vtab:not(.active):hover{
+  color:var(--text);
+  border-color:var(--border2);
+}
+
+/* ── Rendered WebHelp view ── */
+.flare-topbar{
+  background:#0c4a6e;
+  color:#fff;
+  padding:10px 48px;
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-family:'Segoe UI',Arial,sans-serif;
+  flex-shrink: 0;
+}
+.flare-topbar-title{font-weight:600;letter-spacing:.04em}
+.flare-topbar-nav{display:flex;gap:14px}
+.flare-topbar-nav a{color:rgba(255,255,255,.8);text-decoration:none;font-size:11px;transition:color .2s}
+.flare-topbar-nav a:hover{color:#fff}
+
+.flare-layout{
+  display:grid;
+  grid-template-columns:240px 1fr;
+  flex:1;
+  min-height:0;
+  font-family:'Segoe UI',Arial,sans-serif;
+  font-size:14px;
+  overflow:hidden;
+}
+.flare-toc{
+  background:#fff;
+  border-right:1px solid #dde3ec;
+  padding:20px 0;
+  overflow-y:auto;
+}
+.flare-toc-header{
+  padding:10px 18px 14px;
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:#7c8fa6;
+  border-bottom:1px solid #eef0f5;
+}
+.flare-toc-item{
+  padding:7px 18px;
+  font-size:13px;
+  color:#334155;
+  cursor:pointer;
+  border-left:3px solid transparent;
+  transition:all .15s;
+  line-height:1.4;
+}
+.flare-toc-item:hover{background:#f0f6ff;color:#0ea5e9}
+.flare-toc-item.toc-active{
+  background:#e0f2fe;
+  color:#0369a1;
+  border-left-color:#0369a1;
+  font-weight:600;
+}
+.flare-toc-item.sub{padding-left:30px;font-size:12px;color:#64748b}
+.flare-toc-item.sub.toc-active{background:#e0f2fe;color:#0369a1}
+
+.flare-content-wrap{
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.flare-content{
+  padding:32px 40px;
+  background:#fff;
+  overflow-y:auto;
+  color:#1e293b;
+  line-height:1.65;
+  flex:1;
+}
+.flare-breadcrumb{font-size:11px;color:#94a3b8;margin-bottom:20px}
+.flare-breadcrumb span{color:#0369a1}
+.flare-content h1{font-size:24px;color:#0c4a6e;font-weight:700;margin-bottom:6px;padding-bottom:10px;border-bottom:2px solid #e0f2fe}
+.flare-content h2{font-size:16px;color:#0369a1;font-weight:600;margin:26px 0 10px}
+.flare-content h3{font-size:13.5px;font-weight:600;color:#1e40af;margin:16px 0 7px}
+.flare-content p{margin-bottom:11px;font-size:14px}
+.flare-content .note-box{display:flex;gap:10px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:4px;padding:12px 14px;margin:14px 0;font-size:13px}
+.flare-content .note-box .note-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.flare-content .warning-box{display:flex;gap:10px;background:#fff7ed;border:1px solid #fed7aa;border-radius:4px;padding:12px 14px;margin:14px 0;font-size:13px}
+.flare-content .warning-box .note-icon{font-size:1rem;flex-shrink:0}
+.flare-content table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+.flare-content table th{background:#0369a1;color:#fff;padding:8px 12px;text-align:left}
+.flare-content table td{border:1px solid #cbd5e1;padding:7px 12px}
+.flare-content table tr:nth-child(even) td{background:#f8fafc}
+.flare-content ul,.flare-content ol{margin:8px 0 14px 20px}
+.flare-content li{margin-bottom:7px}
+.flare-content code{background:#f1f5f9;border:1px solid #e2e8f0;padding:1px 5px;font-family:'Courier New',monospace;font-size:12px;color:#0369a1}
+.flare-content pre{background:#f8fafc;border:1px solid #e2e8f0;border-left:3px solid #0ea5e9;padding:14px;font-family:'Courier New',monospace;font-size:12px;margin:12px 0;overflow-x:auto;color:#1e293b}
+.flare-content kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:3px;padding:1px 6px;font-size:11px;font-family:monospace}
+.flare-footer{
+  background:#f0f6ff;
+  border-top:1px solid #dde3ec;
+  padding:10px 48px;
+  font-size:11px;
+  color:#7c8fa6;
+  display:flex;
+  justify-content:space-between;
+  font-family:'Segoe UI',Arial,sans-serif;
+  flex-shrink:0;
+}
+
+/* ── Footer ── */
+footer{
+  background:var(--bg);
+  border-top:1px solid var(--border);
+  padding:24px 60px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.footer-copy{font-family:var(--ff-m);font-size:.66rem;color:var(--text3)}
+.footer-link{font-family:var(--ff-m);font-size:.66rem;color:var(--cyan);text-decoration:none}
+.footer-link:hover{text-decoration:underline}
+
+</style>
+</head>
+
+<body>
+
+<!-- ═══ TOP BAR ═══ -->
+<div class="topbar" id="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </a>
+    <div class="topbar-divider"></div>
+    <div class="topbar-brand"><span class="grad">SM.</span></div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-page-title"><span>Healthcare Application User Manual</span></div>
+  </div>
+  <div class="topbar-right">
+    <div class="meta-pill"><div class="mdot md-pink"></div><span>Tool: <strong>MadCap Flare</strong></span></div>
+    <div class="meta-pill"><div class="mdot md-b"></div><span>Output: <strong>HTML5 WebHelp</strong></span></div>
+    <div class="meta-pill">&#9997;&#65039;<span>Format: <strong>Flare XML</strong></span></div>
+  </div>
+</div>
+
+<!-- ═══ Disclaimer ═══ -->
+<div class="hero-disc" id="scroll-trigger">
+  <div>
+    <p class="full-width-disclaimer">
+      <span class="grad">Disclaimer:</span> This user manual for a Healthcare Data Archival System is created as part of my professional portfolio. The content is based on publicly available information and official documentation, and has been adapted for demonstration purposes only. No confidential or proprietary information is included.
+    </p>
+  </div>
+</div>
+
+<main id="main-wrap">
+<div class="layout" id="layout">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <div class="sidebar">
+    <div class="tree-title">📘 Healthcare User Manual</div>
+
+    <div class="tree-item" onclick="loadTopic('overview', this)">
+      ├── 📄 System Overview
+    </div>
+    <div class="tree-item" onclick="loadTopic('login', this)">
+      ├── 📄 Login &amp; Access
+    </div>
+    <div class="tree-item" onclick="loadTopic('search', this)">
+      ├── 📄 Searching Records
+    </div>
+    <div class="tree-item active" onclick="loadTopic('archive', this)">
+      ├── 📄 Archiving Records
+    </div>
+    <div class="tree-item" onclick="loadTopic('bulk', this)">
+      ├── 📄 Bulk Archiving
+    </div>
+    <div class="tree-item" onclick="loadTopic('retention', this)">
+      ├── 📄 Retention Policies
+    </div>
+    <div class="tree-item" onclick="loadTopic('auditlog', this)">
+      └── 📄 Audit Log
+    </div>
+  </div>
+
+  <!-- ═══ VIEWER ═══ -->
+  <div class="viewer">
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="hero-grid"></div>
+      <div class="hero-glow"></div>
+      <div class="toolbar-left">
+        <div class="toolbar-eyebrow">Document Viewer</div>
+        <div class="toolbar-title">MadCap Flare Viewer</div>
+      </div>
+      <div class="toolbar-right">
+        <div class="viewer-tabs">
+          <button class="vtab active" id="tab-xml" onclick="switchView('xml', this)">⟨/⟩ XML Source</button>
+          <button class="vtab" id="tab-rendered" onclick="switchView('rendered', this)">👁 WebHelp Output</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- XML Panel (CodeMirror) -->
+    <div id="panel-xml" class="panel active">
+      <div id="xml-editor" style="flex:1;min-height:0;height:100%;"></div>
+    </div>
+
+    <!-- Rendered WebHelp Panel -->
+    <div id="panel-rendered" class="panel">
+      <div class="flare-topbar">
+        <div class="flare-topbar-title" id="flare-doc-title">Healthcare Data Archival System · User Manual v2.4</div>
+        <div class="flare-topbar-nav">
+          <a href="#">Home</a>
+          <a href="#">Search</a>
+          <a href="#">Print</a>
+          <a href="#">Feedback</a>
+        </div>
+      </div>
+      <div class="flare-layout" style="flex:1;min-height:0;">
+        <div class="flare-toc">
+          <div class="flare-toc-header">Contents</div>
+          <div class="flare-toc-item" onclick="loadTopic('overview', null, this)">Getting Started</div>
+          <div class="flare-toc-item sub" onclick="loadTopic('overview', null, this)">System Overview</div>
+          <div class="flare-toc-item sub" onclick="loadTopic('login', null, this)">Login &amp; Access</div>
+          <div class="flare-toc-item" onclick="loadTopic('search', null, this)">Patient Records</div>
+          <div class="flare-toc-item sub" onclick="loadTopic('search', null, this)">Searching Records</div>
+          <div class="flare-toc-item sub" onclick="loadTopic('archive', null, this)">Archiving Records</div>
+          <div class="flare-toc-item sub toc-active" onclick="loadTopic('bulk', null, this)">Bulk Archiving</div>
+          <div class="flare-toc-item" onclick="loadTopic('retention', null, this)">Retention Policies</div>
+          <div class="flare-toc-item sub" onclick="loadTopic('retention', null, this)">Policy Overview</div>
+          <div class="flare-toc-item" onclick="loadTopic('auditlog', null, this)">Reports &amp; Audit</div>
+          <div class="flare-toc-item sub" onclick="loadTopic('auditlog', null, this)">Audit Log</div>
+        </div>
+        <div class="flare-content-wrap">
+          <div class="flare-content" id="flare-content-body">
+            <!-- content injected by JS -->
+          </div>
+          <div class="flare-footer">
+            <span>© 2025 Healthcare Data Archival System · User Manual v2.4</span>
+            <span>Published with MadCap Flare · HTML5 WebHelp</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /viewer -->
+</div><!-- /layout -->
+</main>
+
+<footer>
+  <div class="footer-copy">© 2026 Selvamani Madhaiyan</div>
+  <a href="index.html#portfolio" class="footer-link">← Back to Portfolio</a>
+</footer>
+
+<!-- ═══ TOPIC DATA ═══ -->
+<script>
+/* ─────────────────────────────────────────────
+   Topic definitions
+   Each topic has:
+     xml  – the raw Flare XML source (displayed in CodeMirror)
+     html – the rendered WebHelp content (injected into .flare-content)
+     breadcrumb – breadcrumb trail text
+     tocActive  – text of the TOC item to highlight
+─────────────────────────────────────────────── */
+const TOPICS = {
+
+  overview: {
+    breadcrumb: 'Getting Started > <span>System Overview</span>',
+    xml: `<?xml version="1.0" encoding="utf-8"?>
+<!-- MadCap Flare Topic File (.htm) — Healthcare Data Archival System -->
+<!-- Conditions: Output=WebHelp|PDF -->
+
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="4"
+  MadCap:lastHeight="980"
+  MadCap:lastWidth="1208">
+
+<head>
+  <link href="../Resources/Stylesheets/HDA_WebHelp.css"
+        rel="stylesheet" type="text/css"/>
+  <meta name="description"
+        content="Overview of the Healthcare Data Archival System."/>
+</head>
+
+<body>
+
+  <h1>System Overview</h1>
+
+  <p class="shortdesc">
+    The Healthcare Data Archival System (HDA) provides a secure,
+    HIPAA-compliant platform for managing, archiving, and retrieving
+    patient records across your organisation.
+  </p>
+
+  <h2>Key Features</h2>
+  <ul>
+    <li>Role-based access control (RBAC)</li>
+    <li>Automated retention policy enforcement</li>
+    <li>Full audit trail for all record operations</li>
+    <li>HTML5 WebHelp with context-sensitive help</li>
+  </ul>
+
+  <h2>Supported Outputs</h2>
+  <MadCap:conditionalText MadCap:conditions="Output.WebHelp">
+    <div class="note-info">
+      <p><strong>WebHelp:</strong> Responsive HTML5 output optimised
+      for desktop and tablet browsers.</p>
+    </div>
+  </MadCap:conditionalText>
+
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="Login_Access.htm"/>
+    <MadCap:relatedTopic src="Patient_Records.htm"/>
+  </MadCap:relatedTopics>
+
+</body>
+</html>`,
+    html: `<div class="flare-breadcrumb">Getting Started &gt; <span>System Overview</span></div>
+      <h1>System Overview</h1>
+      <p style="font-size:14.5px;color:#334155;font-style:italic;margin-bottom:20px;padding-left:12px;border-left:3px solid #0369a1">
+        The Healthcare Data Archival System (HDA) provides a secure, HIPAA-compliant platform for managing, archiving, and retrieving patient records across your organisation.
+      </p>
+      <div class="note-box"><span class="note-icon">ℹ️</span><div><strong>Note:</strong> This system is designed for healthcare organisations subject to HIPAA and regional data retention regulations.</div></div>
+      <h2>Key Features</h2>
+      <ul>
+        <li>Role-based access control (RBAC) with granular permissions</li>
+        <li>Automated retention policy enforcement based on record type</li>
+        <li>Full audit trail for all record create, modify, archive, and restore operations</li>
+        <li>Context-sensitive HTML5 WebHelp output with responsive layout</li>
+        <li>Conditional publishing — separate content for Operator and Administrator roles</li>
+      </ul>
+      <h2>Supported Output Formats</h2>
+      <table>
+        <tr><th>Output Type</th><th>Format</th><th>Notes</th></tr>
+        <tr><td>Online Help</td><td>HTML5 WebHelp</td><td>Primary delivery channel</td></tr>
+        <tr><td>Print Manual</td><td>PDF</td><td>Generated from same source via MadCap Flare targets</td></tr>
+        <tr><td>Context Help</td><td>CSH IDs</td><td>Linked from application UI via Help buttons</td></tr>
+      </table>
+      <h3>Related Topics</h3>
+      <p>
+        <a href="#" onclick="loadTopic('login')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Login &amp; Access</a>
+        <a href="#" onclick="loadTopic('archive')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Archiving Records</a>
+      </p>`
+  },
+
+  login: {
+    breadcrumb: 'Getting Started > <span>Login &amp; Access</span>',
+    xml: `<?xml version="1.0" encoding="utf-8"?>
+<!-- MadCap Flare Topic File (.htm) — Healthcare Data Archival System -->
+<!-- Conditions: UserRole=Admin|Operator; Output=WebHelp|PDF -->
+
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="5"
+  MadCap:lastHeight="1100"
+  MadCap:lastWidth="1208">
+
+<head>
+  <link href="../Resources/Stylesheets/HDA_WebHelp.css"
+        rel="stylesheet" type="text/css"/>
+  <meta name="description"
+        content="How to log in and manage access to the HDA System."/>
+</head>
+
+<body>
+
+  <h1>Login &amp; Access</h1>
+
+  <p class="shortdesc">
+    Use your organisation's Single Sign-On (SSO) credentials or a
+    local account to access the HDA System. Access levels are
+    determined by your assigned role.
+  </p>
+
+  <h2>Logging In</h2>
+  <ol>
+    <li><p>Navigate to <span class="ui">https://hda.example.org/login</span></p></li>
+    <li><p>Enter your <span class="ui">Username</span> and <span class="ui">Password</span>, then click <span class="ui">Sign In</span>.</p></li>
+    <li><p>If MFA is enabled, enter the one-time code from your authenticator app.</p></li>
+  </ol>
+
+  <MadCap:conditionalText MadCap:conditions="UserRole.Admin">
+    <div class="note-admin">
+      <p><strong>Admin Note:</strong> User accounts and role assignments
+      are managed in <MadCap:xref href="User_Management.htm">Administration &gt; User Management</MadCap:xref>.</p>
+    </div>
+  </MadCap:conditionalText>
+
+  <h2>User Roles</h2>
+  <table>
+    <tr><th>Role</th><th>Permissions</th></tr>
+    <tr><td>Viewer</td><td>Read-only access to active records</td></tr>
+    <tr><td>Operator</td><td>Create, edit, and archive records</td></tr>
+    <tr><td>Administrator</td><td>Full access including user management and system settings</td></tr>
+  </table>
+
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="System_Overview.htm"/>
+    <MadCap:relatedTopic src="Archive_Records.htm"/>
+  </MadCap:relatedTopics>
+
+</body>
+</html>`,
+    html: `<div class="flare-breadcrumb">Getting Started &gt; <span>Login &amp; Access</span></div>
+      <h1>Login &amp; Access</h1>
+      <p style="font-size:14.5px;color:#334155;font-style:italic;margin-bottom:20px;padding-left:12px;border-left:3px solid #0369a1">
+        Use your organisation's Single Sign-On (SSO) credentials or a local account to access the HDA System. Access levels are determined by your assigned role.
+      </p>
+      <h2>Logging In</h2>
+      <ol>
+        <li>Navigate to <code>https://hda.example.org/login</code></li>
+        <li>Enter your <code>Username</code> and <code>Password</code>, then click <code>Sign In</code>.</li>
+        <li>If MFA is enabled, enter the one-time code from your authenticator app and click <code>Verify</code>.</li>
+      </ol>
+      <div class="note-box"><span class="note-icon">ℹ️</span><div><strong>Admin Note:</strong> User accounts and role assignments are managed under <strong>Administration &gt; User Management</strong>.</div></div>
+      <h2>User Roles</h2>
+      <table>
+        <tr><th>Role</th><th>Permissions</th></tr>
+        <tr><td><code>Viewer</code></td><td>Read-only access to active records</td></tr>
+        <tr><td><code>Operator</code></td><td>Create, edit, and archive records</td></tr>
+        <tr><td><code>Administrator</code></td><td>Full access including user management and system settings</td></tr>
+      </table>
+      <h2>Forgotten Password</h2>
+      <p>Click <code>Forgot Password</code> on the login page and enter your registered email address. A reset link will be sent within 5 minutes. Contact your system administrator if the issue persists.</p>
+      <h3>Related Topics</h3>
+      <p>
+        <a href="#" onclick="loadTopic('overview')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ System Overview</a>
+        <a href="#" onclick="loadTopic('archive')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Archiving Records</a>
+      </p>`
+  },
+
+  search: {
+    breadcrumb: 'Patient Records > <span>Searching Records</span>',
+    xml: `<?xml version="1.0" encoding="utf-8"?>
+<!-- MadCap Flare Topic File (.htm) — Healthcare Data Archival System -->
+<!-- Conditions: UserRole=Admin|Operator; Output=WebHelp|PDF -->
+
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="5"
+  MadCap:lastHeight="1230"
+  MadCap:lastWidth="1208">
+
+<head>
+  <link href="../Resources/Stylesheets/HDA_WebHelp.css"
+        rel="stylesheet" type="text/css"/>
+  <meta name="description"
+        content="How to search for patient records in the HDA System."/>
+</head>
+
+<body>
+
+  <h1>Searching Patient Records</h1>
+
+  <p class="shortdesc">
+    Use the Patient Records search to locate active, inactive, or
+    archived records. Multiple filter options allow you to narrow
+    results by status, date range, or assigned clinician.
+  </p>
+
+  <h2>Basic Search</h2>
+  <ol>
+    <li><p>Click <span class="ui">Patient Records</span> in the left navigation panel.</p></li>
+    <li><p>Enter a value in the <span class="ui">Search</span> box — supports Patient ID, Last Name, or DOB (YYYY-MM-DD).</p></li>
+    <li><p>Press <span class="key">Enter</span> or click <span class="ui">Search</span>.</p></li>
+  </ol>
+
+  <h2>Advanced Filters</h2>
+  <table>
+    <tr><th>Filter</th><th>Description</th></tr>
+    <tr><td>Status</td><td>Active, Inactive, Closed, Archived</td></tr>
+    <tr><td>Date Range</td><td>Filter by record creation or last modified date</td></tr>
+    <tr><td>Clinician</td><td>Filter by assigned clinician ID or name</td></tr>
+    <tr><td>Retention Policy</td><td>Filter by applied policy name</td></tr>
+  </table>
+
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="Archive_Records.htm"/>
+    <MadCap:relatedTopic src="Audit_Log.htm"/>
+  </MadCap:relatedTopics>
+
+</body>
+</html>`,
+    html: `<div class="flare-breadcrumb">Patient Records &gt; <span>Searching Records</span></div>
+      <h1>Searching Patient Records</h1>
+      <p style="font-size:14.5px;color:#334155;font-style:italic;margin-bottom:20px;padding-left:12px;border-left:3px solid #0369a1">
+        Use the Patient Records search to locate active, inactive, or archived records. Multiple filter options allow you to narrow results by status, date range, or assigned clinician.
+      </p>
+      <h2>Basic Search</h2>
+      <ol>
+        <li>Click <code>Patient Records</code> in the left navigation panel.</li>
+        <li>Enter a value in the <code>Search</code> box — supports Patient ID, Last Name, or DOB (<code>YYYY-MM-DD</code>).</li>
+        <li>Press <kbd>Enter</kbd> or click <code>Search</code>.</li>
+      </ol>
+      <div class="note-box"><span class="note-icon">ℹ️</span><div>The search is case-insensitive and supports partial matches on Last Name and Patient ID.</div></div>
+      <h2>Advanced Filters</h2>
+      <table>
+        <tr><th>Filter</th><th>Description</th></tr>
+        <tr><td><code>Status</code></td><td>Active, Inactive, Closed, Archived</td></tr>
+        <tr><td><code>Date Range</code></td><td>Filter by record creation or last modified date</td></tr>
+        <tr><td><code>Clinician</code></td><td>Filter by assigned clinician ID or name</td></tr>
+        <tr><td><code>Retention Policy</code></td><td>Filter by applied policy name</td></tr>
+      </table>
+      <h2>Viewing Search Results</h2>
+      <p>Results are displayed in a paginated table. Click any row to open the full patient record. Use the column headers to sort results ascending or descending.</p>
+      <h3>Related Topics</h3>
+      <p>
+        <a href="#" onclick="loadTopic('archive')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Archiving Records</a>
+        <a href="#" onclick="loadTopic('auditlog')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Audit Log</a>
+      </p>`
+  },
+
+  archive: {
+    breadcrumb: 'Patient Records > <span>Archiving Patient Records</span>',
+    xml: `<?xml version="1.0" encoding="utf-8"?>
+<!-- MadCap Flare Topic File (.htm) — Healthcare Data Archival System -->
+<!-- Conditions: User=Admin|Operator; Output=WebHelp|PDF -->
+
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="6"
+  MadCap:lastHeight="1842"
+  MadCap:lastWidth="1208">
+
+<head>
+  <link href="../Resources/Stylesheets/HDA_WebHelp.css"
+        rel="stylesheet" type="text/css"/>
+  <meta name="description"
+        content="Step-by-step procedure for archiving patient records in the HDA System."/>
+</head>
+
+<body>
+
+  <h1>Archiving Patient Records</h1>
+
+  <p class="shortdesc">
+    Archive completed or inactive patient records to the long-term
+    storage tier. This procedure permanently moves records out of the
+    active database; verify all mandatory fields before archiving.
+  </p>
+
+  <!-- Admin-only note: conditionally included -->
+  <MadCap:conditionalText MadCap:conditions="UserRole.Admin">
+    <div class="note-admin">
+      <p><strong>Admin Note:</strong> Bulk archive operations are available
+      from the System Administration console. See
+      <MadCap:xref href="Bulk_Archive.htm">Bulk Archiving</MadCap:xref>.</p>
+    </div>
+  </MadCap:conditionalText>
+
+  <h2>Before You Begin</h2>
+  <ul>
+    <li>You must have Operator or Administrator permissions.</li>
+    <li>The patient record status must be <span class="ui">Inactive</span>
+        or <span class="ui">Closed</span>.</li>
+    <li>All pending review tasks must be completed and signed off.</li>
+    <li>A valid retention policy must be assigned to the record.</li>
+  </ul>
+
+  <div class="warning">
+    <p><strong>Important:</strong> Archiving is irreversible from the user
+    interface. Records can only be restored by a system administrator
+    via the database management console.</p>
+  </div>
+
+  <h2>Archiving a Patient Record</h2>
+  <ol>
+    <li>
+      <p>On the main dashboard, click <span class="ui">Patient Records</span>
+      in the left navigation panel.</p>
+    </li>
+    <li>
+      <p>Search for the patient using the <span class="ui">Patient ID</span>
+      or <span class="ui">Last Name</span> search box and press
+      <span class="key">Enter</span>.</p>
+    </li>
+    <li>
+      <p>Open the record and verify that the Status field shows
+      <span class="ui">Inactive</span> or <span class="ui">Closed</span>.</p>
+    </li>
+    <li>
+      <p>From the <span class="ui">Actions</span> menu, select
+      <span class="ui">Archive Record</span>.</p>
+    </li>
+    <li>
+      <p>In the confirmation dialog, review the archive details and
+      click <span class="ui">Confirm Archive</span>.</p>
+    </li>
+  </ol>
+
+  <h2>Verification</h2>
+  <p>After archiving, the record will no longer appear in the active
+  Patient Records list. To locate archived records, use the
+  <span class="ui">Archive Search</span> option under the
+  <span class="ui">Reports</span> menu.</p>
+
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="Record_Retention_Policy.htm"/>
+    <MadCap:relatedTopic src="Bulk_Archive.htm"/>
+    <MadCap:relatedTopic src="Audit_Log.htm"/>
+  </MadCap:relatedTopics>
+
+</body>
+</html>`,
+    html: `<div class="flare-breadcrumb">Patient Records &gt; <span>Archiving Patient Records</span></div>
+      <h1>Archiving Patient Records</h1>
+      <p style="font-size:14.5px;color:#334155;font-style:italic;margin-bottom:20px;padding-left:12px;border-left:3px solid #db2777">
+        Archive completed or inactive patient records to the long-term storage tier. This procedure permanently moves records out of the active database; verify all mandatory fields before archiving.
+      </p>
+      <div class="warning-box"><span class="note-icon">⚠️</span><div><strong>Important:</strong> Archiving is irreversible from the user interface. Records can only be restored by a system administrator via the database management console.</div></div>
+      <h2>Before You Begin</h2>
+      <ul>
+        <li>You must have Operator or Administrator permissions.</li>
+        <li>The patient record status must be <code>Inactive</code> or <code>Closed</code>.</li>
+        <li>All pending review tasks must be completed and signed off.</li>
+        <li>A valid retention policy must be assigned to the record.</li>
+      </ul>
+      <h2>Archiving a Patient Record</h2>
+      <ol>
+        <li>On the main dashboard, click <code>Patient Records</code> in the left navigation panel.</li>
+        <li>Search for the patient using the <code>Patient ID</code> or <code>Last Name</code> search box and press <kbd>Enter</kbd>.</li>
+        <li>Open the record and verify that the Status field shows <code>Inactive</code> or <code>Closed</code>.</li>
+        <li>From the <code>Actions</code> menu, select <code>Archive Record</code>.</li>
+        <li>In the confirmation dialog, review the archive details and click <code>Confirm Archive</code>.</li>
+      </ol>
+      <div class="note-box"><span class="note-icon">ℹ️</span><div><strong>Admin Note:</strong> Bulk archive operations are available from the System Administration console.</div></div>
+      <h2>Verification</h2>
+      <p>After archiving, the record will no longer appear in the active Patient Records list. To locate archived records, use the <code>Archive Search</code> option under the <code>Reports</code> menu.</p>
+      <h2>Archive Status Reference</h2>
+      <table>
+        <tr><th>Record Status</th><th>Eligible to Archive?</th><th>Notes</th></tr>
+        <tr><td><code>Active</code></td><td>No</td><td>Must close or inactivate record first</td></tr>
+        <tr><td><code>Under Review</code></td><td>No</td><td>Complete all pending tasks first</td></tr>
+        <tr><td><code>Inactive</code></td><td>Yes</td><td>Archive available if policy assigned</td></tr>
+        <tr><td><code>Closed</code></td><td>Yes</td><td>Archive available immediately</td></tr>
+      </table>
+      <h3>Related Topics</h3>
+      <p>
+        <a href="#" onclick="loadTopic('retention')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Record Retention Policy</a>
+        <a href="#" onclick="loadTopic('bulk')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Bulk Archiving</a>
+        <a href="#" onclick="loadTopic('auditlog')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Audit Log Reference</a>
+      </p>`
+  },
+
+  bulk: {
+    breadcrumb: 'Patient Records > <span>Bulk Archiving</span>',
+    xml: `<?xml version="1.0" encoding="utf-8"?>
+<!-- MadCap Flare Topic File (.htm) — Healthcare Data Archival System -->
+<!-- Conditions: UserRole=Admin; Output=WebHelp|PDF -->
+
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="5"
+  MadCap:lastHeight="1420"
+  MadCap:lastWidth="1208">
+
+<head>
+  <link href="../Resources/Stylesheets/HDA_WebHelp.css"
+        rel="stylesheet" type="text/css"/>
+  <meta name="description"
+        content="How to perform bulk archiving of patient records in the HDA System."/>
+</head>
+
+<body>
+
+  <h1>Bulk Archiving</h1>
+
+  <p class="shortdesc">
+    Administrators can archive multiple patient records simultaneously
+    using the Bulk Archive feature in the System Administration console.
+    Use this feature to process large record sets at scheduled intervals.
+  </p>
+
+  <MadCap:conditionalText MadCap:conditions="UserRole.Admin">
+    <div class="note-admin">
+      <p><strong>Admin-only Feature:</strong> Bulk Archiving is restricted
+      to users with Administrator role. Operators must archive records
+      individually. See <MadCap:xref href="Archive_Records.htm">Archiving
+      Patient Records</MadCap:xref>.</p>
+    </div>
+  </MadCap:conditionalText>
+
+  <h2>Running a Bulk Archive Job</h2>
+  <ol>
+    <li><p>Navigate to <span class="ui">Administration</span> &gt; <span class="ui">Bulk Archive</span>.</p></li>
+    <li><p>Select the target record status: <span class="ui">Inactive</span>, <span class="ui">Closed</span>, or both.</p></li>
+    <li><p>Set the <span class="ui">Last Activity Date</span> filter to select records older than a specified date.</p></li>
+    <li><p>Click <span class="ui">Preview</span> to review the record set before committing.</p></li>
+    <li><p>Click <span class="ui">Run Archive</span> and confirm in the dialog.</p></li>
+  </ol>
+
+  <div class="warning">
+    <p><strong>Caution:</strong> Bulk archive jobs cannot be undone from
+    the user interface. Ensure selection criteria are verified before
+    running.</p>
+  </div>
+
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="Archive_Records.htm"/>
+    <MadCap:relatedTopic src="Retention_Policy.htm"/>
+    <MadCap:relatedTopic src="Audit_Log.htm"/>
+  </MadCap:relatedTopics>
+
+</body>
+</html>`,
+    html: `<div class="flare-breadcrumb">Patient Records &gt; <span>Bulk Archiving</span></div>
+      <h1>Bulk Archiving</h1>
+      <p style="font-size:14.5px;color:#334155;font-style:italic;margin-bottom:20px;padding-left:12px;border-left:3px solid #db2777">
+        Administrators can archive multiple patient records simultaneously using the Bulk Archive feature in the System Administration console.
+      </p>
+      <div class="note-box"><span class="note-icon">🔒</span><div><strong>Admin-only Feature:</strong> Bulk Archiving is restricted to users with the Administrator role. Operators must archive records individually.</div></div>
+      <h2>Running a Bulk Archive Job</h2>
+      <ol>
+        <li>Navigate to <code>Administration</code> &gt; <code>Bulk Archive</code>.</li>
+        <li>Select the target record status: <code>Inactive</code>, <code>Closed</code>, or both.</li>
+        <li>Set the <code>Last Activity Date</code> filter to select records older than a specified date.</li>
+        <li>Click <code>Preview</code> to review the record set before committing.</li>
+        <li>Click <code>Run Archive</code> and confirm in the dialog.</li>
+      </ol>
+      <div class="warning-box"><span class="note-icon">⚠️</span><div><strong>Caution:</strong> Bulk archive jobs cannot be undone from the user interface. Ensure selection criteria are verified before running.</div></div>
+      <h2>Scheduling Bulk Archive Jobs</h2>
+      <p>Use the <code>Schedule</code> option to configure recurring bulk archive jobs. Supported frequencies are daily, weekly, and monthly. Job logs are stored in the Audit Log.</p>
+      <table>
+        <tr><th>Setting</th><th>Description</th></tr>
+        <tr><td><code>Frequency</code></td><td>How often the job runs (daily/weekly/monthly)</td></tr>
+        <tr><td><code>Run Time</code></td><td>Time of day to execute (24-hour format)</td></tr>
+        <tr><td><code>Notification</code></td><td>Email address to receive job completion report</td></tr>
+      </table>
+      <h3>Related Topics</h3>
+      <p>
+        <a href="#" onclick="loadTopic('archive')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Archiving Records</a>
+        <a href="#" onclick="loadTopic('retention')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Retention Policies</a>
+        <a href="#" onclick="loadTopic('auditlog')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Audit Log</a>
+      </p>`
+  },
+
+  retention: {
+    breadcrumb: 'Retention Policies > <span>Policy Overview</span>',
+    xml: `<?xml version="1.0" encoding="utf-8"?>
+<!-- MadCap Flare Topic File (.htm) — Healthcare Data Archival System -->
+<!-- Conditions: UserRole=Admin|Operator; Output=WebHelp|PDF -->
+
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="5"
+  MadCap:lastHeight="1380"
+  MadCap:lastWidth="1208">
+
+<head>
+  <link href="../Resources/Stylesheets/HDA_WebHelp.css"
+        rel="stylesheet" type="text/css"/>
+  <meta name="description"
+        content="Overview of retention policies in the HDA System."/>
+</head>
+
+<body>
+
+  <h1>Retention Policies</h1>
+
+  <p class="shortdesc">
+    Retention policies define how long patient records are kept in
+    the active database before archiving or deletion. Policies are
+    configured by administrators and must comply with applicable
+    healthcare regulations.
+  </p>
+
+  <h2>Default Policies</h2>
+  <table>
+    <tr><th>Policy Name</th><th>Retention Period</th><th>Applies To</th></tr>
+    <tr><td>Standard</td><td>7 years</td><td>General patient records</td></tr>
+    <tr><td>Paediatric</td><td>Until patient turns 25</td><td>Records created before age 18</td></tr>
+    <tr><td>Mental Health</td><td>10 years</td><td>Psychiatric and counselling records</td></tr>
+    <tr><td>Legal Hold</td><td>Indefinite</td><td>Records under litigation or audit</td></tr>
+  </table>
+
+  <MadCap:conditionalText MadCap:conditions="UserRole.Admin">
+    <div class="note-admin">
+      <p><strong>Admin:</strong> Custom policies can be created under
+      <span class="ui">Administration &gt; Retention Policies</span>.</p>
+    </div>
+  </MadCap:conditionalText>
+
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="Archive_Records.htm"/>
+    <MadCap:relatedTopic src="Bulk_Archive.htm"/>
+  </MadCap:relatedTopics>
+
+</body>
+</html>`,
+    html: `<div class="flare-breadcrumb">Retention Policies &gt; <span>Policy Overview</span></div>
+      <h1>Retention Policies</h1>
+      <p style="font-size:14.5px;color:#334155;font-style:italic;margin-bottom:20px;padding-left:12px;border-left:3px solid #0369a1">
+        Retention policies define how long patient records are kept in the active database before archiving or deletion. Policies must comply with applicable healthcare regulations.
+      </p>
+      <h2>Default Policies</h2>
+      <table>
+        <tr><th>Policy Name</th><th>Retention Period</th><th>Applies To</th></tr>
+        <tr><td><code>Standard</code></td><td>7 years</td><td>General patient records</td></tr>
+        <tr><td><code>Paediatric</code></td><td>Until patient turns 25</td><td>Records created before age 18</td></tr>
+        <tr><td><code>Mental Health</code></td><td>10 years</td><td>Psychiatric and counselling records</td></tr>
+        <tr><td><code>Legal Hold</code></td><td>Indefinite</td><td>Records under litigation or audit</td></tr>
+      </table>
+      <div class="note-box"><span class="note-icon">ℹ️</span><div><strong>Admin:</strong> Custom policies can be created under <code>Administration &gt; Retention Policies</code>. Custom policy names must be unique within the system.</div></div>
+      <h2>Assigning a Policy to a Record</h2>
+      <ol>
+        <li>Open the patient record.</li>
+        <li>Click the <code>Details</code> tab and locate the <code>Retention Policy</code> field.</li>
+        <li>Select the applicable policy from the dropdown.</li>
+        <li>Click <code>Save</code> to apply.</li>
+      </ol>
+      <div class="warning-box"><span class="note-icon">⚠️</span><div>Records with a <code>Legal Hold</code> policy cannot be archived or deleted until the hold is explicitly removed by an administrator.</div></div>
+      <h3>Related Topics</h3>
+      <p>
+        <a href="#" onclick="loadTopic('archive')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Archiving Records</a>
+        <a href="#" onclick="loadTopic('bulk')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Bulk Archiving</a>
+      </p>`
+  },
+
+  auditlog: {
+    breadcrumb: 'Reports & Audit > <span>Audit Log</span>',
+    xml: `<?xml version="1.0" encoding="utf-8"?>
+<!-- MadCap Flare Topic File (.htm) — Healthcare Data Archival System -->
+<!-- Conditions: UserRole=Admin|Operator; Output=WebHelp|PDF -->
+
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="5"
+  MadCap:lastHeight="1290"
+  MadCap:lastWidth="1208">
+
+<head>
+  <link href="../Resources/Stylesheets/HDA_WebHelp.css"
+        rel="stylesheet" type="text/css"/>
+  <meta name="description"
+        content="How to access and interpret the audit log in the HDA System."/>
+</head>
+
+<body>
+
+  <h1>Audit Log</h1>
+
+  <p class="shortdesc">
+    The Audit Log records all create, modify, archive, restore, and
+    delete operations on patient records. Use the Audit Log to track
+    user activity and meet compliance reporting requirements.
+  </p>
+
+  <h2>Accessing the Audit Log</h2>
+  <ol>
+    <li><p>Navigate to <span class="ui">Reports</span> &gt; <span class="ui">Audit Log</span>.</p></li>
+    <li><p>Apply filters as needed: date range, user, record ID, or action type.</p></li>
+    <li><p>Click <span class="ui">Export</span> to download the filtered log as CSV or PDF.</p></li>
+  </ol>
+
+  <h2>Audit Event Types</h2>
+  <table>
+    <tr><th>Event</th><th>Description</th></tr>
+    <tr><td>RECORD_CREATE</td><td>New patient record created</td></tr>
+    <tr><td>RECORD_MODIFY</td><td>Patient record fields updated</td></tr>
+    <tr><td>RECORD_ARCHIVE</td><td>Record moved to archive tier</td></tr>
+    <tr><td>RECORD_RESTORE</td><td>Archived record restored to active</td></tr>
+    <tr><td>RECORD_DELETE</td><td>Record permanently deleted (Admin only)</td></tr>
+    <tr><td>POLICY_ASSIGN</td><td>Retention policy assigned to record</td></tr>
+    <tr><td>USER_LOGIN</td><td>User login event</td></tr>
+    <tr><td>USER_LOGOUT</td><td>User logout or session expiry</td></tr>
+  </table>
+
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="Archive_Records.htm"/>
+    <MadCap:relatedTopic src="Retention_Policy.htm"/>
+  </MadCap:relatedTopics>
+
+</body>
+</html>`,
+    html: `<div class="flare-breadcrumb">Reports &amp; Audit &gt; <span>Audit Log</span></div>
+      <h1>Audit Log</h1>
+      <p style="font-size:14.5px;color:#334155;font-style:italic;margin-bottom:20px;padding-left:12px;border-left:3px solid #0369a1">
+        The Audit Log records all create, modify, archive, restore, and delete operations on patient records. Use it to track user activity and meet compliance reporting requirements.
+      </p>
+      <h2>Accessing the Audit Log</h2>
+      <ol>
+        <li>Navigate to <code>Reports</code> &gt; <code>Audit Log</code>.</li>
+        <li>Apply filters as needed: date range, user, record ID, or action type.</li>
+        <li>Click <code>Export</code> to download the filtered log as CSV or PDF.</li>
+      </ol>
+      <h2>Audit Event Types</h2>
+      <table>
+        <tr><th>Event</th><th>Description</th></tr>
+        <tr><td><code>RECORD_CREATE</code></td><td>New patient record created</td></tr>
+        <tr><td><code>RECORD_MODIFY</code></td><td>Patient record fields updated</td></tr>
+        <tr><td><code>RECORD_ARCHIVE</code></td><td>Record moved to archive tier</td></tr>
+        <tr><td><code>RECORD_RESTORE</code></td><td>Archived record restored to active</td></tr>
+        <tr><td><code>RECORD_DELETE</code></td><td>Record permanently deleted (Admin only)</td></tr>
+        <tr><td><code>POLICY_ASSIGN</code></td><td>Retention policy assigned to record</td></tr>
+        <tr><td><code>USER_LOGIN</code></td><td>User login event</td></tr>
+        <tr><td><code>USER_LOGOUT</code></td><td>User logout or session expiry</td></tr>
+      </table>
+      <div class="note-box"><span class="note-icon">ℹ️</span><div>Audit log entries are immutable and cannot be edited or deleted by any user, including administrators.</div></div>
+      <h2>Exporting the Log</h2>
+      <p>Filtered audit log data can be exported as <code>CSV</code> for data analysis or <code>PDF</code> for compliance submissions. Export files are timestamped and include the filter criteria applied.</p>
+      <h3>Related Topics</h3>
+      <p>
+        <a href="#" onclick="loadTopic('archive')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Archiving Records</a>
+        <a href="#" onclick="loadTopic('retention')" style="color:#0369a1;text-decoration:none;display:block;margin-bottom:4px">▸ Retention Policies</a>
+      </p>`
+  }
+};
+</script>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+// Initialise CodeMirror
+let editor = CodeMirror(document.getElementById("xml-editor"), {
+  mode: "application/xml",
+  lineNumbers: true,
+  readOnly: true,
+  theme: "default"
+});
+
+// Map sidebar tree-item text → topic key
+const SIDEBAR_TOPIC_MAP = {
+  'overview': 0,
+  'login':    1,
+  'search':   2,
+  'archive':  3,
+  'bulk':     4,
+  'retention':5,
+  'auditlog': 6
+};
+
+// Load a topic by key
+function loadTopic(key, sidebarEl, tocEl) {
+  const topic = TOPICS[key];
+  if (!topic) return;
+
+  // ── Update CodeMirror ──
+  editor.setValue(topic.xml);
+
+  // ── Update rendered view ──
+  document.getElementById('flare-content-body').innerHTML = topic.html;
+
+  // ── Sidebar active state ──
+  if (sidebarEl) {
+    document.querySelectorAll('.sidebar .tree-item').forEach(el => el.classList.remove('active'));
+    sidebarEl.classList.add('active');
+  } else {
+    // Called from TOC or Related Topics link — find matching sidebar item
+    const items = document.querySelectorAll('.sidebar .tree-item');
+    const keys = Object.keys(SIDEBAR_TOPIC_MAP);
+    const idx = SIDEBAR_TOPIC_MAP[key];
+    document.querySelectorAll('.sidebar .tree-item').forEach(el => el.classList.remove('active'));
+    if (items[idx]) items[idx].classList.add('active');
+  }
+
+  // ── TOC active state ──
+  // map key to a zero-based toc item index
+  const tocMap = { overview:0, login:2, search:3, archive:5, bulk:6, retention:7, auditlog:9 };
+  document.querySelectorAll('.flare-toc-item').forEach(el => el.classList.remove('toc-active'));
+  const tocItems = document.querySelectorAll('.flare-toc-item');
+  if (tocItems[tocMap[key]]) tocItems[tocMap[key]].classList.add('toc-active');
+
+  return false; // prevent anchor navigation
+}
+
+// Switch between XML and WebHelp panels
+function switchView(view, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + view).classList.add('active');
+  document.querySelectorAll('.vtab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Auto-load the first topic (Archiving Records) on page load
+window.onload = function () {
+  const archiveItem = document.querySelectorAll('.sidebar .tree-item')[3];
+  loadTopic('archive', archiveItem, null);
+};
+</script>
+
+<!-- ═══ Topbar hide/show on scroll ═══ -->
+<script>
+(function () {
+  const TOPBAR_H    = 66;
+  const topbar      = document.getElementById('topbar');
+  let topbarVisible = true;
+  let lastScrollY   = window.scrollY;
+  let ticking       = false;
+
+  function showTopbar() {
+    if (topbarVisible) return;
+    topbarVisible = true;
+    topbar.classList.remove('hide');
+  }
+  function hideTopbar() {
+    if (!topbarVisible) return;
+    topbarVisible = false;
+    topbar.classList.add('hide');
+  }
+
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      const scrollY = window.scrollY;
+      const delta   = scrollY - lastScrollY;
+      if (delta > 4) {
+        const trigger = document.getElementById('scroll-trigger');
+        if (trigger.getBoundingClientRect().bottom <= TOPBAR_H) hideTopbar();
+      } else if (delta < -4) {
+        showTopbar();
+      }
+      lastScrollY = scrollY;
+      ticking = false;
+    });
+  }, { passive: true });
+})();
+</script>
+
+</body>
+</html>
