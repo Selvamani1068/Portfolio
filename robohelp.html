@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RoboHelp Viewer — Network Management Release Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/xml/xml.js"></script>
+
+<style>
+
+  :root {
+    --bg:#020408;--bg2:#080d14;--bg3:#0c1420;--surface:#0f1a28;--surface2:#162233;
+    --border:rgba(96,165,250,0.12);--border2:rgba(96,165,250,0.32);
+    --cyan:#00c8ff;--gold:#f0b429;--green:#00ffb3;--blue:#60a5fa;--blue-deep:#3b82f6;
+    --text:#e8f4f8;--text2:#8baab8;--text3:#4d7a8a;
+    --ff-d:'Cormorant Garamond',serif;--ff-u:'Syne',sans-serif;--ff-m:'DM Mono',monospace;
+    --topbar-h:66px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--ff-u);overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:0.5}
+
+  /* ── TOP BAR ── */
+  .topbar{
+    background:rgba(5,8,16,0.97);
+    border-bottom:1px solid rgba(99,179,237,0.15);
+    padding:0 2% 0 1%;
+    height:var(--topbar-h);
+    display:flex;align-items:center;justify-content:space-between;
+    position:sticky;top:0;z-index:9999;
+    backdrop-filter:blur(24px);flex-shrink:0;
+    font-family:'Inter',sans-serif;
+    transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .topbar.hide{transform:translateY(-100%)}
+  .topbar-left{display:flex;align-items:center;gap:0.4rem}
+  .topbar-right{display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;margin-left:auto}
+  .back-btn{display:inline-flex;align-items:center;gap:1px;color:var(--text2);text-decoration:none;font-size:.82rem;letter-spacing:.06em;transition:color .2s;font-family:'Inter',sans-serif}
+  .back-btn:hover{color:#464849}
+  .topbar-divider{width:1px;height:24px;background:rgba(255,255,255,0.1)}
+  .topbar-brand{font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:630;letter-spacing:-0.01em}
+  .grad{background:linear-gradient(135deg,#60a5fa,#ede1e8);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .topbar-page-title{font-family:var(--ff-d);font-size:1.4rem;font-weight:600;color:var(--text2);letter-spacing:.01em;padding-left:.3rem}
+  .topbar-page-title span{color:var(--text)}
+
+  /* Meta pills */
+  .meta-pill{display:flex;align-items:center;gap:0.45rem;padding:.42rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;font-size:.82rem;color:#8892b0;transition:border-color .2s}
+  .meta-pill:hover{border-color:rgba(96,165,250,0.25)}
+  .meta-pill strong{color:#ccd6f6}
+  .mdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  .md-blue{background:#60a5fa;box-shadow:0 0 7px #60a5fa}
+  .md-b{background:#62dddd;box-shadow:0 0 7px #69daf0}
+
+  /* ── Disclaimer ── */
+  .hero-disc{
+    background:linear-gradient(135deg,rgba(96,165,250,0.06) 0%,rgba(59,130,246,0.07) 50%,transparent 100%),
+               radial-gradient(ellipse 50% 70% at 85% 60%,rgba(0,200,255,0.04),transparent);
+    border-bottom:1px solid rgba(96,165,250,0.1);
+    padding:.3rem 5%;flex-shrink:0;position:relative;overflow:hidden;
+  }
+  .full-width-disclaimer{width:100%;max-width:100%;margin:0;padding:.5rem;color:#f4f8f7!important;font-size:.9rem;line-height:1.7}
+
+  /* hero-grid / glow — blue tint */
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(96,165,250,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,.04) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+  .hero-glow{position:absolute;top:0;right:10%;width:500px;height:300px;background:radial-gradient(circle,rgba(96,165,250,.1) 0%,transparent 70%);pointer-events:none}
+
+  /* ── Layout ── */
+  main{padding:0!important;max-width:100%!important;position:sticky;top:0;z-index:100}
+  .layout{display:flex;height:calc(104.75vh - var(--topbar-h));width:100%;overflow:hidden}
+
+  /* CodeMirror */
+  .CodeMirror{height:100%!important;max-height:100%!important;background:#020408;color:#e8f4f8}
+  .CodeMirror-gutters{background:#020408;border-right:1px solid rgba(96,165,250,0.12)}
+
+  /* ── Sidebar ── */
+  .sidebar{
+    width:220px;min-width:220px;max-width:220px;
+    background:linear-gradient(135deg,#080818 0%,#0d0d30 40%,var(--bg) 100%);
+    border-right:1px solid #1e293b;
+    padding:12px;overflow-y:auto;
+  }
+  .tree-title{font-weight:600;font-size:13px;margin-bottom:10px;color:#e2e8f0}
+  .tree-item{
+    padding:6px 10px 6px 20px;
+    cursor:pointer;
+    font-family:'DM Mono',monospace;font-size:12px;color:#94a3b8;
+    border-left:2px solid transparent;border-radius:0 4px 4px 0;
+    white-space:normal;word-break:break-word;line-height:1.4;
+    text-indent:-10px;
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  .tree-item:hover{background:#0f172a;color:#fff}
+  .tree-item.active{background:rgba(96,165,250,0.09);color:#e2e8f0;border-left:2px solid var(--blue)}
+  .tree-item.active:hover{background:rgba(96,165,250,0.15)}
+
+  /* ── Viewer ── */
+  .viewer{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+
+  /* ── Toolbar ── */
+  .toolbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:6px 20px 4px 20px;
+    border-bottom:1px solid rgba(96,165,250,0.2);
+    background:linear-gradient(135deg,#080818 0%,#0d0d30 40%,var(--bg) 100%);
+    flex-shrink:0;position:relative;overflow:hidden;
+  }
+  .toolbar-left{display:flex;flex-direction:column;gap:4px;position:relative;z-index:2}
+  .toolbar-title{font-family:var(--ff-d);font-size:1.3rem;font-weight:700;color:var(--text);line-height:1.1}
+  .toolbar-eyebrow{font-family:var(--ff-m);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blue)}
+  .toolbar-right{display:flex;align-items:center;gap:12px;position:relative;z-index:2}
+
+  /* ── Panels ── */
+  .panel{display:none;flex:1;min-height:0;overflow:hidden;height:100%}
+  .panel.active{display:flex;flex-direction:column}
+  #panel-xml{overflow:hidden}
+  #panel-html{overflow-y:auto;background:#f0f4fa}
+
+  /* ── Tabs ── */
+  .viewer-tabs{display:flex;gap:0}
+  .vtab{
+    font-family:var(--ff-m);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+    padding:8px 18px;border:1px solid var(--border);
+    background:transparent;color:var(--text3);cursor:pointer;transition:all .25s;
+  }
+  .vtab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .vtab:not(.active):hover{color:var(--text);border-color:var(--border2)}
+
+  /* ── RoboHelp HTML output simulation ── */
+  .rh-topbar{
+    background:#003780;color:#fff;
+    padding:10px 40px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:Arial,sans-serif;font-size:12px;flex-shrink:0;
+  }
+  .rh-topbar-title{font-weight:700;font-size:13px}
+  .rh-topbar-tools{display:flex;gap:16px;opacity:.85}
+  .rh-topbar-tools a{color:#fff;text-decoration:none;font-size:11px}
+  .rh-topbar-tools a:hover{text-decoration:underline}
+
+  .rh-body{display:flex;flex:1;min-height:0;overflow:hidden}
+
+  .rh-nav{
+    width:220px;min-width:220px;
+    background:#f0f4fa;border-right:1px solid #c5d0e0;
+    padding:16px 0;overflow-y:auto;
+  }
+  .rh-nav-title{padding:6px 16px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#003780;border-bottom:1px solid #c5d0e0;margin-bottom:8px;font-family:Arial,sans-serif}
+  .rh-nav-item{
+    padding:6px 16px;font-size:12px;color:#333;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+    transition:background .15s;font-family:Arial,sans-serif;
+    border-left:3px solid transparent;
+  }
+  .rh-nav-item:hover{background:#dce8f5;color:#003780}
+  .rh-nav-item.rh-active{background:#cde0f5;color:#003780;font-weight:700;border-left:3px solid #003780;padding-left:13px}
+  .rh-nav-item.sub{padding-left:28px;font-size:11.5px;color:#555}
+  .rh-nav-item.sub.rh-active{padding-left:25px;font-weight:700}
+
+  .rh-content-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
+  .rh-content{
+    flex:1;background:#fff;padding:32px 40px;
+    overflow-y:auto;color:#1a1a1a;line-height:1.6;
+    font-family:Arial,sans-serif;font-size:13px;
+  }
+  .rh-content h1{font-size:20px;color:#003780;font-weight:700;margin-bottom:4px;border-bottom:2px solid #003780;padding-bottom:6px}
+  .rh-content h2{font-size:15px;color:#003780;font-weight:700;margin:24px 0 8px}
+  .rh-content h3{font-size:13px;font-weight:700;color:#1a1a1a;margin:16px 0 6px}
+  .rh-content .version-tag{display:inline-block;background:#003780;color:#fff;font-size:10px;padding:2px 8px;font-weight:700;letter-spacing:.06em;margin-bottom:16px}
+  .rh-content .release-date{font-size:11px;color:#666;font-style:italic;margin-bottom:20px}
+  .rh-content p{margin-bottom:10px;font-size:13px}
+  .rh-content ul,.rh-content ol{margin:6px 0 12px 20px}
+  .rh-content li{margin-bottom:5px;font-size:13px}
+  .rh-content .new-feat{color:#157a00}
+  .rh-content .fix{color:#8b4513}
+  .rh-content .known{color:#8b0000}
+  .rh-content table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
+  .rh-content table th{background:#003780;color:#fff;padding:7px 10px;text-align:left}
+  .rh-content table td{border:1px solid #c5d0e0;padding:6px 10px}
+  .rh-content table tr:nth-child(even) td{background:#f0f4fa}
+  .rh-content .note{background:#e8f4fe;border:1px solid #90c8f8;border-left:3px solid #003780;padding:9px 12px;margin:12px 0;font-size:12px}
+  .rh-content .warn{background:#fff8e1;border:1px solid #ffe082;border-left:3px solid #f59e0b;padding:9px 12px;margin:12px 0;font-size:12px}
+  .rh-content code{font-family:'Courier New',monospace;background:#f0f4fa;padding:1px 4px;font-size:11.5px;color:#003780;border:1px solid #c5d0e0}
+  .rh-content a{color:#003780;text-decoration:none}
+  .rh-content a:hover{text-decoration:underline}
+
+  .rh-footer{background:#e8eef5;border-top:1px solid #c5d0e0;padding:8px 40px;font-size:10px;color:#666;display:flex;justify-content:space-between;font-family:Arial,sans-serif;flex-shrink:0}
+
+  /* ── Site footer ── */
+  footer{background:var(--bg);border-top:1px solid var(--border);padding:24px 60px;display:flex;align-items:center;justify-content:space-between}
+  .footer-copy{font-family:var(--ff-m);font-size:.66rem;color:var(--text3)}
+  .footer-link{font-family:var(--ff-m);font-size:.66rem;color:var(--cyan);text-decoration:none}
+  .footer-link:hover{text-decoration:underline}
+
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP BAR ═══ -->
+<div class="topbar" id="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </a>
+    <div class="topbar-divider"></div>
+    <div class="topbar-brand"><span class="grad">SM.</span></div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-page-title"><span>Network Management Release Notes</span></div>
+  </div>
+  <div class="topbar-right">
+    <div class="meta-pill"><div class="mdot md-blue"></div><span>Tool: <strong>Adobe RoboHelp</strong></span></div>
+    <div class="meta-pill"><div class="mdot md-b"></div><span>Output: <strong>HTML / CHM</strong></span></div>
+    <div class="meta-pill">&#9997;&#65039;<span>Type: <strong>Release Notes</strong></span></div>
+  </div>
+</div>
+
+<!-- ═══ Disclaimer ═══ -->
+<div class="hero-disc" id="scroll-trigger">
+  <div>
+    <p class="full-width-disclaimer">
+      <span class="grad">Disclaimer:</span> This release notes document for a Network Management System is created as part of my professional portfolio. The content is based on publicly available information and has been adapted for demonstration purposes only. No confidential or proprietary information is included.
+    </p>
+  </div>
+</div>
+
+<main id="main-wrap">
+<div class="layout" id="layout">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <div class="sidebar">
+    <div class="tree-title">📘 NMS Online Help v5.6</div>
+    <div class="tree-item" onclick="loadTopic('overview', this)">├── 📄 System Overview</div>
+    <div class="tree-item" onclick="loadTopic('install', this)">├── 📄 Installation Guide</div>
+    <div class="tree-item" onclick="loadTopic('dashboard', this)">├── 📄 Dashboard</div>
+    <div class="tree-item" onclick="loadTopic('devices', this)">├── 📄 Device Management</div>
+    <div class="tree-item" onclick="loadTopic('alerts', this)">├── 📄 Alerts &amp; Monitoring</div>
+    <div class="tree-item active" onclick="loadTopic('relnotes', this)">├── 📄 Release Notes v5.6.2</div>
+    <div class="tree-item" onclick="loadTopic('upgrade', this)">├── 📄 Upgrade Guide</div>
+    <div class="tree-item" onclick="loadTopic('troubleshoot', this)">└── 📄 Troubleshooting</div>
+  </div>
+
+  <!-- ═══ VIEWER ═══ -->
+  <div class="viewer">
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="hero-grid"></div>
+      <div class="hero-glow"></div>
+      <div class="toolbar-left">
+        <div class="toolbar-eyebrow">Document Viewer</div>
+        <div class="toolbar-title">RoboHelp HTML Viewer</div>
+      </div>
+      <div class="toolbar-right">
+        <div class="viewer-tabs">
+          <button class="vtab active" id="tab-xml" onclick="switchView('xml', this)">⟨/⟩ HTML Source</button>
+          <button class="vtab" id="tab-html" onclick="switchView('html', this)">👁 HTML Output</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HTML Source Panel (CodeMirror) -->
+    <div id="panel-xml" class="panel active">
+      <div id="xml-editor" style="flex:1;min-height:0;height:100%;"></div>
+    </div>
+
+    <!-- Rendered HTML Output Panel -->
+    <div id="panel-html" class="panel">
+      <div class="rh-topbar">
+        <div class="rh-topbar-title">NX Network Management System · Online Help v5.6</div>
+        <div class="rh-topbar-tools">
+          <a href="#">Contents</a>
+          <a href="#">Index</a>
+          <a href="#">Search</a>
+          <a href="#">Print</a>
+        </div>
+      </div>
+      <div class="rh-body">
+        <!-- RoboHelp left nav -->
+        <div class="rh-nav">
+          <div class="rh-nav-title">Contents</div>
+          <div class="rh-nav-item" onclick="loadTopic('overview', null, this)">Getting Started</div>
+          <div class="rh-nav-item sub" onclick="loadTopic('overview', null, this)">System Overview</div>
+          <div class="rh-nav-item sub" onclick="loadTopic('install', null, this)">Installation Guide</div>
+          <div class="rh-nav-item" onclick="loadTopic('dashboard', null, this)">User Guide</div>
+          <div class="rh-nav-item sub" onclick="loadTopic('dashboard', null, this)">Dashboard</div>
+          <div class="rh-nav-item sub" onclick="loadTopic('devices', null, this)">Device Management</div>
+          <div class="rh-nav-item sub" onclick="loadTopic('alerts', null, this)">Alerts &amp; Monitoring</div>
+          <div class="rh-nav-item rh-active" onclick="loadTopic('relnotes', null, this)">Release Notes</div>
+          <div class="rh-nav-item sub rh-active" onclick="loadTopic('relnotes', null, this)">v5.6 — Current</div>
+          <div class="rh-nav-item sub" onclick="loadTopic('relnotes', null, this)">v5.5</div>
+          <div class="rh-nav-item" onclick="loadTopic('upgrade', null, this)">Upgrade Guide</div>
+          <div class="rh-nav-item" onclick="loadTopic('troubleshoot', null, this)">Troubleshooting</div>
+        </div>
+        <!-- RoboHelp content area -->
+        <div class="rh-content-wrap">
+          <div class="rh-content" id="rh-content-body">
+            <!-- injected by JS -->
+          </div>
+          <div class="rh-footer">
+            <span>© 2025 NX Network Management System · Online Help v5.6</span>
+            <span>Published with Adobe RoboHelp 2022</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /viewer -->
+</div><!-- /layout -->
+</main>
+
+<footer>
+  <div class="footer-copy">© 2026 Selvamani Madhaiyan</div>
+  <a href="index.html#portfolio" class="footer-link">← Back to Portfolio</a>
+</footer>
+
+<!-- ═══ TOPIC DATA ═══ -->
+<script>
+const TOPICS = {
+
+  overview: {
+    navActive: [0, 1],   /* indices in .rh-nav-item list to highlight */
+    source: `<!DOCTYPE html>
+<!-- RoboHelp Topic File — NX Network Management System Online Help -->
+<!-- Project: NMgmt_ReleaseNotes.xpj | CSS: css/NMgmt_Help.css -->
+<html lang="en">
+<head>
+  <title>System Overview - NX NMS Online Help</title>
+  <link rel="stylesheet" href="../css/NMgmt_Help.css" type="text/css"/>
+  <meta name="generator" content="Adobe RoboHelp 2022"/>
+  <meta name="topic-status" content="Ready"/>
+</head>
+<body>
+
+<h1>System Overview</h1>
+
+<p class="shortdesc">
+  The NX Network Management System (NMS) is an enterprise-grade
+  platform for monitoring, managing, and reporting on complex
+  network infrastructures.
+</p>
+
+<h2>Core Capabilities</h2>
+<ul>
+  <li>Real-time network topology discovery and visualisation</li>
+  <li>SNMP v1/v2c/v3 polling and trap processing</li>
+  <li>Syslog collection and intelligent filtering</li>
+  <li>Threshold-based alerting with multi-channel notifications</li>
+  <li>Automated scheduled reporting (PDF &amp; CSV)</li>
+</ul>
+
+<h2>Supported Protocols</h2>
+<table>
+  <tr><th>Protocol</th><th>Version</th><th>Use Case</th></tr>
+  <tr><td>SNMP</td><td>v1, v2c, v3</td><td>Device polling &amp; trap collection</td></tr>
+  <tr><td>Syslog</td><td>RFC 5424</td><td>Log collection from network devices</td></tr>
+  <tr><td>ICMP</td><td>—</td><td>Availability monitoring (ping)</td></tr>
+  <tr><td>REST</td><td>v2</td><td>Third-party integrations &amp; API access</td></tr>
+</table>
+
+<!-- RoboHelp drop-down hotspot -->
+<!-- {button See Also} -->
+<!-- See_Also: Installation_Guide.htm, Dashboard.htm -->
+
+</body>
+</html>`,
+    html: `<h1>System Overview</h1>
+<div class="version-tag">NX NMS v5.6</div>
+<p class="shortdesc" style="font-style:italic;color:#334155;margin-bottom:16px;padding-left:10px;border-left:3px solid #003780">
+  The NX Network Management System (NMS) is an enterprise-grade platform for monitoring, managing, and reporting on complex network infrastructures.
+</p>
+<h2>Core Capabilities</h2>
+<ul>
+  <li>Real-time network topology discovery and visualisation</li>
+  <li>SNMP v1/v2c/v3 polling and trap processing</li>
+  <li>Syslog collection and intelligent filtering with regex-based rules</li>
+  <li>Threshold-based alerting with multi-channel notifications (email, SNMP, webhook)</li>
+  <li>Automated scheduled reporting in PDF and CSV formats</li>
+</ul>
+<h2>Supported Protocols</h2>
+<table>
+  <tr><th>Protocol</th><th>Version</th><th>Use Case</th></tr>
+  <tr><td>SNMP</td><td>v1, v2c, v3</td><td>Device polling &amp; trap collection</td></tr>
+  <tr><td>Syslog</td><td>RFC 5424</td><td>Log collection from network devices</td></tr>
+  <tr><td>ICMP</td><td>—</td><td>Availability monitoring (ping)</td></tr>
+  <tr><td>REST</td><td>v2</td><td>Third-party integrations &amp; API access</td></tr>
+</table>
+<div class="note"><strong>Note:</strong> For minimum system requirements and supported operating systems, refer to the <a href="#" onclick="loadTopic('install')">Installation Guide</a>.</div>
+<h2>See Also</h2>
+<p>
+  <a href="#" onclick="loadTopic('install')">▸ Installation Guide</a><br/>
+  <a href="#" onclick="loadTopic('dashboard')">▸ Dashboard</a>
+</p>`
+  },
+
+  install: {
+    navActive: [2],
+    source: `<!DOCTYPE html>
+<!-- RoboHelp Topic File — NX Network Management System Online Help -->
+<!-- Project: NMgmt_ReleaseNotes.xpj | CSS: css/NMgmt_Help.css -->
+<html lang="en">
+<head>
+  <title>Installation Guide - NX NMS Online Help</title>
+  <link rel="stylesheet" href="../css/NMgmt_Help.css" type="text/css"/>
+  <meta name="generator" content="Adobe RoboHelp 2022"/>
+  <meta name="topic-status" content="Ready"/>
+</head>
+<body>
+
+<h1>Installation Guide</h1>
+
+<p>
+  This guide covers the installation of the NX NMS Server on a
+  supported Linux distribution. Ensure all prerequisites are met
+  before starting the installation.
+</p>
+
+<h2>Prerequisites</h2>
+<table>
+  <tr><th>Component</th><th>Requirement</th></tr>
+  <tr><td>Operating System</td><td>RHEL 8/9, Ubuntu 22.04 LTS, Rocky Linux 9</td></tr>
+  <tr><td>CPU</td><td>4 cores minimum (8 recommended)</td></tr>
+  <tr><td>RAM</td><td>16 GB minimum (32 GB recommended)</td></tr>
+  <tr><td>Disk</td><td>100 GB SSD minimum</td></tr>
+  <tr><td>PostgreSQL</td><td>14 or 16</td></tr>
+  <tr><td>Java</td><td>OpenJDK 17</td></tr>
+</table>
+
+<h2>Installation Steps</h2>
+<ol>
+  <li>Download the installer: <code>NMS_5.6.2_installer.sh</code></li>
+  <li>Make it executable:
+      <code>chmod +x NMS_5.6.2_installer.sh</code></li>
+  <li>Run as root:
+      <code>sudo ./NMS_5.6.2_installer.sh</code></li>
+  <li>Follow the interactive prompts to configure the database
+      connection and admin credentials.</li>
+  <li>Verify the installation:
+      <code>nms-cli status</code></li>
+</ol>
+
+<div class="note">
+  <strong>Tip:</strong> Run <code>nms-cli health-check</code> after
+  installation to validate all services are running correctly.
+</div>
+
+<!-- {button See Also} -->
+<!-- See_Also: System_Overview.htm, Upgrade_Guide.htm -->
+
+</body>
+</html>`,
+    html: `<h1>Installation Guide</h1>
+<div class="release-date">Applies to: NX NMS v5.6.x · Last updated March 2025</div>
+<p>This guide covers the installation of the NX NMS Server on a supported Linux distribution. Ensure all prerequisites are met before starting.</p>
+<h2>Prerequisites</h2>
+<table>
+  <tr><th>Component</th><th>Requirement</th></tr>
+  <tr><td>Operating System</td><td>RHEL 8/9, Ubuntu 22.04 LTS, Rocky Linux 9</td></tr>
+  <tr><td>CPU</td><td>4 cores minimum (8 recommended)</td></tr>
+  <tr><td>RAM</td><td>16 GB minimum (32 GB recommended)</td></tr>
+  <tr><td>Disk</td><td>100 GB SSD minimum</td></tr>
+  <tr><td>PostgreSQL</td><td>14 or 16</td></tr>
+  <tr><td>Java</td><td>OpenJDK 17</td></tr>
+</table>
+<h2>Installation Steps</h2>
+<ol>
+  <li>Download the installer: <code>NMS_5.6.2_installer.sh</code></li>
+  <li>Make it executable: <code>chmod +x NMS_5.6.2_installer.sh</code></li>
+  <li>Run as root: <code>sudo ./NMS_5.6.2_installer.sh</code></li>
+  <li>Follow the interactive prompts to configure the database connection and admin credentials.</li>
+  <li>Verify the installation: <code>nms-cli status</code></li>
+</ol>
+<div class="note"><strong>Tip:</strong> Run <code>nms-cli health-check</code> after installation to validate all services are running correctly.</div>
+<div class="warn"><strong>Warning:</strong> Do not run the installer as a non-root user. The NMS service requires root-level access to bind to ports 80, 443, and 162 (SNMP trap).</div>
+<h2>See Also</h2>
+<p>
+  <a href="#" onclick="loadTopic('upgrade')">▸ Upgrade Guide</a><br/>
+  <a href="#" onclick="loadTopic('overview')">▸ System Overview</a>
+</p>`
+  },
+
+  dashboard: {
+    navActive: [4],
+    source: `<!DOCTYPE html>
+<!-- RoboHelp Topic File — NX Network Management System Online Help -->
+<!-- Project: NMgmt_ReleaseNotes.xpj | CSS: css/NMgmt_Help.css -->
+<html lang="en">
+<head>
+  <title>Dashboard - NX NMS Online Help</title>
+  <link rel="stylesheet" href="../css/NMgmt_Help.css" type="text/css"/>
+  <meta name="generator" content="Adobe RoboHelp 2022"/>
+  <meta name="topic-status" content="Ready"/>
+</head>
+<body>
+
+<h1>Dashboard</h1>
+
+<p>
+  The NMS Dashboard provides a real-time, configurable overview of
+  your network health, active alerts, and device status.
+</p>
+
+<h2>Default Widgets</h2>
+<table>
+  <tr><th>Widget</th><th>Description</th></tr>
+  <tr><td>Network Health Score</td><td>Aggregate availability % across monitored devices</td></tr>
+  <tr><td>Active Alerts</td><td>Count and severity breakdown of open alerts</td></tr>
+  <tr><td>Top Interfaces by Traffic</td><td>Real-time bandwidth utilisation chart</td></tr>
+  <tr><td>Device Status Map</td><td>Topology view colour-coded by device health</td></tr>
+  <tr><td>Syslog Rate</td><td>Incoming syslog messages per minute</td></tr>
+</table>
+
+<h2>Customising the Dashboard</h2>
+<ol>
+  <li>Click the <strong>Edit Layout</strong> button in the top-right corner.</li>
+  <li>Drag and drop widgets to reposition them.</li>
+  <li>Use <strong>Add Widget</strong> to add new panels from the widget library.</li>
+  <li>Click <strong>Save Layout</strong> to persist your configuration.</li>
+</ol>
+
+<div class="note">
+  <strong>Note:</strong> Dashboard layouts are saved per user account.
+  Administrators can publish a default layout for all users via
+  <strong>Administration &gt; Dashboard Defaults</strong>.
+</div>
+
+</body>
+</html>`,
+    html: `<h1>Dashboard</h1>
+<p>The NMS Dashboard provides a real-time, configurable overview of your network health, active alerts, and device status.</p>
+<h2>Default Widgets</h2>
+<table>
+  <tr><th>Widget</th><th>Description</th></tr>
+  <tr><td>Network Health Score</td><td>Aggregate availability % across monitored devices</td></tr>
+  <tr><td>Active Alerts</td><td>Count and severity breakdown of open alerts</td></tr>
+  <tr><td>Top Interfaces by Traffic</td><td>Real-time bandwidth utilisation chart</td></tr>
+  <tr><td>Device Status Map</td><td>Topology view colour-coded by device health</td></tr>
+  <tr><td>Syslog Rate</td><td>Incoming syslog messages per minute</td></tr>
+</table>
+<h2>Customising the Dashboard</h2>
+<ol>
+  <li>Click the <strong>Edit Layout</strong> button in the top-right corner.</li>
+  <li>Drag and drop widgets to reposition them.</li>
+  <li>Use <strong>Add Widget</strong> to add new panels from the widget library.</li>
+  <li>Click <strong>Save Layout</strong> to persist your configuration.</li>
+</ol>
+<div class="note"><strong>Note:</strong> Dashboard layouts are saved per user account. Administrators can publish a default layout via <strong>Administration &gt; Dashboard Defaults</strong>.</div>
+<h2>Refreshing Data</h2>
+<p>Each widget has an independent refresh interval. Set the interval per widget using the <strong>⚙ Widget Settings</strong> gear icon. The global minimum refresh interval is 30 seconds.</p>
+<h2>See Also</h2>
+<p>
+  <a href="#" onclick="loadTopic('alerts')">▸ Alerts &amp; Monitoring</a><br/>
+  <a href="#" onclick="loadTopic('devices')">▸ Device Management</a>
+</p>`
+  },
+
+  devices: {
+    navActive: [5],
+    source: `<!DOCTYPE html>
+<!-- RoboHelp Topic File — NX Network Management System Online Help -->
+<!-- Project: NMgmt_ReleaseNotes.xpj | CSS: css/NMgmt_Help.css -->
+<html lang="en">
+<head>
+  <title>Device Management - NX NMS Online Help</title>
+  <link rel="stylesheet" href="../css/NMgmt_Help.css" type="text/css"/>
+  <meta name="generator" content="Adobe RoboHelp 2022"/>
+  <meta name="topic-status" content="Ready"/>
+</head>
+<body>
+
+<h1>Device Management</h1>
+
+<p>
+  Use the Device Management module to add, configure, and remove
+  network devices from NMS monitoring. Devices can be added manually
+  or discovered automatically using the network discovery scan.
+</p>
+
+<h2>Adding a Device Manually</h2>
+<ol>
+  <li>Navigate to <strong>Devices &gt; Add Device</strong>.</li>
+  <li>Enter the device IP address or hostname.</li>
+  <li>Select the SNMP version and enter credentials.</li>
+  <li>Assign the device to a device group.</li>
+  <li>Click <strong>Save &amp; Test</strong> to verify connectivity.</li>
+</ol>
+
+<h2>Running a Discovery Scan</h2>
+<ol>
+  <li>Navigate to <strong>Devices &gt; Discovery</strong>.</li>
+  <li>Enter the IP range in CIDR notation (e.g. <code>192.168.1.0/24</code>).</li>
+  <li>Select SNMP credentials to use during discovery.</li>
+  <li>Click <strong>Start Scan</strong>.</li>
+  <li>Review the discovered devices list and click <strong>Import Selected</strong>.</li>
+</ol>
+
+<div class="note">
+  <strong>Note:</strong> ICMP (ping) must be permitted through your firewall
+  for discovery scans to work. If ICMP is blocked, the scan will return
+  an error for unreachable hosts.
+</div>
+
+<h2>Device Status Values</h2>
+<table>
+  <tr><th>Status</th><th>Meaning</th></tr>
+  <tr><td>Up</td><td>Device is responding to polls</td></tr>
+  <tr><td>Down</td><td>Device is not responding; alert generated</td></tr>
+  <tr><td>Unknown</td><td>No poll result yet (new device)</td></tr>
+  <tr><td>Maintenance</td><td>Device excluded from alerting during maintenance window</td></tr>
+</table>
+
+</body>
+</html>`,
+    html: `<h1>Device Management</h1>
+<p>Use the Device Management module to add, configure, and remove network devices from NMS monitoring. Devices can be added manually or discovered automatically.</p>
+<h2>Adding a Device Manually</h2>
+<ol>
+  <li>Navigate to <strong>Devices &gt; Add Device</strong>.</li>
+  <li>Enter the device IP address or hostname.</li>
+  <li>Select the SNMP version and enter the appropriate credentials.</li>
+  <li>Assign the device to a device group.</li>
+  <li>Click <strong>Save &amp; Test</strong> to verify connectivity.</li>
+</ol>
+<h2>Running a Discovery Scan</h2>
+<ol>
+  <li>Navigate to <strong>Devices &gt; Discovery</strong>.</li>
+  <li>Enter the IP range in CIDR notation (e.g. <code>192.168.1.0/24</code>).</li>
+  <li>Select SNMP credentials to use during the scan.</li>
+  <li>Click <strong>Start Scan</strong>.</li>
+  <li>Review discovered devices and click <strong>Import Selected</strong>.</li>
+</ol>
+<div class="note"><strong>Note:</strong> ICMP must be permitted through your firewall for discovery scans to work correctly.</div>
+<h2>Device Status Values</h2>
+<table>
+  <tr><th>Status</th><th>Meaning</th></tr>
+  <tr><td>Up</td><td>Device is responding to polls</td></tr>
+  <tr><td>Down</td><td>Device is not responding; alert generated</td></tr>
+  <tr><td>Unknown</td><td>No poll result yet (new device)</td></tr>
+  <tr><td>Maintenance</td><td>Device excluded from alerting during maintenance window</td></tr>
+</table>
+<h2>See Also</h2>
+<p>
+  <a href="#" onclick="loadTopic('alerts')">▸ Alerts &amp; Monitoring</a><br/>
+  <a href="#" onclick="loadTopic('dashboard')">▸ Dashboard</a>
+</p>`
+  },
+
+  alerts: {
+    navActive: [6],
+    source: `<!DOCTYPE html>
+<!-- RoboHelp Topic File — NX Network Management System Online Help -->
+<!-- Project: NMgmt_ReleaseNotes.xpj | CSS: css/NMgmt_Help.css -->
+<html lang="en">
+<head>
+  <title>Alerts &amp; Monitoring - NX NMS Online Help</title>
+  <link rel="stylesheet" href="../css/NMgmt_Help.css" type="text/css"/>
+  <meta name="generator" content="Adobe RoboHelp 2022"/>
+  <meta name="topic-status" content="Ready"/>
+</head>
+<body>
+
+<h1>Alerts &amp; Monitoring</h1>
+
+<p>
+  The Alerts module processes threshold violations, SNMP traps,
+  and syslog events into actionable alert notifications delivered
+  via email, SNMP forward, or webhook.
+</p>
+
+<h2>Alert Severity Levels</h2>
+<table>
+  <tr><th>Severity</th><th>Colour</th><th>Description</th></tr>
+  <tr><td>Critical</td><td>Red</td><td>Service-affecting; immediate action required</td></tr>
+  <tr><td>Major</td><td>Orange</td><td>Significant degradation; action required soon</td></tr>
+  <tr><td>Minor</td><td>Yellow</td><td>Non-service-affecting; monitor closely</td></tr>
+  <tr><td>Warning</td><td>Blue</td><td>Threshold approaching; informational</td></tr>
+  <tr><td>Informational</td><td>Grey</td><td>General events; no action needed</td></tr>
+</table>
+
+<h2>Creating an Alert Rule</h2>
+<ol>
+  <li>Navigate to <strong>Alerts &gt; Alert Rules &gt; New Rule</strong>.</li>
+  <li>Select the trigger type: Threshold, SNMP Trap, or Syslog Pattern.</li>
+  <li>Define the condition (metric, operator, value).</li>
+  <li>Set the severity level and notification channels.</li>
+  <li>Configure the escalation policy if required.</li>
+  <li>Click <strong>Save Rule</strong>.</li>
+</ol>
+
+<div class="note">
+  <strong>Best Practice:</strong> Use device groups to apply the same
+  alert rule across multiple devices rather than creating individual
+  rules per device.
+</div>
+
+</body>
+</html>`,
+    html: `<h1>Alerts &amp; Monitoring</h1>
+<p>The Alerts module processes threshold violations, SNMP traps, and syslog events into actionable notifications delivered via email, SNMP forward, or webhook.</p>
+<h2>Alert Severity Levels</h2>
+<table>
+  <tr><th>Severity</th><th>Colour</th><th>Description</th></tr>
+  <tr><td>Critical</td><td style="color:#b91c1c;font-weight:700">Red</td><td>Service-affecting; immediate action required</td></tr>
+  <tr><td>Major</td><td style="color:#c2410c;font-weight:700">Orange</td><td>Significant degradation; action required soon</td></tr>
+  <tr><td>Minor</td><td style="color:#a16207;font-weight:700">Yellow</td><td>Non-service-affecting; monitor closely</td></tr>
+  <tr><td>Warning</td><td style="color:#003780;font-weight:700">Blue</td><td>Threshold approaching; informational</td></tr>
+  <tr><td>Informational</td><td style="color:#64748b;font-weight:700">Grey</td><td>General events; no action needed</td></tr>
+</table>
+<h2>Creating an Alert Rule</h2>
+<ol>
+  <li>Navigate to <strong>Alerts &gt; Alert Rules &gt; New Rule</strong>.</li>
+  <li>Select the trigger type: Threshold, SNMP Trap, or Syslog Pattern.</li>
+  <li>Define the condition (metric, operator, value).</li>
+  <li>Set the severity level and notification channels.</li>
+  <li>Configure the escalation policy if required.</li>
+  <li>Click <strong>Save Rule</strong>.</li>
+</ol>
+<div class="note"><strong>Best Practice:</strong> Apply alert rules to device groups rather than individual devices to simplify management at scale.</div>
+<h2>See Also</h2>
+<p>
+  <a href="#" onclick="loadTopic('devices')">▸ Device Management</a><br/>
+  <a href="#" onclick="loadTopic('relnotes')">▸ Release Notes</a>
+</p>`
+  },
+
+  relnotes: {
+    navActive: [7, 8],
+    source: `<!DOCTYPE html>
+<!-- RoboHelp Topic File — NX Network Management System Online Help -->
+<!-- Project: NMgmt_ReleaseNotes.xpj | CSS: css/NMgmt_Help.css -->
+<html lang="en">
+<head>
+  <title>Release Notes v5.6.2 - NX NMS Online Help</title>
+  <link rel="stylesheet" href="../css/NMgmt_Help.css" type="text/css"/>
+  <meta name="generator" content="Adobe RoboHelp 2022"/>
+  <meta name="topic-comment" content="Release Notes — v5.6.2 maintenance release"/>
+  <meta name="topic-status" content="Ready"/>
+</head>
+<body>
+
+<h1>Release Notes</h1>
+<p class="version-label">VERSION 5.6.2</p>
+<p class="release-date">
+  Release Date: March 15, 2025 · Build: 5.6.2.19847
+</p>
+
+<div class="note">
+  <strong>Note:</strong> Version 5.6.2 is a maintenance release. It is
+  fully compatible with v5.6.x configurations. No database schema changes
+  are required for upgrades from v5.6.0 or v5.6.1.
+</div>
+
+<h2>New Features</h2>
+<ul>
+  <li class="new-feat">
+    <strong>Enhanced Topology View (NMS-4201):</strong> Interactive
+    network topology map with real-time device status overlays and
+    drag-to-reposition support.
+  </li>
+  <li class="new-feat">
+    <strong>SNMP v3 Auth Improvements (NMS-4185):</strong> Added support
+    for SHA-256 and SHA-512 authentication protocols for SNMP v3
+    traps and polls.
+  </li>
+  <li class="new-feat">
+    <strong>Syslog Filtering (NMS-4193):</strong> New Syslog filter builder
+    with regex-based pattern matching and severity-level thresholds
+    per device group.
+  </li>
+  <li class="new-feat">
+    <strong>Report Scheduler (NMS-4178):</strong> Automated PDF/CSV report
+    generation with configurable email delivery schedules.
+  </li>
+</ul>
+
+<h2>Bug Fixes</h2>
+<ul>
+  <li class="fix">
+    Fixed: Dashboard widget refresh interval not respecting user
+    preferences after session restore (NMS-4220).
+  </li>
+  <li class="fix">
+    Fixed: Device discovery scan failing silently when ICMP is blocked;
+    now returns a clear error message (NMS-4214).
+  </li>
+  <li class="fix">
+    Fixed: SNMP walk timeout causing NMS service hang on large device
+    sets (&gt;500 devices) (NMS-4198).
+  </li>
+  <li class="fix">
+    Fixed: Alert escalation not triggering correctly when multiple
+    notification rules share the same threshold (NMS-4207).
+  </li>
+  <li class="fix">
+    Fixed: CSV export from Alert History table truncating device name
+    field at 64 characters (NMS-4211).
+  </li>
+</ul>
+
+<h2>Known Issues</h2>
+<ul>
+  <li class="known">
+    BGP route count display in the topology view may show stale data
+    for up to 60 seconds after route changes. Workaround: manually
+    refresh the topology view (NMS-4229).
+  </li>
+  <li class="known">
+    PDF reports with more than 1,000 rows may take up to 3 minutes
+    to generate (NMS-4231). Under investigation.
+  </li>
+</ul>
+
+<h2>Upgrade Procedure</h2>
+<p>Follow this procedure to upgrade from version 5.6.0 or 5.6.1.</p>
+<ol>
+  <li>Take a full backup of the NMS database before starting.</li>
+  <li>Stop the NMS service:
+      <code>systemctl stop nms-server</code></li>
+  <li>Run the installer package:
+      <code>./NMS_5.6.2_upgrade.sh</code></li>
+  <li>Verify the upgrade:
+      <code>nms-cli version</code> — should return
+      <code>5.6.2.19847</code></li>
+  <li>Restart the service:
+      <code>systemctl start nms-server</code></li>
+</ol>
+
+<h2>Version Compatibility Matrix</h2>
+<table>
+  <tr><th>Component</th><th>v5.5.x</th><th>v5.6.0</th><th>v5.6.2</th></tr>
+  <tr><td>NMS Server</td><td>Compatible</td><td>Compatible</td><td>✓ Current</td></tr>
+  <tr><td>NMS Agent</td><td>v3.4+</td><td>v3.5+</td><td>v3.5+ required</td></tr>
+  <tr><td>PostgreSQL</td><td>13–15</td><td>14–16</td><td>14–16</td></tr>
+  <tr><td>Browser</td><td>Chrome 100+</td><td>Chrome 110+</td><td>Chrome 110+</td></tr>
+</table>
+
+<!-- {button See Also} -->
+<!-- See_Also: Upgrade_Guide.htm, Troubleshooting.htm -->
+
+</body>
+</html>`,
+    html: `<h1>Release Notes</h1>
+<div class="version-tag">VERSION 5.6.2</div>
+<div class="release-date">Release Date: March 15, 2025 · Build: 5.6.2.19847</div>
+<div class="note"><strong>Note:</strong> Version 5.6.2 is a maintenance release. It is fully compatible with v5.6.x configurations. No database schema changes are required for upgrades from v5.6.0 or v5.6.1.</div>
+<h2>New Features</h2>
+<ul>
+  <li class="new-feat">▸ <strong>Enhanced Topology View:</strong> Interactive network topology map with real-time device status overlays and drag-to-reposition support (NMS-4201).</li>
+  <li class="new-feat">▸ <strong>SNMP v3 Auth Improvements:</strong> Added support for SHA-256 and SHA-512 authentication protocols for SNMP v3 traps and polls (NMS-4185).</li>
+  <li class="new-feat">▸ <strong>Syslog Filtering:</strong> New Syslog filter builder with regex-based pattern matching and severity-level thresholds per device group (NMS-4193).</li>
+  <li class="new-feat">▸ <strong>Report Scheduler:</strong> Automated PDF/CSV report generation with configurable email delivery schedules (NMS-4178).</li>
+</ul>
+<h2>Bug Fixes</h2>
+<ul>
+  <li class="fix">■ Fixed: Dashboard widget refresh interval not respecting user preferences after session restore (NMS-4220).</li>
+  <li class="fix">■ Fixed: Device discovery scan failing silently when ICMP is blocked at the firewall; now returns a clear error message (NMS-4214).</li>
+  <li class="fix">■ Fixed: SNMP walk timeout causing NMS service hang on large device sets (&gt;500 devices) (NMS-4198).</li>
+  <li class="fix">■ Fixed: Alert escalation not triggering correctly when multiple notification rules share the same threshold (NMS-4207).</li>
+  <li class="fix">■ Fixed: CSV export from Alert History table truncating device name field at 64 characters (NMS-4211).</li>
+</ul>
+<h2>Known Issues</h2>
+<ul>
+  <li class="known">◆ BGP route count in topology view may show stale data for up to 60 seconds after route changes. Workaround: manually refresh the topology view (NMS-4229).</li>
+  <li class="known">◆ PDF reports with more than 1,000 rows may take up to 3 minutes to generate. Under investigation (NMS-4231).</li>
+</ul>
+<h2>Upgrade Procedure</h2>
+<p>Follow this procedure to upgrade from version 5.6.0 or 5.6.1.</p>
+<ol>
+  <li>Take a full backup of the NMS database before starting.</li>
+  <li>Stop the NMS service: <code>systemctl stop nms-server</code></li>
+  <li>Run the installer: <code>./NMS_5.6.2_upgrade.sh</code></li>
+  <li>Verify: <code>nms-cli version</code> → should return <code>5.6.2.19847</code></li>
+  <li>Restart: <code>systemctl start nms-server</code></li>
+</ol>
+<h2>Version Compatibility Matrix</h2>
+<table>
+  <tr><th>Component</th><th>v5.5.x</th><th>v5.6.0</th><th>v5.6.2</th></tr>
+  <tr><td>NMS Server</td><td>Compatible</td><td>Compatible</td><td>✓ Current</td></tr>
+  <tr><td>NMS Agent</td><td>v3.4+</td><td>v3.5+</td><td>v3.5+ required</td></tr>
+  <tr><td>PostgreSQL</td><td>13–15</td><td>14–16</td><td>14–16</td></tr>
+  <tr><td>Browser</td><td>Chrome 100+</td><td>Chrome 110+</td><td>Chrome 110+</td></tr>
+</table>
+<h2>See Also</h2>
+<p>
+  <a href="#" onclick="loadTopic('upgrade')">▸ Upgrade Guide</a><br/>
+  <a href="#" onclick="loadTopic('troubleshoot')">▸ Troubleshooting</a>
+</p>`
+  },
+
+  upgrade: {
+    navActive: [10],
+    source: `<!DOCTYPE html>
+<!-- RoboHelp Topic File — NX Network Management System Online Help -->
+<!-- Project: NMgmt_ReleaseNotes.xpj | CSS: css/NMgmt_Help.css -->
+<html lang="en">
+<head>
+  <title>Upgrade Guide - NX NMS Online Help</title>
+  <link rel="stylesheet" href="../css/NMgmt_Help.css" type="text/css"/>
+  <meta name="generator" content="Adobe RoboHelp 2022"/>
+  <meta name="topic-status" content="Ready"/>
+</head>
+<body>
+
+<h1>Upgrade Guide</h1>
+
+<p>
+  This guide covers upgrading an existing NMS installation to v5.6.2.
+  Always take a full database backup before starting an upgrade.
+</p>
+
+<div class="caution">
+  <strong>Caution:</strong> Upgrading from a version older than v5.5
+  requires a staged upgrade (upgrade to v5.5 first, then to v5.6).
+  Direct upgrades from v5.4 or earlier are not supported.
+</div>
+
+<h2>Pre-Upgrade Checklist</h2>
+<ul>
+  <li>Backup the NMS PostgreSQL database:
+      <code>pg_dump nms_db &gt; nms_backup_$(date +%F).sql</code></li>
+  <li>Note your current NMS version: <code>nms-cli version</code></li>
+  <li>Confirm the server has at least 2 GB free disk space</li>
+  <li>Notify users of planned downtime (estimated: 15–30 minutes)</li>
+</ul>
+
+<h2>Upgrade Steps</h2>
+<ol>
+  <li>Stop the NMS service: <code>systemctl stop nms-server</code></li>
+  <li>Transfer the upgrade package to the server.</li>
+  <li>Run: <code>sudo ./NMS_5.6.2_upgrade.sh</code></li>
+  <li>The script migrates configuration files and verifies
+      database compatibility automatically.</li>
+  <li>Start the service: <code>systemctl start nms-server</code></li>
+  <li>Confirm version: <code>nms-cli version</code></li>
+</ol>
+
+<h2>Rollback Procedure</h2>
+<p>
+  If the upgrade fails, restore the database backup and reinstall
+  the previous NMS version package:
+</p>
+<ol>
+  <li>Stop the service: <code>systemctl stop nms-server</code></li>
+  <li>Restore the database:
+      <code>psql nms_db &lt; nms_backup_YYYY-MM-DD.sql</code></li>
+  <li>Reinstall the previous version installer.</li>
+  <li>Restart: <code>systemctl start nms-server</code></li>
+</ol>
+
+</body>
+</html>`,
+    html: `<h1>Upgrade Guide</h1>
+<div class="release-date">Applies to: NX NMS v5.6.2 · Upgrade from v5.5.x or v5.6.x</div>
+<p>This guide covers upgrading an existing NMS installation to v5.6.2. Always take a full database backup before starting.</p>
+<div class="warn"><strong>Caution:</strong> Upgrading from a version older than v5.5 requires a staged upgrade. Upgrade to v5.5 first, then to v5.6. Direct upgrades from v5.4 or earlier are not supported.</div>
+<h2>Pre-Upgrade Checklist</h2>
+<ul>
+  <li>Backup the NMS PostgreSQL database: <code>pg_dump nms_db &gt; nms_backup_$(date +%F).sql</code></li>
+  <li>Note your current NMS version: <code>nms-cli version</code></li>
+  <li>Confirm the server has at least 2 GB free disk space</li>
+  <li>Notify users of planned downtime (estimated: 15–30 minutes)</li>
+</ul>
+<h2>Upgrade Steps</h2>
+<ol>
+  <li>Stop the NMS service: <code>systemctl stop nms-server</code></li>
+  <li>Transfer the upgrade package to the server.</li>
+  <li>Run: <code>sudo ./NMS_5.6.2_upgrade.sh</code></li>
+  <li>The script migrates configuration files and verifies database compatibility automatically.</li>
+  <li>Start the service: <code>systemctl start nms-server</code></li>
+  <li>Confirm the version: <code>nms-cli version</code> → <code>5.6.2.19847</code></li>
+</ol>
+<h2>Rollback Procedure</h2>
+<ol>
+  <li>Stop the service: <code>systemctl stop nms-server</code></li>
+  <li>Restore the database: <code>psql nms_db &lt; nms_backup_YYYY-MM-DD.sql</code></li>
+  <li>Reinstall the previous version installer.</li>
+  <li>Restart: <code>systemctl start nms-server</code></li>
+</ol>
+<div class="note"><strong>Note:</strong> Contact NX Support if the rollback procedure fails or if you need assistance recovering from a failed upgrade.</div>
+<h2>See Also</h2>
+<p>
+  <a href="#" onclick="loadTopic('relnotes')">▸ Release Notes v5.6.2</a><br/>
+  <a href="#" onclick="loadTopic('install')">▸ Installation Guide</a>
+</p>`
+  },
+
+  troubleshoot: {
+    navActive: [11],
+    source: `<!DOCTYPE html>
+<!-- RoboHelp Topic File — NX Network Management System Online Help -->
+<!-- Project: NMgmt_ReleaseNotes.xpj | CSS: css/NMgmt_Help.css -->
+<html lang="en">
+<head>
+  <title>Troubleshooting - NX NMS Online Help</title>
+  <link rel="stylesheet" href="../css/NMgmt_Help.css" type="text/css"/>
+  <meta name="generator" content="Adobe RoboHelp 2022"/>
+  <meta name="topic-status" content="Ready"/>
+</head>
+<body>
+
+<h1>Troubleshooting</h1>
+
+<p>
+  This section covers common issues encountered when installing,
+  upgrading, or operating the NX NMS, along with recommended
+  resolutions.
+</p>
+
+<h2>Common Issues</h2>
+
+<h3>NMS Service Fails to Start</h3>
+<p>
+  Check the service log for errors:
+  <code>journalctl -u nms-server -n 100</code>
+</p>
+<p>Common causes:</p>
+<ul>
+  <li>PostgreSQL is not running — start it with
+      <code>systemctl start postgresql</code></li>
+  <li>Port 443 or 80 is already in use — check with
+      <code>ss -tlnp | grep :443</code></li>
+  <li>Invalid database credentials in
+      <code>/etc/nms/nms.conf</code></li>
+</ul>
+
+<h3>Devices Not Discovered</h3>
+<ul>
+  <li>Verify ICMP is permitted to the target IP range.</li>
+  <li>Confirm SNMP community strings or v3 credentials are correct.</li>
+  <li>Check firewall rules: UDP port 161 must be open inbound on target devices.</li>
+</ul>
+
+<h3>Alert Emails Not Being Delivered</h3>
+<ul>
+  <li>Check SMTP settings under <strong>Administration &gt; Notifications &gt; SMTP</strong>.</li>
+  <li>Verify the NMS server can reach the SMTP host:
+      <code>telnet smtp.example.com 25</code></li>
+  <li>Review the notification log under <strong>Alerts &gt; Notification Log</strong>.</li>
+</ul>
+
+<h2>Log File Locations</h2>
+<table>
+  <tr><th>Log</th><th>Path</th></tr>
+  <tr><td>NMS Application</td><td><code>/var/log/nms/nms-app.log</code></td></tr>
+  <tr><td>Database</td><td><code>/var/log/nms/nms-db.log</code></td></tr>
+  <tr><td>SNMP Engine</td><td><code>/var/log/nms/snmp-engine.log</code></td></tr>
+  <tr><td>Syslog Collector</td><td><code>/var/log/nms/syslog-collector.log</code></td></tr>
+</table>
+
+<div class="note">
+  <strong>Support:</strong> If an issue persists after following the
+  steps above, collect a support bundle with
+  <code>nms-cli support-bundle</code> and contact NX Support.
+</div>
+
+</body>
+</html>`,
+    html: `<h1>Troubleshooting</h1>
+<p>This section covers common issues encountered when installing, upgrading, or operating the NX NMS, along with recommended resolutions.</p>
+<h2>NMS Service Fails to Start</h2>
+<p>Check the service log for errors: <code>journalctl -u nms-server -n 100</code></p>
+<p>Common causes:</p>
+<ul>
+  <li>PostgreSQL is not running — start it with <code>systemctl start postgresql</code></li>
+  <li>Port 443 or 80 is already in use — check with <code>ss -tlnp | grep :443</code></li>
+  <li>Invalid database credentials in <code>/etc/nms/nms.conf</code></li>
+</ul>
+<h2>Devices Not Discovered</h2>
+<ul>
+  <li>Verify ICMP is permitted to the target IP range.</li>
+  <li>Confirm SNMP community strings or v3 credentials are correct.</li>
+  <li>Ensure UDP port 161 is open inbound on target devices.</li>
+</ul>
+<h2>Alert Emails Not Delivered</h2>
+<ul>
+  <li>Check SMTP settings under <strong>Administration &gt; Notifications &gt; SMTP</strong>.</li>
+  <li>Verify the NMS server can reach the SMTP host: <code>telnet smtp.example.com 25</code></li>
+  <li>Review the notification log under <strong>Alerts &gt; Notification Log</strong>.</li>
+</ul>
+<h2>Log File Locations</h2>
+<table>
+  <tr><th>Log</th><th>Path</th></tr>
+  <tr><td>NMS Application</td><td><code>/var/log/nms/nms-app.log</code></td></tr>
+  <tr><td>Database</td><td><code>/var/log/nms/nms-db.log</code></td></tr>
+  <tr><td>SNMP Engine</td><td><code>/var/log/nms/snmp-engine.log</code></td></tr>
+  <tr><td>Syslog Collector</td><td><code>/var/log/nms/syslog-collector.log</code></td></tr>
+</table>
+<div class="note"><strong>Support:</strong> If an issue persists, collect a support bundle with <code>nms-cli support-bundle</code> and contact NX Support.</div>
+<h2>See Also</h2>
+<p>
+  <a href="#" onclick="loadTopic('relnotes')">▸ Release Notes v5.6.2</a><br/>
+  <a href="#" onclick="loadTopic('upgrade')">▸ Upgrade Guide</a>
+</p>`
+  }
+};
+</script>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+// Initialise CodeMirror
+let editor = CodeMirror(document.getElementById("xml-editor"), {
+  mode: "application/xml",
+  lineNumbers: true,
+  readOnly: true
+});
+
+// Sidebar topic keys in order
+const SIDEBAR_KEYS = ['overview','install','dashboard','devices','alerts','relnotes','upgrade','troubleshoot'];
+
+// RoboHelp nav item indices that map to each key
+const NAV_MAP = {
+  overview:    [0,1],
+  install:     [2],
+  dashboard:   [4],
+  devices:     [5],
+  alerts:      [6],
+  relnotes:    [7,8],
+  upgrade:     [10],
+  troubleshoot:[11]
+};
+
+function loadTopic(key, sidebarEl, navEl) {
+  const topic = TOPICS[key];
+  if (!topic) return false;
+
+  // ── CodeMirror source ──
+  editor.setValue(topic.source);
+
+  // ── Rendered HTML content ──
+  document.getElementById('rh-content-body').innerHTML = topic.html;
+
+  // ── Sidebar active ──
+  const sidebarItems = document.querySelectorAll('.sidebar .tree-item');
+  sidebarItems.forEach(el => el.classList.remove('active'));
+  const idx = SIDEBAR_KEYS.indexOf(key);
+  if (idx >= 0 && sidebarItems[idx]) sidebarItems[idx].classList.add('active');
+
+  // ── RoboHelp nav active ──
+  const navItems = document.querySelectorAll('.rh-nav-item');
+  navItems.forEach(el => el.classList.remove('rh-active'));
+  (NAV_MAP[key] || []).forEach(i => { if (navItems[i]) navItems[i].classList.add('rh-active'); });
+
+  return false;
+}
+
+function switchView(view, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + view).classList.add('active');
+  document.querySelectorAll('.vtab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Auto-load Release Notes on page load
+window.onload = function () {
+  const relItem = document.querySelectorAll('.sidebar .tree-item')[5];
+  loadTopic('relnotes', relItem, null);
+};
+</script>
+
+<!-- ═══ Topbar hide/show on scroll ═══ -->
+<script>
+(function () {
+  const TOPBAR_H    = 66;
+  const topbar      = document.getElementById('topbar');
+  let topbarVisible = true;
+  let lastScrollY   = window.scrollY;
+  let ticking       = false;
+
+  function showTopbar() { if (!topbarVisible) { topbarVisible=true; topbar.classList.remove('hide'); } }
+  function hideTopbar() { if (topbarVisible)  { topbarVisible=false; topbar.classList.add('hide'); } }
+
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      const scrollY = window.scrollY;
+      const delta   = scrollY - lastScrollY;
+      if (delta > 4) {
+        const trigger = document.getElementById('scroll-trigger');
+        if (trigger.getBoundingClientRect().bottom <= TOPBAR_H) hideTopbar();
+      } else if (delta < -4) { showTopbar(); }
+      lastScrollY = scrollY;
+      ticking = false;
+    });
+  }, { passive: true });
+})();
+</script>
+
+</body>
+</html>
