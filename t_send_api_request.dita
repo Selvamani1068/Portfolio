@@ -111,7 +111,7 @@
     <r>
       <p>Postman sends the request and displays the response. The status code appears in the
         upper-right of the response panel. For a list of common status codes and their
-        meanings, see <xref href="../reference/r_status_codes.dita"/>.</p>
+        meanings, see <xref keyref="status-codes" href="../reference/r_status_codes.dita"/>.</p>
     </r>
 
     <postreq>
