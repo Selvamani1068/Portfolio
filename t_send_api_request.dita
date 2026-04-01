@@ -118,9 +118,12 @@
       <p>Add test scripts to validate the response automatically. For instructions, see
         <xref href="t_add_test_scripts.dita"/>.</p>
     </postreq>
-    <related-links>
-      <link href="../reference/r_http_methods.dita"/>
-      <link href="../reference/r_status_codes.dita"/>
-    </related-links>
+    <section>
+  <title>See Also</title>
+  <p>
+    <xref keyref="http-methods"/>
+    <xref keyref="status-codes"/>
+  </p>
+</section>
   </taskbody>
 </task>
