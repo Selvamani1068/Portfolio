@@ -761,7 +761,24 @@ function renderAuthorView(xmlString, file) {
     let rowIdx = 0;
     function walkMap(topicrefs, depth) {
       topicrefs.forEach(function(tr) {
-        if (tr.tagName.toLowerCase() !== "topicref") return;
+        const tag = tr.tagName.toLowerCase();
+
+// ✅ Handle topichead
+if (tag === "topichead") {
+  const title = tr.getAttribute("navtitle") || "Section";
+  
+  html += '<tr style="background:#e0f2fe">';
+  html += '<td colspan="2" style="padding:8px 12px;font-weight:bold;color:#0c4a6e">'
+       + "&nbsp;".repeat(depth * 4) + "📁 " + title + '</td>';
+  html += '</tr>';
+
+  // Process children
+  walkMap(Array.from(tr.children), depth + 1);
+  return;
+}
+
+// Existing logic
+if (tag !== "topicref") return;
         const href = tr.getAttribute("href") || "";
         const type = tr.getAttribute("type") || "";
         const indent = "&nbsp;".repeat(depth * 4);
