@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="c_postman_overview">
+  <title>Postman Overview</title>
+
+  <shortdesc>Postman is an API platform that enables developers and technical writers to design,
+    test, and document APIs in a centralized workspace.</shortdesc>
+
+  <conbody>
+
+    <p>Postman provides a graphical interface for sending HTTP requests, inspecting responses, and
+      automating API tests. You can use Postman as a desktop application on Windows, macOS, and
+      Linux, or as a web app in a supported browser.</p>
+
+    <p>Postman organizes API work into <term>collections</term>, which are groups of related
+      requests. Collections allow you to structure your API tests logically, share them with team
+      members, and generate documentation automatically.</p>
+
+    <section id="key-capabilities">
+      <title>Key Capabilities</title>
+      <p>Postman supports the following core capabilities:</p>
+      <ul>
+        <li><b>API Testing</b> — Send HTTP requests and validate responses using built-in test
+          scripts written in JavaScript.</li>
+        <li><b>Environment Management</b> — Define variables for different environments such as
+          development, staging, and production, and switch between them without editing
+          requests.</li>
+        <li><b>Collection Runner</b> — Execute all requests in a collection in sequence to automate
+          regression and integration testing.</li>
+        <li><b>API Documentation</b> — Generate human-readable API documentation directly from your
+          collections and publish it to a public or private URL.</li>
+        <li><b>Mock Servers</b> — Simulate API endpoints to test integrations before the API is
+          fully developed.</li>
+        <li><b>Team Collaboration</b> — Share collections, environments, and workspaces with team
+          members using Postman workspaces.</li>
+      </ul>
+    </section>
+
+    <section id="postman-plans">
+      <title>Postman Plans</title>
+      <p>Postman offers the following account types:</p>
+      <ul>
+        <li><b>Free</b> — Includes core API testing and basic documentation features with limited
+          team collaboration.</li>
+        <li><b>Basic</b> — Adds enhanced collaboration, more mock server calls, and custom
+          domains for published documentation.</li>
+        <li><b>Professional</b> — Includes advanced team features, audit logs, and priority
+          support.</li>
+        <li><b>Enterprise</b> — Provides SSO, dedicated support, and enterprise-grade security
+          controls.</li>
+      </ul>
+      <p>The procedures in this guide apply to the Free and Basic plans unless otherwise noted.</p>
+    </section>
+
+    <section id="related-concepts">
+      <title>Before You Begin</title>
+      <p>To use Postman, you need:</p>
+      <ul>
+        <li>A Postman account. Create a free account at
+          <xref href="https://www.postman.com" format="html" scope="external">postman.com</xref>.</li>
+        <li>Postman installed on your system, or access to the Postman web app.</li>
+        <li>Basic familiarity with HTTP request methods and API concepts.</li>
+      </ul>
+    </section>
+
+  </conbody>
+</concept>
