@@ -159,6 +159,17 @@
   background: rgba(0, 200, 255, 0.13);
 }
 
+.tree-section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  padding: 10px 10px 4px 10px;
+  border-top: 1px solid rgba(251,191,36,0.1);
+  margin-top: 6px;
+}
+
 body{
   margin:0;
   font-family:'Inter',sans-serif;
@@ -419,16 +430,69 @@ main {
 
   <div class="tree-title">📘 Postman User Guide</div>
 
-  <div class="tree-item" onclick="loadXML('concept.xml', this)">
-    ├── 📄 Introduction (concept.xml)
+  <div class="tree-section-label">🗺 Map</div>
+  <div class="tree-item" onclick="loadXML('postman-user-guide.ditamap', this)">
+    └── 📋 postman-user-guide.ditamap
   </div>
 
-  <div class="tree-item" onclick="loadXML('task.xml', this)">
-    ├── 📄 Create Request (task.xml)
+  <div class="tree-section-label">💡 Concepts</div>
+  <div class="tree-item" onclick="loadXML('concepts/c_postman_overview.dita', this)">
+    ├── 📄 Postman Overview
+  </div>
+  <div class="tree-item" onclick="loadXML('concepts/c_postman_interface.dita', this)">
+    ├── 📄 Postman Interface
+  </div>
+  <div class="tree-item" onclick="loadXML('concepts/c_api_testing_overview.dita', this)">
+    ├── 📄 API Testing Overview
+  </div>
+  <div class="tree-item" onclick="loadXML('concepts/c_api_documentation_overview.dita', this)">
+    └── 📄 API Documentation Overview
   </div>
 
-  <div class="tree-item" onclick="loadXML('reference.xml', this)">
-    └── 📄 API Reference (reference.xml)
+  <div class="tree-section-label">✅ Tasks</div>
+  <div class="tree-item" onclick="loadXML('tasks/t_create_collection.dita', this)">
+    ├── 📄 Create a Collection
+  </div>
+  <div class="tree-item" onclick="loadXML('tasks/t_send_api_request.dita', this)">
+    ├── 📄 Send an API Request
+  </div>
+  <div class="tree-item" onclick="loadXML('tasks/t_add_test_scripts.dita', this)">
+    ├── 📄 Add Test Scripts
+  </div>
+  <div class="tree-item" onclick="loadXML('tasks/t_use_environments.dita', this)">
+    ├── 📄 Use Environments &amp; Variables
+  </div>
+  <div class="tree-item" onclick="loadXML('tasks/t_run_collection.dita', this)">
+    ├── 📄 Run a Collection
+  </div>
+  <div class="tree-item" onclick="loadXML('tasks/t_write_request_description.dita', this)">
+    ├── 📄 Write Request Descriptions
+  </div>
+  <div class="tree-item" onclick="loadXML('tasks/t_generate_documentation.dita', this)">
+    ├── 📄 Generate Documentation
+  </div>
+  <div class="tree-item" onclick="loadXML('tasks/t_publish_documentation.dita', this)">
+    ├── 📄 Publish Documentation
+  </div>
+  <div class="tree-item" onclick="loadXML('tasks/t_customize_documentation.dita', this)">
+    └── 📄 Customize Documentation
+  </div>
+
+  <div class="tree-section-label">📚 Reference</div>
+  <div class="tree-item" onclick="loadXML('reference/r_postman_glossary.dita', this)">
+    ├── 📄 Glossary
+  </div>
+  <div class="tree-item" onclick="loadXML('reference/r_http_methods.dita', this)">
+    ├── 📄 HTTP Methods
+  </div>
+  <div class="tree-item" onclick="loadXML('reference/r_status_codes.dita', this)">
+    ├── 📄 HTTP Status Codes
+  </div>
+  <div class="tree-item" onclick="loadXML('reference/r_test_snippets.dita', this)">
+    ├── 📄 Test Script Snippets
+  </div>
+  <div class="tree-item" onclick="loadXML('reference/r_documentation_elements.dita', this)">
+    └── 📄 Documentation Elements
   </div>
 
 </div>
@@ -522,58 +586,265 @@ function loadXML(file, clickedEl){
     .then(res => res.text())
     .then(data => {
       editor.setValue(data);
-      renderAuthorView(data);
+      renderAuthorView(data, file);
     })
     .catch(err => {
-      editor.setValue("Error loading XML");
+      editor.setValue("// Error loading: " + file + "\n// " + err);
       console.error(err);
     });
 }
 </script>
 
 <script>
-function renderAuthorView(xmlString){
-
+function renderAuthorView(xmlString, file) {
   const parser = new DOMParser();
-  const xml = parser.parseFromString(xmlString, "text/xml");
+  const xml = parser.parseFromString(xmlString, "application/xml");
+  const parseErr = xml.querySelector("parsererror");
+  const av = document.getElementById("author-view");
 
-  let html = "";
-
-  // Title
-  const title = xml.querySelector("title");
-  if(title) html += `<h1>${title.textContent}</h1>`;
-
-  // Shortdesc
-  const shortdesc = xml.querySelector("shortdesc");
-  if(shortdesc) html += `<p class="shortdesc">${shortdesc.textContent}</p>`;
-
-  // Sections
-  xml.querySelectorAll("section").forEach(sec=>{
-    const t = sec.querySelector("title");
-    if(t) html += `<h2>${t.textContent}</h2>`;
-
-    sec.querySelectorAll("p").forEach(p=>{
-      html += `<p>${p.textContent}</p>`;
-    });
-  });
-
-  // Steps
-  const steps = xml.querySelectorAll("step");
-  if(steps.length){
-    html += "<ol>";
-    steps.forEach(s=>{
-      const cmd = s.querySelector("cmd");
-      html += `<li>${cmd ? cmd.textContent : ""}</li>`;
-    });
-    html += "</ol>";
+  if (parseErr) {
+    av.innerHTML = '<p style="color:red">XML parse error: ' + parseErr.textContent + '</p>';
+    return;
   }
 
-  // Codeblocks
-  xml.querySelectorAll("codeblock").forEach(cb=>{
-    html += `<pre>${cb.textContent}</pre>`;
-  });
+  // ── helpers ──────────────────────────────────────────────────────
+  function esc(s) {
+    return (s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
 
-  document.getElementById("author-view").innerHTML = html;
+  function nodeText(el) {
+    return el ? el.textContent.trim() : "";
+  }
+
+  // Render a single <p> node (handles inline <b>,<i>,<codeph>,<uicontrol>,<term>,<userinput>,<xref>)
+  function renderP(p) {
+    let out = "";
+    p.childNodes.forEach(function(n) {
+      if (n.nodeType === 3) { out += esc(n.textContent); }
+      else if (n.nodeType === 1) {
+        const tag = n.tagName.toLowerCase();
+        const inner = esc(n.textContent);
+        if (tag === "b" || tag === "uicontrol")      out += "<strong>" + inner + "</strong>";
+        else if (tag === "i" || tag === "term")       out += "<em>" + inner + "</em>";
+        else if (tag === "codeph" || tag === "userinput") out += "<code>" + inner + "</code>";
+        else if (tag === "xref")                      out += "<em class='xref'>" + inner + "</em>";
+        else                                          out += inner;
+      }
+    });
+    return "<p>" + out + "</p>";
+  }
+
+  // Render <ul> / <ol>
+  function renderList(listEl, listTag) {
+    let out = "<" + listTag + ">";
+    listEl.querySelectorAll(":scope > li, :scope > strow, :scope > dlentry").forEach(function(item) {
+      out += "<li>" + esc(item.textContent.trim()) + "</li>";
+    });
+    return out + "</" + listTag + ">";
+  }
+
+  // Render a <table> or <simpletable>
+  function renderTable(tbl) {
+    let out = '<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em">';
+    // thead from <thead> or <sthead>
+    const thead = tbl.querySelector("thead, sthead");
+    if (thead) {
+      out += "<thead><tr>";
+      thead.querySelectorAll("entry, stentry").forEach(function(e) {
+        out += '<th style="background:#e0f2fe;color:#0c4a6e;padding:6px 10px;border:1px solid #bae6fd;text-align:left">' + esc(e.textContent.trim()) + "</th>";
+      });
+      out += "</tr></thead>";
+    }
+    out += "<tbody>";
+    tbl.querySelectorAll("row, strow").forEach(function(row) {
+      out += "<tr>";
+      row.querySelectorAll("entry, stentry").forEach(function(e) {
+        out += '<td style="padding:6px 10px;border:1px solid #e2e8f0;vertical-align:top">' + esc(e.textContent.trim()) + "</td>";
+      });
+      out += "</tr>";
+    });
+    out += "</tbody></table>";
+    return out;
+  }
+
+  // Render <dl>
+  function renderDl(dl) {
+    let out = '<dl style="margin:8px 0">';
+    dl.querySelectorAll("dlentry").forEach(function(entry) {
+      const dt = entry.querySelector("dt");
+      const dd = entry.querySelector("dd");
+      out += '<dt style="font-weight:700;color:#0369a1;margin-top:10px">' + esc(nodeText(dt)) + "</dt>";
+      out += '<dd style="margin-left:20px;color:#334155">' + esc(nodeText(dd)) + "</dd>";
+    });
+    return out + "</dl>";
+  }
+
+  // Render steps (task)
+  function renderSteps(stepsEl) {
+    let out = '<ol style="margin:8px 0 8px 20px;line-height:1.8">';
+    stepsEl.querySelectorAll(":scope > step").forEach(function(step) {
+      const cmd  = step.querySelector("cmd");
+      const info = step.querySelector("info");
+      const ex   = step.querySelector("stepxmp");
+      const sr   = step.querySelector("stepresult");
+      let li = "<strong>" + esc(nodeText(cmd)) + "</strong>";
+      if (info) li += " <span style='color:#64748b;font-size:.88em'>" + esc(info.textContent.trim()) + "</span>";
+      if (ex)   li += "<pre style='background:#f1f5f9;padding:8px;margin-top:6px;font-size:.82em;overflow:auto'>" + esc(ex.textContent.trim()) + "</pre>";
+      if (sr)   li += "<div style='color:#0369a1;font-style:italic;font-size:.88em;margin-top:4px'>Result: " + esc(nodeText(sr)) + "</div>";
+      out += "<li style='margin-bottom:8px'>" + li + "</li>";
+    });
+    return out + "</ol>";
+  }
+
+  // Render a <note>
+  function renderNote(note) {
+    const type = note.getAttribute("type") || "note";
+    const colors = { note:"#dbeafe:#1e40af", caution:"#fef3c7:#92400e", important:"#fce7f3:#9d174d", warning:"#fee2e2:#991b1b" };
+    const parts  = (colors[type] || colors.note).split(":");
+    return '<div style="background:' + parts[0] + ';border-left:4px solid ' + parts[1] + ';padding:8px 12px;margin:10px 0;font-size:.9em;color:' + parts[1] + '">'
+         + '<strong>' + type.toUpperCase() + ':</strong> ' + esc(note.textContent.trim())
+         + '</div>';
+  }
+
+  // Render <codeblock>
+  function renderCode(cb) {
+    return '<pre style="background:#f1f5f9;padding:12px;overflow:auto;font-size:.82em;border-left:3px solid #0ea5e9;margin:10px 0">'
+         + esc(cb.textContent) + "</pre>";
+  }
+
+  // Render a <section>
+  function renderSection(sec) {
+    let out = "";
+    const secId = sec.getAttribute("id") || "";
+    sec.childNodes.forEach(function(n) {
+      if (n.nodeType !== 1) return;
+      const tag = n.tagName.toLowerCase();
+      if (tag === "title")       out += '<h2 style="color:#0369a1;margin-top:16px;border-bottom:1px solid #bae6fd;padding-bottom:4px">' + esc(n.textContent.trim()) + "</h2>";
+      else if (tag === "p")      out += renderP(n);
+      else if (tag === "ul")     out += renderList(n, "ul");
+      else if (tag === "ol")     out += renderList(n, "ol");
+      else if (tag === "dl")     out += renderDl(n);
+      else if (tag === "table")  out += renderTable(n);
+      else if (tag === "simpletable") out += renderTable(n);
+      else if (tag === "note")   out += renderNote(n);
+      else if (tag === "codeblock") out += renderCode(n);
+    });
+    return out;
+  }
+
+  // ── Render by DITA topic type ────────────────────────────────────
+  let html = '<div style="font-family:\'Inter\',sans-serif;max-width:860px;line-height:1.7;padding-bottom:40px">';
+
+  // Detect topic root
+  const root = xml.documentElement;
+  const rootTag = root.tagName.toLowerCase();
+
+  // ── DITAMAP ──────────────────────────────────────────────────────
+  if (rootTag === "map") {
+    const mapTitle = root.querySelector("title");
+    html += '<h1 style="color:#0c4a6e;border-bottom:2px solid #0ea5e9;padding-bottom:8px">' + esc(nodeText(mapTitle)) + '</h1>';
+    html += '<p style="font-style:italic;color:#64748b;margin-bottom:16px">DITA Map — Document Structure</p>';
+
+    // Author / date from topicmeta
+    const author = root.querySelector("author");
+    const created = root.querySelector("created");
+    if (author || created) {
+      html += '<div style="background:#f0f9ff;border:1px solid #bae6fd;padding:10px 14px;margin-bottom:20px;font-size:.9em">';
+      if (author)  html += '<div><strong>Author:</strong> ' + esc(nodeText(author)) + '</div>';
+      if (created) html += '<div><strong>Created:</strong> ' + esc(created.getAttribute("date") || "") + '</div>';
+      html += '</div>';
+    }
+
+    html += '<table style="width:100%;border-collapse:collapse;font-size:.9em">';
+    html += '<thead><tr><th style="background:#0369a1;color:#fff;padding:7px 12px;text-align:left">File</th><th style="background:#0369a1;color:#fff;padding:7px 12px;text-align:left">Type</th></tr></thead><tbody>';
+
+    let rowIdx = 0;
+    function walkMap(topicrefs, depth) {
+      topicrefs.forEach(function(tr) {
+        if (tr.tagName.toLowerCase() !== "topicref") return;
+        const href = tr.getAttribute("href") || "";
+        const type = tr.getAttribute("type") || "";
+        const indent = "&nbsp;".repeat(depth * 4);
+        const bg = rowIdx % 2 === 0 ? "#fff" : "#f8fafc";
+        const typeColors = { concept:"#dbeafe:#1e40af", task:"#dcfce7:#166534", reference:"#fef9c3:#854d0e" };
+        const tc = (typeColors[type] || "#f1f5f9:#334155").split(":");
+        html += '<tr style="background:' + bg + '">';
+        html += '<td style="padding:6px 12px;border:1px solid #e2e8f0">' + indent + '📄 ' + esc(href) + '</td>';
+        html += '<td style="padding:6px 12px;border:1px solid #e2e8f0"><span style="background:' + tc[0] + ';color:' + tc[1] + ';padding:2px 8px;border-radius:4px;font-size:.8em">' + esc(type) + '</span></td>';
+        html += '</tr>';
+        rowIdx++;
+        const children = Array.from(tr.children).filter(c => c.tagName.toLowerCase() === "topicref");
+        if (children.length) walkMap(children, depth + 1);
+      });
+    }
+    walkMap(Array.from(root.children), 0);
+    html += '</tbody></table>';
+
+  // ── CONCEPT / TASK / REFERENCE ───────────────────────────────────
+  } else {
+    const body = root.querySelector("conbody, taskbody, refbody");
+
+    // Title
+    const titleEl = root.querySelector(":scope > title");
+    if (titleEl) {
+      html += '<h1 style="color:#0c4a6e;border-bottom:2px solid #0ea5e9;padding-bottom:8px;margin-bottom:6px">' + esc(nodeText(titleEl)) + '</h1>';
+    }
+
+    // Type badge
+    const typeLabels = { concept:"💡 Concept", task:"✅ Task", reference:"📚 Reference" };
+    const badge = typeLabels[rootTag] || rootTag;
+    html += '<div style="display:inline-block;background:#dbeafe;color:#1e40af;padding:2px 10px;border-radius:4px;font-size:.78em;font-weight:600;margin-bottom:12px">' + badge + '</div>';
+
+    // Short description
+    const sd = root.querySelector("shortdesc");
+    if (sd) html += '<p style="font-style:italic;border-left:3px solid #0ea5e9;padding:6px 12px;background:#f0f9ff;margin-bottom:16px;color:#0c4a6e">' + esc(nodeText(sd)) + '</p>';
+
+    if (body) {
+      body.childNodes.forEach(function(n) {
+        if (n.nodeType !== 1) return;
+        const tag = n.tagName.toLowerCase();
+
+        if (tag === "section")    html += renderSection(n);
+        else if (tag === "p")     html += renderP(n);
+        else if (tag === "ul")    html += renderList(n, "ul");
+        else if (tag === "ol")    html += renderList(n, "ol");
+        else if (tag === "dl")    html += renderDl(n);
+        else if (tag === "table") html += renderTable(n);
+        else if (tag === "simpletable") html += renderTable(n);
+        else if (tag === "note")  html += renderNote(n);
+        else if (tag === "codeblock") html += renderCode(n);
+
+        // Task-specific elements
+        else if (tag === "prereq") {
+          html += '<div style="background:#fefce8;border-left:4px solid #ca8a04;padding:8px 12px;margin:10px 0"><strong style="color:#92400e">Prerequisites</strong>';
+          n.querySelectorAll("p").forEach(function(p) { html += renderP(p); });
+          n.querySelectorAll("ul").forEach(function(ul) { html += renderList(ul, "ul"); });
+          html += '</div>';
+        }
+        else if (tag === "context") {
+          html += '<div style="background:#f0fdf4;border-left:4px solid #16a34a;padding:8px 12px;margin:10px 0"><strong style="color:#166534">Context</strong>';
+          n.querySelectorAll("p").forEach(function(p) { html += renderP(p); });
+          html += '</div>';
+        }
+        else if (tag === "steps") {
+          html += '<h3 style="color:#0369a1;margin-top:16px">Procedure</h3>' + renderSteps(n);
+        }
+        else if (tag === "r" || tag === "result") {
+          html += '<div style="background:#dcfce7;border-left:4px solid #16a34a;padding:8px 12px;margin:10px 0"><strong style="color:#166534">Result</strong>';
+          n.querySelectorAll("p").forEach(function(p) { html += renderP(p); });
+          html += '</div>';
+        }
+        else if (tag === "postreq") {
+          html += '<div style="background:#f0f9ff;border-left:4px solid #0284c7;padding:8px 12px;margin:10px 0"><strong style="color:#0369a1">Next Steps</strong>';
+          n.querySelectorAll("p").forEach(function(p) { html += renderP(p); });
+          html += '</div>';
+        }
+      });
+    }
+  }
+
+  html += '</div>';
+  av.innerHTML = html;
 }
 </script>
 
