@@ -36,7 +36,7 @@
     <topicref href="reference/r_status_codes.dita" type="reference"/>
     <topicref href="reference/r_test_snippets.dita" type="reference"/>
   </topicref>
-
+  </topichead>
   <topichead navtitle="Publishing API Documentation">
     <topicref href="concepts/c_api_documentation_overview.dita" type="concept">
     <topicref href="tasks/t_write_request_description.dita" type="task"/>
@@ -45,5 +45,5 @@
     <topicref href="tasks/t_customize_documentation.dita" type="task"/>
     <topicref href="reference/r_documentation_elements.dita" type="reference"/>
   </topicref>
-
+  </topichead>
 </map>
