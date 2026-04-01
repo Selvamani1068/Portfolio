@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="t_use_environments">
+  <title>Use Environments and Variables</title>
+
+  <shortdesc>Create Postman environments to manage variables such as base URLs and
+    authentication tokens, and switch between development, staging, and production
+    configurations without editing individual requests.</shortdesc>
+
+  <taskbody>
+
+    <context>
+      <p>An <term>environment</term> in Postman is a set of key-value pairs called
+        <term>variables</term>. Variables let you write requests once and run them against
+        different configurations by changing the active environment. For example, the variable
+        <codeph>{{baseUrl}}</codeph> can point to <codeph>http://localhost:3000</codeph> in
+        the development environment and to <codeph>https://api.example.com</codeph> in the
+        production environment.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>In the sidebar, select <uicontrol>Environments</uicontrol>.</cmd>
+      </step>
+      <step>
+        <cmd>Select the <uicontrol>+</uicontrol> icon to create a new environment.</cmd>
+      </step>
+      <step>
+        <cmd>Type a name for the environment, such as
+          <userinput>Development</userinput>, <userinput>Staging</userinput>, or
+          <userinput>Production</userinput>.</cmd>
+      </step>
+      <step>
+        <cmd>In the variable table, enter variable names and their initial and current
+          values.</cmd>
+        <info>
+          <table>
+            <tgroup cols="3">
+              <colspec colname="col1" colwidth="1.5*"/>
+              <colspec colname="col2" colwidth="2*"/>
+              <colspec colname="col3" colwidth="2*"/>
+              <thead>
+                <row>
+                  <entry>Variable</entry>
+                  <entry>Initial Value</entry>
+                  <entry>Current Value</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry><codeph>baseUrl</codeph></entry>
+                  <entry><codeph>http://localhost:3000</codeph></entry>
+                  <entry><codeph>http://localhost:3000</codeph></entry>
+                </row>
+                <row>
+                  <entry><codeph>apiKey</codeph></entry>
+                  <entry>Leave blank</entry>
+                  <entry>Your API key value</entry>
+                </row>
+                <row>
+                  <entry><codeph>userId</codeph></entry>
+                  <entry><codeph>1</codeph></entry>
+                  <entry><codeph>1</codeph></entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+          <note type="important">
+            <p>Do not store sensitive values such as API keys or passwords in the
+              <uicontrol>Initial Value</uicontrol> column. Initial values are shared with
+              your team. Use the <uicontrol>Current Value</uicontrol> column for
+              secrets — current values are stored locally and not synced to Postman
+              servers.</p>
+          </note>
+        </info>
+      </step>
+      <step>
+        <cmd>Select <uicontrol>Save</uicontrol>.</cmd>
+      </step>
+      <step>
+        <cmd>To activate the environment, open the environment selector in the upper-right
+          corner of Postman and select the environment name from the dropdown.</cmd>
+        <stepresult>The environment name appears in the selector and Postman resolves all
+          <codeph>{{variableName}}</codeph> references in requests using the current
+          values from the active environment.</stepresult>
+      </step>
+      <step>
+        <cmd>In your requests, replace hardcoded values with variable references using double
+          curly braces.</cmd>
+        <stepxmp>
+          <p>Replace a hardcoded URL:</p>
+          <codeblock>https://api.example.com/users/1</codeblock>
+          <p>With a variable reference:</p>
+          <codeblock>{{baseUrl}}/users/{{userId}}</codeblock>
+        </stepxmp>
+      </step>
+    </steps>
+
+    <r>
+      <p>Postman resolves variable references in request URLs, headers, and body content using
+        the values from the active environment. You can switch environments at any time using
+        the environment selector without modifying individual requests.</p>
+    </r>
+
+  </taskbody>
+</task>

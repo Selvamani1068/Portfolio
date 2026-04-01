@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="r_test_snippets">
+  <title>Test Script Snippets Reference</title>
+  <shortdesc>Postman provides built-in test snippets that you can insert with a single click
+    in the Tests tab. Use this reference to find the correct snippet for common test
+    scenarios.</shortdesc>
+  <refbody>
+
+    <section id="status-snippets">
+      <title>Status Code Assertions</title>
+      <table>
+        <tgroup cols="2">
+          <colspec colname="col1" colwidth="2*"/>
+          <colspec colname="col2" colwidth="3*"/>
+          <thead>
+            <row><entry>Test Description</entry><entry>Code</entry></row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Status code is 200</entry>
+              <entry><codeblock language="javascript">pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});</codeblock></entry>
+            </row>
+            <row>
+              <entry>Status code is 201</entry>
+              <entry><codeblock language="javascript">pm.test("Status code is 201", function () {
+    pm.response.to.have.status(201);
+});</codeblock></entry>
+            </row>
+            <row>
+              <entry>Status code name contains a string</entry>
+              <entry><codeblock language="javascript">pm.test("Status code name is OK", function () {
+    pm.response.to.have.status("OK");
+});</codeblock></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="response-body-snippets">
+      <title>Response Body Assertions</title>
+      <table>
+        <tgroup cols="2">
+          <colspec colname="col1" colwidth="2*"/>
+          <colspec colname="col2" colwidth="3*"/>
+          <thead>
+            <row><entry>Test Description</entry><entry>Code</entry></row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Response body contains a string</entry>
+              <entry><codeblock language="javascript">pm.test("Body contains string", function () {
+    pm.expect(pm.response.text())
+      .to.include("Jane Smith");
+});</codeblock></entry>
+            </row>
+            <row>
+              <entry>JSON value check</entry>
+              <entry><codeblock language="javascript">pm.test("Field value is correct", function () {
+    const json = pm.response.json();
+    pm.expect(json.name).to.eql("Jane Smith");
+});</codeblock></entry>
+            </row>
+            <row>
+              <entry>Response body is valid JSON</entry>
+              <entry><codeblock language="javascript">pm.test("Response is valid JSON", function () {
+    pm.response.to.be.json;
+});</codeblock></entry>
+            </row>
+            <row>
+              <entry>JSON schema validation</entry>
+              <entry><codeblock language="javascript">const schema = {
+  type: "object",
+  properties: {
+    id:    { type: "integer" },
+    name:  { type: "string"  },
+    email: { type: "string"  }
+  },
+  required: ["id", "name", "email"]
+};
+pm.test("Schema is valid", function () {
+    pm.response.to.have.jsonSchema(schema);
+});</codeblock></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="header-snippets">
+      <title>Header Assertions</title>
+      <table>
+        <tgroup cols="2">
+          <colspec colname="col1" colwidth="2*"/>
+          <colspec colname="col2" colwidth="3*"/>
+          <thead>
+            <row><entry>Test Description</entry><entry>Code</entry></row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Content-Type header is JSON</entry>
+              <entry><codeblock language="javascript">pm.test("Content-Type is JSON", function () {
+    pm.expect(pm.response.headers.get("Content-Type"))
+      .to.include("application/json");
+});</codeblock></entry>
+            </row>
+            <row>
+              <entry>Response has a specific header</entry>
+              <entry><codeblock language="javascript">pm.test("Has Authorization header", function () {
+    pm.response.to.have.header("Authorization");
+});</codeblock></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="timing-snippets">
+      <title>Performance Assertions</title>
+      <table>
+        <tgroup cols="2">
+          <colspec colname="col1" colwidth="2*"/>
+          <colspec colname="col2" colwidth="3*"/>
+          <thead>
+            <row><entry>Test Description</entry><entry>Code</entry></row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Response time under 200ms</entry>
+              <entry><codeblock language="javascript">pm.test("Response time is acceptable", function () {
+    pm.expect(pm.response.responseTime)
+      .to.be.below(200);
+});</codeblock></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="variable-snippets">
+      <title>Setting Variables from Response</title>
+      <table>
+        <tgroup cols="2">
+          <colspec colname="col1" colwidth="2*"/>
+          <colspec colname="col2" colwidth="3*"/>
+          <thead>
+            <row><entry>Test Description</entry><entry>Code</entry></row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Set an environment variable from the response</entry>
+              <entry><codeblock language="javascript">const json = pm.response.json();
+pm.environment.set("userId", json.id);</codeblock></entry>
+            </row>
+            <row>
+              <entry>Set a collection variable from the response</entry>
+              <entry><codeblock language="javascript">const json = pm.response.json();
+pm.collectionVariables.set("authToken", json.token);</codeblock></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+  </refbody>
+</reference>

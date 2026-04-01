@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="t_customize_documentation">
+  <title>Customize Published Documentation</title>
+
+  <shortdesc>Configure the appearance of your published Postman documentation by setting a
+    custom logo, theme colors, and a custom domain.</shortdesc>
+
+  <taskbody>
+
+    <prereq>
+      <p>Before you customize documentation, ensure that the documentation is already
+        published. For instructions, see <xref href="t_publish_documentation.dita"/>.</p>
+      <p>Custom domain configuration requires a Postman Basic plan or higher.</p>
+    </prereq>
+
+    <context>
+      <p>Published Postman documentation supports visual customization through the team
+        settings in the Postman web dashboard. You can set a logo, choose a theme color,
+        and configure a custom domain so the documentation appears under your own
+        subdomain.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>Sign in to your Postman account at
+          <xref href="https://www.postman.com" format="html" scope="external">postman.com</xref>
+          and navigate to your team dashboard.</cmd>
+      </step>
+      <step>
+        <cmd>Select your team name in the upper-left corner and then select
+          <uicontrol>Team Settings</uicontrol>.</cmd>
+      </step>
+      <step>
+        <cmd>Select <uicontrol>Public Profile</uicontrol> in the left navigation panel.</cmd>
+      </step>
+      <step>
+        <cmd>To add a logo, select <uicontrol>Upload logo</uicontrol> and upload a PNG or
+          SVG image.</cmd>
+        <info>
+          <p>The recommended logo size is 400 x 400 pixels or larger. Postman displays the
+            logo in the upper-left corner of the published documentation page.</p>
+        </info>
+      </step>
+      <step>
+        <cmd>Select <uicontrol>Save</uicontrol>.</cmd>
+      </step>
+      <step>
+        <cmd>To configure a custom domain, select <uicontrol>Custom Domain</uicontrol> in the
+          left navigation panel.</cmd>
+      </step>
+      <step>
+        <cmd>In the <uicontrol>Domain</uicontrol> field, enter the subdomain you want to use
+          for the documentation.</cmd>
+        <stepxmp>
+          <p>For example: <userinput>docs.example.com</userinput></p>
+        </stepxmp>
+      </step>
+      <step>
+        <cmd>Follow the DNS configuration instructions that Postman displays.</cmd>
+        <info>
+          <p>You must add a CNAME record in your DNS provider that points your subdomain to
+            the Postman documentation server. DNS changes can take up to 48 hours to
+            propagate.</p>
+          <ol>
+            <li>Log in to your DNS provider's control panel.</li>
+            <li>Add a <codeph>CNAME</codeph> record with:
+              <ul>
+                <li><b>Host:</b> <codeph>docs</codeph> (or your chosen subdomain prefix)</li>
+                <li><b>Value:</b> The target provided by Postman, such as
+                  <codeph>phs.getpostman.com</codeph></li>
+              </ul>
+            </li>
+            <li>Save the DNS record.</li>
+          </ol>
+        </info>
+      </step>
+      <step>
+        <cmd>Return to Postman and select <uicontrol>Verify Domain</uicontrol>.</cmd>
+        <stepresult>Postman checks the DNS records. When verification succeeds, the custom
+          domain becomes active and the documentation is accessible at your custom
+          URL.</stepresult>
+      </step>
+    </steps>
+
+    <r>
+      <p>The published documentation displays your team logo and is accessible at the custom
+        domain you configured. All existing documentation links automatically redirect to the
+        new custom domain URL.</p>
+    </r>
+
+  </taskbody>
+</task>

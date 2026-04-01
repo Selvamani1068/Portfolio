@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="c_api_documentation_overview">
+  <title>API Documentation Overview</title>
+
+  <shortdesc>Postman generates API documentation automatically from collections and lets you
+    publish it to a public or private URL. Documentation stays synchronized with your
+    collection as you update requests.</shortdesc>
+
+  <conbody>
+
+    <p>Postman documentation is built from the descriptions you write for each collection,
+      folder, and request. Postman renders these descriptions as formatted HTML pages that
+      include request details, parameters, headers, body schemas, and example responses.</p>
+
+    <p>Published documentation provides developers with a self-service reference for consuming
+      your API. It includes interactive examples that readers can copy directly into their
+      own environments.</p>
+
+    <section id="documentation-sources">
+      <title>Documentation Sources</title>
+      <p>Postman assembles documentation from the following sources in your collection:</p>
+      <ul>
+        <li><b>Collection description</b> — An introduction and overview of the API, written in
+          Markdown. This appears at the top of the published documentation page.</li>
+        <li><b>Folder descriptions</b> — Introductions to logical groups of endpoints within the
+          collection, such as Authentication or User Management.</li>
+        <li><b>Request descriptions</b> — Detailed explanations of individual endpoints,
+          including purpose, required parameters, and expected responses.</li>
+        <li><b>Parameter and header descriptions</b> — Inline descriptions for each query
+          parameter, path variable, and header.</li>
+        <li><b>Example responses</b> — Saved example responses that Postman displays alongside
+          each request in the documentation.</li>
+      </ul>
+    </section>
+
+    <section id="documentation-types">
+      <title>Documentation Visibility Options</title>
+      <p>When you publish documentation in Postman, you can choose one of the following
+        visibility settings:</p>
+      <dl>
+        <dlentry>
+          <dt>Public</dt>
+          <dd>Anyone with the URL can view the documentation without signing in to Postman.
+            Public documentation is indexed by search engines. Use this setting for open
+            APIs or developer portals.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Private (Team)</dt>
+          <dd>Only members of your Postman team can view the documentation. Use this setting
+            for internal APIs that should not be publicly accessible.</dd>
+        </dlentry>
+      </dl>
+      <note type="note">
+        <p>Custom domains for published documentation require a Basic plan or higher.</p>
+      </note>
+    </section>
+
+    <section id="documentation-workflow">
+      <title>Documentation Workflow</title>
+      <p>The recommended workflow for creating and publishing API documentation in Postman is:</p>
+      <ol>
+        <li>Write descriptions for the collection, folders, and each request using Markdown.</li>
+        <li>Add saved example responses to each request to illustrate expected outputs.</li>
+        <li>Generate a preview of the documentation from the collection menu.</li>
+        <li>Publish the documentation and configure the visibility and URL settings.</li>
+        <li>Optionally, customize the published documentation with a custom domain, logo, and
+          color scheme.</li>
+      </ol>
+    </section>
+
+  </conbody>
+</concept>

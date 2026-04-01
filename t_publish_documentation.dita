@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="t_publish_documentation">
+  <title>Publish API Documentation</title>
+
+  <shortdesc>Publish your Postman collection documentation to a publicly accessible URL so
+    that API consumers can view the documentation in a browser without requiring a Postman
+    account.</shortdesc>
+
+  <taskbody>
+
+    <prereq>
+      <p>Before you publish documentation, ensure that:</p>
+      <ul>
+        <li>You have reviewed the documentation preview and confirmed it is complete. For
+          instructions, see <xref href="t_generate_documentation.dita"/>.</li>
+        <li>You are signed in to a Postman account with the collection saved to a
+          workspace.</li>
+      </ul>
+    </prereq>
+
+    <context>
+      <p>Publishing documentation in Postman creates a hosted web page at a Postman-generated
+        URL. You can share this URL with developers, add it to your developer portal, or
+        link it from a README file. Published documentation updates automatically when you
+        make changes to your collection.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>In the documentation preview panel, select
+          <uicontrol>Publish</uicontrol> in the upper-right corner.</cmd>
+        <info>
+          <p>Alternatively, in the sidebar, hover over the collection name, select the
+            <uicontrol>...</uicontrol> (More Actions) icon, and select
+            <uicontrol>Publish docs</uicontrol>.</p>
+        </info>
+        <stepresult>The <uicontrol>Publish Documentation</uicontrol> dialog opens.</stepresult>
+      </step>
+      <step>
+        <cmd>In the <uicontrol>Environment</uicontrol> dropdown, select the environment whose
+          variable values Postman will use in the published documentation.</cmd>
+        <info>
+          <note type="caution">
+            <p>Postman replaces variables in the published documentation with their current
+              values from the selected environment. Do not select an environment that
+              contains sensitive values such as API keys or passwords. Use a dedicated
+              documentation environment with sanitized values.</p>
+          </note>
+        </info>
+      </step>
+      <step>
+        <cmd>Under <uicontrol>Visibility</uicontrol>, select
+          <uicontrol>Public</uicontrol> to allow anyone with the URL to view the
+          documentation.</cmd>
+        <info>
+          <p>To restrict access to your team members only, select
+            <uicontrol>Private</uicontrol>. Private documentation requires viewers to sign
+            in to your Postman team.</p>
+        </info>
+      </step>
+      <step>
+        <cmd>Review the generated URL displayed in the
+          <uicontrol>Documentation URL</uicontrol> field.</cmd>
+        <info>
+          <p>The default URL is in the format:
+            <codeph>https://documenter.getpostman.com/view/&lt;teamId&gt;/&lt;collectionId&gt;</codeph></p>
+          <p>To use a custom domain, see <xref href="t_customize_documentation.dita"/>.</p>
+        </info>
+      </step>
+      <step>
+        <cmd>Select <uicontrol>Publish</uicontrol>.</cmd>
+        <stepresult>Postman publishes the documentation and displays a confirmation dialog
+          with the public URL.</stepresult>
+      </step>
+      <step>
+        <cmd>Select <uicontrol>View documentation</uicontrol> to open the published
+          page in your browser and verify the content.</cmd>
+      </step>
+      <step>
+        <cmd>Copy the URL and share it with your API consumers.</cmd>
+      </step>
+    </steps>
+
+    <r>
+      <p>The API documentation is published and accessible at the displayed URL. The page
+        updates automatically each time you edit the collection and republish. Viewers do
+        not need a Postman account to access public documentation.</p>
+    </r>
+
+    <postreq>
+      <p>Optionally, customize the documentation with a logo, color scheme, and custom
+        domain. For instructions, see <xref href="t_customize_documentation.dita"/>.</p>
+    </postreq>
+
+  </taskbody>
+</task>

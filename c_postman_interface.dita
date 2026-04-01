@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="c_postman_interface">
+  <title>Postman Interface</title>
+
+  <shortdesc>The Postman interface consists of a sidebar, a request builder, and a response
+    viewer. Understanding the layout helps you navigate collections and build requests
+    efficiently.</shortdesc>
+
+  <conbody>
+
+    <section id="main-areas">
+      <title>Main Interface Areas</title>
+      <p>The Postman desktop application is divided into the following areas:</p>
+
+      <dl>
+        <dlentry>
+          <dt>Sidebar</dt>
+          <dd>The left panel contains your <uicontrol>Collections</uicontrol>,
+            <uicontrol>Environments</uicontrol>, <uicontrol>APIs</uicontrol>,
+            <uicontrol>Mock Servers</uicontrol>, and <uicontrol>Monitors</uicontrol>. Use the
+            sidebar to navigate between saved requests and folders.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Workbench</dt>
+          <dd>The central area is the workbench, where you open and edit requests, write test
+            scripts, and view responses. Requests open as tabs across the top of the
+            workbench.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Request Builder</dt>
+          <dd>Within the workbench, the request builder contains the URL bar, HTTP method
+            selector, and tabs for <uicontrol>Params</uicontrol>,
+            <uicontrol>Authorization</uicontrol>, <uicontrol>Headers</uicontrol>,
+            <uicontrol>Body</uicontrol>, <uicontrol>Pre-request Script</uicontrol>, and
+            <uicontrol>Tests</uicontrol>.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Response Viewer</dt>
+          <dd>Below the request builder, the response viewer displays the response body, status
+            code, response time, and size. Tabs include <uicontrol>Body</uicontrol>,
+            <uicontrol>Cookies</uicontrol>, <uicontrol>Headers</uicontrol>, and
+            <uicontrol>Test Results</uicontrol>.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Environment Selector</dt>
+          <dd>Located in the upper-right corner, the environment selector lets you switch the
+            active environment. The current environment name appears in the dropdown.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Footer Bar</dt>
+          <dd>The bottom bar shows connection status, Postman version, and access to the
+            <uicontrol>Console</uicontrol>, which logs request and response details for
+            debugging.</dd>
+        </dlentry>
+      </dl>
+    </section>
+
+    <section id="request-tabs">
+      <title>Request Builder Tabs</title>
+      <p>Each request in Postman has the following configuration tabs:</p>
+      <simpletable>
+        <sthead>
+          <stentry>Tab</stentry>
+          <stentry>Purpose</stentry>
+        </sthead>
+        <strow>
+          <stentry><uicontrol>Params</uicontrol></stentry>
+          <stentry>Add query parameters as key-value pairs. Postman appends them to the URL
+            automatically.</stentry>
+        </strow>
+        <strow>
+          <stentry><uicontrol>Authorization</uicontrol></stentry>
+          <stentry>Configure authentication, including API keys, Bearer tokens, Basic Auth, and
+            OAuth 2.0.</stentry>
+        </strow>
+        <strow>
+          <stentry><uicontrol>Headers</uicontrol></stentry>
+          <stentry>Add or override HTTP request headers.</stentry>
+        </strow>
+        <strow>
+          <stentry><uicontrol>Body</uicontrol></stentry>
+          <stentry>Specify the request body for POST, PUT, and PATCH requests. Supports raw
+            JSON, form-data, and binary.</stentry>
+        </strow>
+        <strow>
+          <stentry><uicontrol>Pre-request Script</uicontrol></stentry>
+          <stentry>Write JavaScript that runs before the request is sent, such as setting
+            variables or generating tokens.</stentry>
+        </strow>
+        <strow>
+          <stentry><uicontrol>Tests</uicontrol></stentry>
+          <stentry>Write JavaScript assertions that run after the response is received to
+            validate the API behavior.</stentry>
+        </strow>
+      </simpletable>
+    </section>
+
+  </conbody>
+</concept>

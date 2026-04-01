@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="t_add_test_scripts">
+  <title>Add Test Scripts to a Request</title>
+
+  <shortdesc>Write JavaScript test scripts in the Tests tab to validate API responses
+    automatically after each request is sent.</shortdesc>
+
+  <taskbody>
+
+    <prereq>
+      <p>Before you add test scripts, create a request and verify that it returns a response.
+        For instructions, see <xref href="t_send_api_request.dita"/>.</p>
+    </prereq>
+
+    <context>
+      <p>Postman runs test scripts after every response is received. Tests use the
+        <codeph>pm.test()</codeph> function combined with <codeph>pm.expect()</codeph>
+        assertions from the Chai library. Each test has a name and an assertion. Postman
+        reports pass or fail for each assertion in the <uicontrol>Test Results</uicontrol> tab
+        of the response viewer.</p>
+      <p>You can write tests at the request level or at the collection and folder level.
+        Collection-level and folder-level scripts run before or after every request in that
+        group.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>Open the saved request in the workbench.</cmd>
+      </step>
+      <step>
+        <cmd>Select the <uicontrol>Tests</uicontrol> tab in the request builder.</cmd>
+      </step>
+      <step>
+        <cmd>To insert a test quickly, select a snippet from the
+          <uicontrol>Snippets</uicontrol> panel on the right side of the Tests tab.</cmd>
+        <info>
+          <p>Common snippets include:</p>
+          <ul>
+            <li><uicontrol>Status code: Code is 200</uicontrol></li>
+            <li><uicontrol>Response body: JSON value check</uicontrol></li>
+            <li><uicontrol>Response time is less than 200ms</uicontrol></li>
+          </ul>
+          <p>For a full list of available snippets, see
+            <xref href="../reference/r_test_snippets.dita"/>.</p>
+        </info>
+        <stepresult>Postman inserts the snippet code into the test editor.</stepresult>
+      </step>
+      <step>
+        <cmd>Modify the inserted snippet or write a custom test in the editor.</cmd>
+        <stepxmp>
+          <p>The following example tests verify the status code, content type, and a field
+            value in the response body:</p>
+          <codeblock language="javascript">// Test 1: Verify status code
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+// Test 2: Verify Content-Type header
+pm.test("Content-Type is JSON", function () {
+    pm.expect(pm.response.headers.get("Content-Type"))
+      .to.include("application/json");
+});
+
+// Test 3: Verify response body field
+pm.test("User name is correct", function () {
+    const responseBody = pm.response.json();
+    pm.expect(responseBody.name).to.eql("Jane Smith");
+});
+
+// Test 4: Response time under 500ms
+pm.test("Response time is acceptable", function () {
+    pm.expect(pm.response.responseTime).to.be.below(500);
+});</codeblock>
+        </stepxmp>
+      </step>
+      <step>
+        <cmd>Select <uicontrol>Send</uicontrol> to run the request and execute the
+          tests.</cmd>
+      </step>
+      <step>
+        <cmd>Select the <uicontrol>Test Results</uicontrol> tab in the response viewer to
+          review the test outcomes.</cmd>
+        <stepresult>Each test displays a green <uicontrol>PASS</uicontrol> or red
+          <uicontrol>FAIL</uicontrol> label with the test name. Failed tests include an error
+          message explaining the assertion that was not met.</stepresult>
+      </step>
+    </steps>
+
+    <r>
+      <p>Postman runs the test scripts after the response is received and reports the results
+        in the <uicontrol>Test Results</uicontrol> tab. Passing tests appear in green and
+        failing tests appear in red.</p>
+    </r>
+
+    <postreq>
+      <p>After adding tests to individual requests, run the entire collection to execute all
+        tests in sequence. For instructions, see <xref href="t_run_collection.dita"/>.</p>
+    </postreq>
+
+  </taskbody>
+</task>

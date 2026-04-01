@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="t_send_api_request">
+  <title>Send an API Request</title>
+
+  <shortdesc>Configure and send an HTTP request in Postman to test an API endpoint and inspect
+    the response.</shortdesc>
+
+  <taskbody>
+
+    <prereq>
+      <p>Before you send an API request, ensure that you have created a collection to save the
+        request to. For instructions, see <xref href="t_create_collection.dita"/>.</p>
+    </prereq>
+
+    <context>
+      <p>Sending a request in Postman involves selecting the HTTP method, entering the endpoint
+        URL, configuring parameters or a request body, and selecting
+        <uicontrol>Send</uicontrol>. Postman displays the response in the response viewer
+        below the request builder.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>Select <uicontrol>New</uicontrol> in the top navigation bar and select
+          <uicontrol>HTTP</uicontrol>, or select <uicontrol>+</uicontrol> to open a new
+          request tab.</cmd>
+      </step>
+      <step>
+        <cmd>In the method selector on the left of the URL bar, select the HTTP method for the
+          request: <uicontrol>GET</uicontrol>, <uicontrol>POST</uicontrol>,
+          <uicontrol>PUT</uicontrol>, <uicontrol>PATCH</uicontrol>, or
+          <uicontrol>DELETE</uicontrol>.</cmd>
+        <info>
+          <p>For a description of each HTTP method, see
+            <xref href="../reference/r_http_methods.dita"/>.</p>
+        </info>
+      </step>
+      <step>
+        <cmd>In the URL bar, type the full endpoint URL.</cmd>
+        <info>
+          <p>If you have defined a base URL variable in your environment, use the variable
+            syntax. For example: <userinput>{{baseUrl}}/users/1</userinput>.</p>
+        </info>
+      </step>
+      <step>
+        <cmd>To add query parameters, select the <uicontrol>Params</uicontrol> tab and enter
+          key-value pairs in the table.</cmd>
+        <info>
+          <p>Postman appends the parameters to the URL in the format
+            <codeph>?key=value&amp;key2=value2</codeph>. You can also type parameters directly
+            into the URL bar.</p>
+        </info>
+      </step>
+      <step>
+        <cmd>To add an authorization header, select the <uicontrol>Authorization</uicontrol>
+          tab, select the authorization type from the <uicontrol>Auth Type</uicontrol>
+          dropdown, and enter the required credentials.</cmd>
+        <info>
+          <p>Common authorization types include:</p>
+          <ul>
+            <li><uicontrol>API Key</uicontrol> — Enter the key name and value.</li>
+            <li><uicontrol>Bearer Token</uicontrol> — Paste the token in the
+              <uicontrol>Token</uicontrol> field.</li>
+            <li><uicontrol>Basic Auth</uicontrol> — Enter the username and password.</li>
+          </ul>
+        </info>
+      </step>
+      <step>
+        <cmd>For POST, PUT, or PATCH requests, select the <uicontrol>Body</uicontrol> tab and
+          configure the request body.</cmd>
+        <substeps>
+          <substep>
+            <cmd>Select <uicontrol>raw</uicontrol> and choose <uicontrol>JSON</uicontrol>
+              from the format dropdown to send a JSON body.</cmd>
+          </substep>
+          <substep>
+            <cmd>Type or paste the JSON request body in the text area.</cmd>
+          </substep>
+        </substeps>
+        <stepxmp>
+          <p>Example JSON request body for creating a user:</p>
+          <codeblock language="json">{
+  "name": "Jane Smith",
+  "email": "jane.smith@example.com",
+  "role": "admin"
+}</codeblock>
+        </stepxmp>
+      </step>
+      <step>
+        <cmd>Select <uicontrol>Send</uicontrol>.</cmd>
+        <stepresult>Postman sends the request and displays the response in the response viewer.
+          The status code, response time, and response size appear in the header of the
+          response panel.</stepresult>
+      </step>
+      <step>
+        <cmd>Review the response in the <uicontrol>Body</uicontrol> tab of the response
+          viewer.</cmd>
+        <info>
+          <p>Select <uicontrol>Pretty</uicontrol> to view the response with formatted
+            indentation, or <uicontrol>Raw</uicontrol> to view the unformatted response
+            text.</p>
+        </info>
+      </step>
+      <step>
+        <cmd>To save the request to a collection, select <uicontrol>Save</uicontrol>, choose a
+          collection and folder, and select <uicontrol>Save</uicontrol>.</cmd>
+      </step>
+    </steps>
+
+    <r>
+      <p>Postman sends the request and displays the response. The status code appears in the
+        upper-right of the response panel. For a list of common status codes and their
+        meanings, see <xref href="../reference/r_status_codes.dita"/>.</p>
+    </r>
+
+    <postreq>
+      <p>Add test scripts to validate the response automatically. For instructions, see
+        <xref href="t_add_test_scripts.dita"/>.</p>
+    </postreq>
+
+  </taskbody>
+</task>

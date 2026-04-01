@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="t_write_request_description">
+  <title>Write Request Descriptions</title>
+
+  <shortdesc>Add Markdown descriptions to your collection, folders, and individual requests
+    to build the content that Postman uses to generate API documentation.</shortdesc>
+
+  <taskbody>
+
+    <context>
+      <p>Descriptions in Postman support Markdown formatting, including headings, bold and
+        italic text, bullet lists, numbered lists, tables, and inline code. The descriptions
+        you write appear directly in the published documentation alongside the request
+        details.</p>
+      <p>Write descriptions that explain the purpose of each endpoint, the required and
+        optional parameters, the expected response structure, and any important notes for
+        API consumers.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>To write a collection description, select the collection name in the sidebar to
+          open the collection overview panel, and then select the
+          <uicontrol>Edit</uicontrol> icon in the <uicontrol>Description</uicontrol>
+          section.</cmd>
+      </step>
+      <step>
+        <cmd>Write a Markdown description for the collection.</cmd>
+        <stepxmp>
+          <p>Example collection description:</p>
+          <codeblock language="markdown">## User Management API
+
+The User Management API provides endpoints for creating, retrieving,
+updating, and deleting user accounts.
+
+**Base URL:** `https://api.example.com/v1`
+
+**Authentication:** All requests require a Bearer token in the
+`Authorization` header.
+
+**Rate Limits:** 100 requests per minute per API key.</codeblock>
+        </stepxmp>
+      </step>
+      <step>
+        <cmd>Select <uicontrol>Save</uicontrol>.</cmd>
+      </step>
+      <step>
+        <cmd>To write a folder description, select the folder name in the sidebar to open the
+          folder overview, and add a description in the same way.</cmd>
+      </step>
+      <step>
+        <cmd>To write a request description, open a request in the workbench, hover over the
+          request name at the top of the request builder, and select the
+          <uicontrol>Edit</uicontrol> icon to add a description.</cmd>
+      </step>
+      <step>
+        <cmd>Write a clear description for the request.</cmd>
+        <stepxmp>
+          <p>Example request description for a GET endpoint:</p>
+          <codeblock language="markdown">Retrieves a single user by their unique ID.
+
+**Path Parameters**
+
+| Parameter | Type   | Required | Description          |
+|-----------|--------|----------|----------------------|
+| `id`      | string | Yes      | The unique user ID.  |
+
+**Response**
+
+Returns a user object with the following fields:
+
+- `id` — Unique identifier for the user.
+- `name` — Full name of the user.
+- `email` — Email address of the user.
+- `role` — User role: `admin` or `member`.
+- `createdAt` — ISO 8601 timestamp of account creation.</codeblock>
+        </stepxmp>
+      </step>
+      <step>
+        <cmd>To add a saved example response, send the request and receive a real response,
+          then select <uicontrol>Save as example</uicontrol> from the response panel.</cmd>
+        <stepresult>Postman saves the example response and includes it in the generated
+          documentation alongside the request.</stepresult>
+      </step>
+      <step>
+        <cmd>Add descriptions to the remaining folders and requests in the collection.</cmd>
+      </step>
+    </steps>
+
+    <r>
+      <p>Descriptions are saved and will appear in the generated API documentation.
+        Saved example responses are included as reference examples for API consumers.</p>
+    </r>
+
+    <postreq>
+      <p>After writing descriptions for all requests, generate the documentation. For
+        instructions, see <xref href="t_generate_documentation.dita"/>.</p>
+    </postreq>
+
+  </taskbody>
+</task>

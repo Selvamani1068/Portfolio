@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="t_run_collection">
+  <title>Run a Collection</title>
+
+  <shortdesc>Use the Collection Runner to execute all requests in a collection in sequence and
+    review the aggregated test results.</shortdesc>
+
+  <taskbody>
+
+    <prereq>
+      <p>Before you run a collection, ensure that:</p>
+      <ul>
+        <li>The collection contains at least one request with test scripts.</li>
+        <li>An environment is configured with the correct variable values for the target
+          system.</li>
+      </ul>
+    </prereq>
+
+    <context>
+      <p>The <term>Collection Runner</term> executes all requests in a collection in the order
+        they appear in the sidebar. After the run completes, Postman displays a summary of all
+        test results, including the number of tests that passed and failed.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>In the sidebar, hover over the collection name and select the
+          <uicontrol>Run collection</uicontrol> icon (the arrow icon), or right-click the
+          collection and select <uicontrol>Run collection</uicontrol>.</cmd>
+        <stepresult>The Collection Runner panel opens.</stepresult>
+      </step>
+      <step>
+        <cmd>In the <uicontrol>Environment</uicontrol> dropdown, select the environment to
+          use for the run.</cmd>
+      </step>
+      <step>
+        <cmd>In the <uicontrol>Iterations</uicontrol> field, enter the number of times to
+          repeat the run. Leave this set to <uicontrol>1</uicontrol> for a single run.</cmd>
+      </step>
+      <step>
+        <cmd>In the <uicontrol>Delay</uicontrol> field, enter a delay in milliseconds between
+          requests if the API requires rate limiting. A value of
+          <userinput>0</userinput> sends requests with no delay.</cmd>
+      </step>
+      <step>
+        <cmd>To run only specific requests, clear the checkboxes next to the requests you want
+          to skip in the request list.</cmd>
+      </step>
+      <step>
+        <cmd>Select <uicontrol>Run</uicontrol> (the button labeled with your collection
+          name).</cmd>
+        <stepresult>Postman sends each request in sequence. The runner panel updates in real
+          time, showing each request as it completes with a pass or fail
+          indicator.</stepresult>
+      </step>
+      <step>
+        <cmd>After the run completes, review the results summary at the top of the runner
+          panel.</cmd>
+        <info>
+          <p>The summary displays:</p>
+          <ul>
+            <li>Total number of requests executed.</li>
+            <li>Total number of test assertions passed and failed.</li>
+            <li>Total run duration.</li>
+          </ul>
+        </info>
+      </step>
+      <step>
+        <cmd>To view the details of a specific request, select the request name in the results
+          list.</cmd>
+        <stepresult>Postman displays the request details, response, and individual test
+          assertion results for the selected request.</stepresult>
+      </step>
+      <step>
+        <cmd>To export the results as a JSON file, select
+          <uicontrol>Export Results</uicontrol>.</cmd>
+      </step>
+    </steps>
+
+    <r>
+      <p>The Collection Runner executes all requests and displays a pass or fail result for
+        each test assertion. A green indicator next to the collection name in the summary
+        indicates all tests passed. A red indicator means one or more tests failed.</p>
+    </r>
+
+  </taskbody>
+</task>

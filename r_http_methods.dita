@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="r_http_methods">
+  <title>HTTP Methods Reference</title>
+  <shortdesc>Postman supports all standard HTTP methods. Use this reference to select the correct method for each API request.</shortdesc>
+  <refbody>
+    <section id="methods-table">
+      <title>HTTP Methods</title>
+      <table>
+        <tgroup cols="4">
+          <colspec colname="col1" colwidth="1*"/>
+          <colspec colname="col2" colwidth="2.5*"/>
+          <colspec colname="col3" colwidth="1.5*"/>
+          <colspec colname="col4" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Method</entry>
+              <entry>Purpose</entry>
+              <entry>Request Body</entry>
+              <entry>Idempotent</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>GET</codeph></entry>
+              <entry>Retrieve a resource or list of resources. Does not modify server state.</entry>
+              <entry>None</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry><codeph>POST</codeph></entry>
+              <entry>Create a new resource or submit data for processing.</entry>
+              <entry>Required</entry>
+              <entry>No</entry>
+            </row>
+            <row>
+              <entry><codeph>PUT</codeph></entry>
+              <entry>Replace an existing resource entirely with the request body.</entry>
+              <entry>Required</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry><codeph>PATCH</codeph></entry>
+              <entry>Apply partial updates to an existing resource. Only the provided fields are changed.</entry>
+              <entry>Required</entry>
+              <entry>No</entry>
+            </row>
+            <row>
+              <entry><codeph>DELETE</codeph></entry>
+              <entry>Remove an existing resource.</entry>
+              <entry>Optional</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry><codeph>HEAD</codeph></entry>
+              <entry>Retrieve response headers without the response body. Useful for checking resource existence.</entry>
+              <entry>None</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry><codeph>OPTIONS</codeph></entry>
+              <entry>Describe the communication options for a resource. Used in CORS preflight requests.</entry>
+              <entry>None</entry>
+              <entry>Yes</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section id="body-types">
+      <title>Request Body Types in Postman</title>
+      <dl>
+        <dlentry>
+          <dt>raw — JSON</dt>
+          <dd>Send a JSON-formatted body. Set Content-Type to <codeph>application/json</codeph>. Most common format for REST APIs.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>form-data</dt>
+          <dd>Send multipart form fields including file uploads. Postman sets Content-Type to <codeph>multipart/form-data</codeph>.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>x-www-form-urlencoded</dt>
+          <dd>Send URL-encoded key-value pairs equivalent to an HTML form submission.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>binary</dt>
+          <dd>Upload a file as the entire request body. Use for images, PDFs, or other binary data.</dd>
+        </dlentry>
+      </dl>
+    </section>
+  </refbody>
+</reference>

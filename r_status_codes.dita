@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="r_status_codes">
+  <title>HTTP Status Codes Reference</title>
+  <shortdesc>HTTP status codes indicate whether a request was successful or provide information about errors. Use this reference when writing test assertions in Postman.</shortdesc>
+  <refbody>
+
+    <section id="2xx">
+      <title>2xx — Success</title>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="col1" colwidth="1*"/>
+          <colspec colname="col2" colwidth="1.5*"/>
+          <colspec colname="col3" colwidth="3*"/>
+          <thead>
+            <row><entry>Code</entry><entry>Name</entry><entry>Description</entry></row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>200</codeph></entry>
+              <entry>OK</entry>
+              <entry>The request was successful. Returned for successful GET, PUT, PATCH, and DELETE requests.</entry>
+            </row>
+            <row>
+              <entry><codeph>201</codeph></entry>
+              <entry>Created</entry>
+              <entry>A new resource was created. Typically returned for successful POST requests. The response body or Location header contains the new resource.</entry>
+            </row>
+            <row>
+              <entry><codeph>204</codeph></entry>
+              <entry>No Content</entry>
+              <entry>The request was successful but there is no response body. Commonly returned for DELETE requests.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="4xx">
+      <title>4xx — Client Errors</title>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="col1" colwidth="1*"/>
+          <colspec colname="col2" colwidth="1.5*"/>
+          <colspec colname="col3" colwidth="3*"/>
+          <thead>
+            <row><entry>Code</entry><entry>Name</entry><entry>Description</entry></row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>400</codeph></entry>
+              <entry>Bad Request</entry>
+              <entry>The server cannot process the request because of invalid syntax, missing required parameters, or malformed request body.</entry>
+            </row>
+            <row>
+              <entry><codeph>401</codeph></entry>
+              <entry>Unauthorized</entry>
+              <entry>The request requires authentication. The client must provide valid credentials in the Authorization header.</entry>
+            </row>
+            <row>
+              <entry><codeph>403</codeph></entry>
+              <entry>Forbidden</entry>
+              <entry>The client is authenticated but does not have permission to access the requested resource.</entry>
+            </row>
+            <row>
+              <entry><codeph>404</codeph></entry>
+              <entry>Not Found</entry>
+              <entry>The requested resource does not exist at the specified URL.</entry>
+            </row>
+            <row>
+              <entry><codeph>409</codeph></entry>
+              <entry>Conflict</entry>
+              <entry>The request conflicts with the current state of the resource. Commonly returned when attempting to create a duplicate resource.</entry>
+            </row>
+            <row>
+              <entry><codeph>422</codeph></entry>
+              <entry>Unprocessable Entity</entry>
+              <entry>The request is well-formed but the server cannot process it due to semantic errors, such as validation failures.</entry>
+            </row>
+            <row>
+              <entry><codeph>429</codeph></entry>
+              <entry>Too Many Requests</entry>
+              <entry>The client has sent too many requests in a given time period. The response may include a Retry-After header.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="5xx">
+      <title>5xx — Server Errors</title>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="col1" colwidth="1*"/>
+          <colspec colname="col2" colwidth="1.5*"/>
+          <colspec colname="col3" colwidth="3*"/>
+          <thead>
+            <row><entry>Code</entry><entry>Name</entry><entry>Description</entry></row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>500</codeph></entry>
+              <entry>Internal Server Error</entry>
+              <entry>An unexpected condition on the server prevented it from completing the request.</entry>
+            </row>
+            <row>
+              <entry><codeph>502</codeph></entry>
+              <entry>Bad Gateway</entry>
+              <entry>The server received an invalid response from an upstream server.</entry>
+            </row>
+            <row>
+              <entry><codeph>503</codeph></entry>
+              <entry>Service Unavailable</entry>
+              <entry>The server is temporarily unable to handle requests, typically due to maintenance or overload.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+  </refbody>
+</reference>

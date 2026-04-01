@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="t_create_collection">
+  <title>Create a Collection</title>
+
+  <shortdesc>Create a Postman collection to group related API requests and organize your
+    testing and documentation workflow.</shortdesc>
+
+  <taskbody>
+
+    <prereq>
+      <p>Before you create a collection, ensure that you are signed in to your Postman account
+        and have a workspace open.</p>
+    </prereq>
+
+    <context>
+      <p>A <term>collection</term> is a container for API requests in Postman. Collections let
+        you organize requests into folders, run them in sequence, and generate documentation
+        automatically. Creating a well-structured collection is the first step for both API
+        testing and API documentation in Postman.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>In the sidebar, select <uicontrol>Collections</uicontrol>.</cmd>
+      </step>
+      <step>
+        <cmd>Select the <uicontrol>+</uicontrol> icon next to the
+          <uicontrol>Collections</uicontrol> heading, or select
+          <uicontrol>New</uicontrol> from the top navigation bar and then select
+          <uicontrol>Collection</uicontrol>.</cmd>
+        <stepresult>A new untitled collection appears in the sidebar with the name field
+          active.</stepresult>
+      </step>
+      <step>
+        <cmd>Type a name for the collection and press <uicontrol>Enter</uicontrol>.</cmd>
+        <info>
+          <p>Use a descriptive name that reflects the API or feature set the collection
+            covers. For example: <userinput>User Management API</userinput> or
+            <userinput>Payment Gateway — v2</userinput>.</p>
+        </info>
+      </step>
+      <step>
+        <cmd>Select the collection name to open the collection overview panel.</cmd>
+      </step>
+      <step>
+        <cmd>In the <uicontrol>Description</uicontrol> field, write an overview of the API
+          in Markdown.</cmd>
+        <info>
+          <p>The collection description appears at the top of your published API documentation.
+            Include the purpose of the API, the base URL, authentication requirements, and
+            any important notes for API consumers.</p>
+        </info>
+      </step>
+      <step>
+        <cmd>To add a folder, hover over the collection name in the sidebar, select the
+          <uicontrol>...</uicontrol> (More Actions) icon, and then select
+          <uicontrol>Add folder</uicontrol>.</cmd>
+        <info>
+          <p>Use folders to group requests by resource type or feature area. For example:
+            <userinput>Authentication</userinput>, <userinput>Users</userinput>, and
+            <userinput>Orders</userinput>.</p>
+        </info>
+      </step>
+      <step>
+        <cmd>Type a name for the folder, add a description, and press
+          <uicontrol>Enter</uicontrol>.</cmd>
+      </step>
+    </steps>
+
+    <result>
+      <p>The collection and folder structure appears in the sidebar. You can now add requests
+        to the collection.</p>
+    </result>
+
+    <postreq>
+      <p>Add API requests to the collection. For instructions, see
+        <xref href="t_send_api_request.dita"/>.</p>
+    </postreq>
+
+  </taskbody>
+</task>

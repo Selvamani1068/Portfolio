@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="postman-user-guide">
+  <title>Postman User Guide: Testing APIs and Creating API Documentation</title>
+
+  <topicmeta>
+    <author>Selvamani Madhaiyan</author>
+    <critdates>
+      <created date="2026-04-01"/>
+      <revised modified="2026-04-01"/>
+    </critdates>
+    <copyright>
+      <copyryear year="2026"/>
+      <copyrholder>Selvamani Madhaiyan</copyrholder>
+    </copyright>
+    <prodinfo>
+      <prodname>Postman</prodname>
+      <vrmlist>
+        <vrm version="11" release="0"/>
+      </vrmlist>
+    </prodinfo>
+  </topicmeta>
+
+  <topicref href="concepts/c_postman_overview.dita" type="concept"/>
+  <topicref href="concepts/c_postman_interface.dita" type="concept"/>
+  <topicref href="reference/r_postman_glossary.dita" type="reference"/>
+
+  <topicref href="concepts/c_api_testing_overview.dita" type="concept">
+    <topicref href="tasks/t_create_collection.dita" type="task"/>
+    <topicref href="tasks/t_send_api_request.dita" type="task"/>
+    <topicref href="tasks/t_add_test_scripts.dita" type="task"/>
+    <topicref href="tasks/t_use_environments.dita" type="task"/>
+    <topicref href="tasks/t_run_collection.dita" type="task"/>
+    <topicref href="reference/r_http_methods.dita" type="reference"/>
+    <topicref href="reference/r_status_codes.dita" type="reference"/>
+    <topicref href="reference/r_test_snippets.dita" type="reference"/>
+  </topicref>
+
+  <topicref href="concepts/c_api_documentation_overview.dita" type="concept">
+    <topicref href="tasks/t_write_request_description.dita" type="task"/>
+    <topicref href="tasks/t_generate_documentation.dita" type="task"/>
+    <topicref href="tasks/t_publish_documentation.dita" type="task"/>
+    <topicref href="tasks/t_customize_documentation.dita" type="task"/>
+    <topicref href="reference/r_documentation_elements.dita" type="reference"/>
+  </topicref>
+
+</map>

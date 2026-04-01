@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="r_postman_glossary">
+  <title>Glossary</title>
+  <shortdesc>Definitions of key terms used throughout this guide.</shortdesc>
+  <refbody>
+    <section id="glossary-terms">
+      <dl>
+        <dlentry>
+          <dt>API (Application Programming Interface)</dt>
+          <dd>A set of rules and protocols that allows software applications to communicate
+            with each other. In the context of this guide, API refers to web APIs that
+            communicate over HTTP.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Collection</dt>
+          <dd>A Postman container that groups related API requests, folders, test scripts,
+            and documentation. Collections are the primary unit of organization in
+            Postman.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Collection Runner</dt>
+          <dd>A Postman feature that executes all requests in a collection in sequence,
+            automating the test suite and reporting aggregated pass/fail results.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Environment</dt>
+          <dd>A named set of key-value variable pairs in Postman. Switching the active
+            environment changes the variable values resolved in all requests, enabling
+            the same collection to run against different systems.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Endpoint</dt>
+          <dd>A specific URL path on an API server that responds to HTTP requests. For
+            example, <codeph>/users/{id}</codeph> is an endpoint that returns a user
+            record.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Environment Variable</dt>
+          <dd>A variable defined in a Postman environment. Referenced in requests using
+            double curly brace syntax: <codeph>{{variableName}}</codeph>.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>HTTP Method</dt>
+          <dd>A verb that indicates the action a request should perform on a resource.
+            Common methods include GET, POST, PUT, PATCH, and DELETE.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Mock Server</dt>
+          <dd>A simulated API server in Postman that returns predefined responses. Used
+            to test integrations before the real API is available.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Pre-request Script</dt>
+          <dd>JavaScript code in Postman that runs before a request is sent. Used to
+            set variables, generate tokens, or modify request parameters
+            programmatically.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Query Parameter</dt>
+          <dd>A key-value pair appended to a URL after the <codeph>?</codeph> character.
+            For example, in <codeph>/users?role=admin</codeph>, the query parameter is
+            <codeph>role=admin</codeph>.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Request Body</dt>
+          <dd>Data sent with a request, typically used with POST, PUT, and PATCH methods.
+            Postman supports JSON, form-data, URL-encoded, and binary body types.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Response</dt>
+          <dd>The data returned by the API server after processing a request. A response
+            includes a status code, headers, and optionally a body.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Status Code</dt>
+          <dd>A three-digit number returned in the HTTP response that indicates the
+            result of the request. For example, <codeph>200</codeph> means success and
+            <codeph>404</codeph> means the resource was not found.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Test Script</dt>
+          <dd>JavaScript code written in the Tests tab of a Postman request that runs
+            after a response is received to assert expected values and validate API
+            behavior.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Variable</dt>
+          <dd>A named placeholder used in Postman requests and scripts. Variables are
+            referenced using the <codeph>{{variableName}}</codeph> syntax and resolved
+            at runtime from the active environment, collection, or global scope.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Workspace</dt>
+          <dd>A collaborative space in Postman that contains collections, environments,
+            APIs, and mock servers. Workspaces can be personal or shared with a
+            team.</dd>
+        </dlentry>
+      </dl>
+    </section>
+  </refbody>
+</reference>

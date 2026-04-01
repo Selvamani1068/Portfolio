@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="c_api_testing_overview">
+  <title>API Testing Overview</title>
+
+  <shortdesc>API testing in Postman verifies that an API behaves correctly by sending requests
+    and validating responses against expected values. Tests are written in JavaScript and run
+    automatically after each response.</shortdesc>
+
+  <conbody>
+
+    <p>API testing is the process of verifying that an API returns the correct responses for a
+      given set of inputs. In Postman, you write tests as JavaScript assertions that run
+      immediately after a response is received. Postman reports pass or fail results for each
+      assertion in the <uicontrol>Test Results</uicontrol> tab.</p>
+
+    <section id="types-of-tests">
+      <title>Types of API Tests</title>
+      <p>Postman supports the following categories of API tests:</p>
+      <dl>
+        <dlentry>
+          <dt>Functional Tests</dt>
+          <dd>Verify that an API endpoint returns the correct data for a given request. For
+            example, confirm that a GET request for a user returns the expected user object
+            with the correct fields.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Status Code Tests</dt>
+          <dd>Confirm that the API returns the expected HTTP status code. For example, a
+            successful POST request should return <codeph>201 Created</codeph>.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Schema Validation Tests</dt>
+          <dd>Validate that the response body matches a predefined JSON schema, ensuring the
+            API contract is maintained across releases.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Performance Tests</dt>
+          <dd>Assert that the API responds within an acceptable time threshold, such as under
+            500 milliseconds.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Negative Tests</dt>
+          <dd>Verify that the API returns appropriate error codes and messages for invalid
+            inputs, missing fields, or unauthorized requests.</dd>
+        </dlentry>
+      </dl>
+    </section>
+
+    <section id="testing-workflow">
+      <title>API Testing Workflow</title>
+      <p>A typical API testing workflow in Postman consists of the following steps:</p>
+      <ol>
+        <li>Create a <term>collection</term> to group related API requests.</li>
+        <li>Add requests to the collection for each API endpoint you want to test.</li>
+        <li>Configure <term>environments</term> and <term>variables</term> to manage base URLs
+          and authentication tokens across environments.</li>
+        <li>Write <term>test scripts</term> in the <uicontrol>Tests</uicontrol> tab of each
+          request.</li>
+        <li>Use the <term>Collection Runner</term> to execute all requests in sequence and
+          review the test results.</li>
+      </ol>
+    </section>
+
+    <section id="postman-test-framework">
+      <title>Postman Test Framework</title>
+      <p>Postman uses the <b>Chai assertion library</b> through the <codeph>pm.expect()</codeph>
+        API and the <codeph>pm.test()</codeph> function to define and run tests. Each test
+        consists of a descriptive name and an assertion function.</p>
+      <p>Postman also provides a <b>Snippets</b> panel in the Tests tab that inserts commonly
+        used test patterns with a single click. For a complete list of available snippets, see
+        <xref href="../reference/r_test_snippets.dita"/>.</p>
+    </section>
+
+  </conbody>
+</concept>
