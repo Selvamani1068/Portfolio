@@ -627,7 +627,11 @@ function renderAuthorView(xmlString, file) {
         if (tag === "b" || tag === "uicontrol")      out += "<strong>" + inner + "</strong>";
         else if (tag === "i" || tag === "term")       out += "<em>" + inner + "</em>";
         else if (tag === "codeph" || tag === "userinput") out += "<code>" + inner + "</code>";
-        else if (tag === "xref")                      out += "<em class='xref'>" + inner + "</em>";
+else if (tag === "xref") {
+  const href = n.getAttribute("href") || "#";
+  const label = n.textContent.trim() || href;
+  out += '<a href="' + esc(href) + '" style="color:#0284c7;text-decoration:underline">' + esc(label) + '</a>';
+}
         else                                          out += inner;
       }
     });
