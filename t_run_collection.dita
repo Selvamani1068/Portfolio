@@ -57,14 +57,6 @@
       <step>
         <cmd>After the run completes, review the results summary at the top of the runner
           panel.</cmd>
-        <info>
-          <p>The summary displays:</p>
-          <ul>
-            <li>Total number of requests executed.</li>
-            <li>Total number of test assertions passed and failed.</li>
-            <li>Total run duration.</li>
-          </ul>
-        </info>
       </step>
       <step>
         <cmd>To view the details of a specific request, select the request name in the results

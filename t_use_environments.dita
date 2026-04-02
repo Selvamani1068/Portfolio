@@ -33,46 +33,6 @@
       <step>
         <cmd>In the variable table, enter variable names and their initial and current
           values.</cmd>
-        <info>
-          <table>
-            <tgroup cols="3">
-              <colspec colname="col1" colwidth="1.5*"/>
-              <colspec colname="col2" colwidth="2*"/>
-              <colspec colname="col3" colwidth="2*"/>
-              <thead>
-                <row>
-                  <entry>Variable</entry>
-                  <entry>Initial Value</entry>
-                  <entry>Current Value</entry>
-                </row>
-              </thead>
-              <tbody>
-                <row>
-                  <entry><codeph>baseUrl</codeph></entry>
-                  <entry><codeph>http://localhost:3000</codeph></entry>
-                  <entry><codeph>http://localhost:3000</codeph></entry>
-                </row>
-                <row>
-                  <entry><codeph>apiKey</codeph></entry>
-                  <entry>Leave blank</entry>
-                  <entry>Your API key value</entry>
-                </row>
-                <row>
-                  <entry><codeph>userId</codeph></entry>
-                  <entry><codeph>1</codeph></entry>
-                  <entry><codeph>1</codeph></entry>
-                </row>
-              </tbody>
-            </tgroup>
-          </table>
-          <note type="important">
-            <p>Do not store sensitive values such as API keys or passwords in the
-              <uicontrol>Initial Value</uicontrol> column. Initial values are shared with
-              your team. Use the <uicontrol>Current Value</uicontrol> column for
-              secrets — current values are stored locally and not synced to Postman
-              servers.</p>
-          </note>
-        </info>
       </step>
       <step>
         <cmd>Select <uicontrol>Save</uicontrol>.</cmd>

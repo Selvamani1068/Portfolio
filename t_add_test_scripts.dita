@@ -34,16 +34,6 @@
       <step>
         <cmd>To insert a test quickly, select a snippet from the
           <uicontrol>Snippets</uicontrol> panel on the right side of the Tests tab.</cmd>
-        <info>
-          <p>Common snippets include:</p>
-          <ul>
-            <li><uicontrol>Status code: Code is 200</uicontrol></li>
-            <li><uicontrol>Response body: JSON value check</uicontrol></li>
-            <li><uicontrol>Response time is less than 200ms</uicontrol></li>
-          </ul>
-          <p>For a full list of available snippets, see
-            <xref href="../reference/r_test_snippets.dita"/>.</p>
-        </info>
         <stepresult>Postman inserts the snippet code into the test editor.</stepresult>
       </step>
       <step>
