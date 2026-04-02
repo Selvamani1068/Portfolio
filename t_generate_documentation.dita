@@ -11,7 +11,7 @@
     <prereq>
       <p>Before you generate documentation, ensure that you have written descriptions for
         your collection, folders, and requests. For instructions, see
-        <xref href="t_write_request_description.dita"/>.</p>
+        <xref href="t_write_request_description.dita">Write Request Description</xref>.</p>
     </prereq>
 
     <context>
@@ -34,16 +34,6 @@
       <step>
         <cmd>Review the documentation preview to verify that all descriptions, parameters,
           headers, and example responses are accurate and complete.</cmd>
-        <info>
-          <p>Check the following elements in the preview:</p>
-          <ul>
-            <li>Collection title and description appear at the top of the page.</li>
-            <li>Folder names appear as section headings.</li>
-            <li>Each request shows the HTTP method, URL, description, parameters, and
-              headers.</li>
-            <li>Saved example responses appear in a code block under each request.</li>
-          </ul>
-        </info>
       </step>
       <step>
         <cmd>If the documentation requires changes, close the preview panel, update the
@@ -53,11 +43,6 @@
         <cmd>To select an environment for the documentation, open the environment selector
           in the upper-right corner of Postman and select the environment whose variable
           values you want Postman to use in the documentation examples.</cmd>
-        <info>
-          <p>Postman substitutes environment variable values into the URLs and parameters
-            shown in the documentation preview. Select the environment that reflects the
-            public-facing API endpoint.</p>
-        </info>
       </step>
     </steps>
 
@@ -69,7 +54,7 @@
 
     <postreq>
       <p>Publish the documentation to make it available to API consumers. For instructions,
-        see <xref href="t_publish_documentation.dita"/>.</p>
+        see <xref href="t_publish_documentation.dita">Publish Documentation</xref>.</p>
     </postreq>
 
   </taskbody>

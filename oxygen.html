@@ -744,7 +744,12 @@ function renderInline(el) {
       const ex   = step.querySelector("stepxmp");
       const sr   = step.querySelector("stepresult");
       let li = "<strong>" + renderInline(cmd) + "</strong>";
-      if (info) li += " <span style='color:#64748b;font-size:.88em'>" + esc(info.textContent.trim()) + "</span>";
+if (info) {
+  const noteEl = info.querySelector("note");
+  const pEls   = info.querySelectorAll("p:not(note p)");
+  if (noteEl) li += renderNote(noteEl);
+  pEls.forEach(function(p) { li += renderP(p); });
+}
       if (ex)   li += "<pre style='background:#f1f5f9;padding:8px;margin-top:6px;font-size:.82em;overflow:auto'>" + esc(ex.textContent.trim()) + "</pre>";
       if (sr)   li += "<div style='color:#0369a1;font-style:italic;font-size:.88em;margin-top:4px'>Result: " + esc(nodeText(sr)) + "</div>";
       out += "<li style='margin-bottom:8px'>" + li + "</li>";

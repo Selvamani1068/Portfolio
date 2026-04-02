@@ -95,7 +95,7 @@ Returns a user object with the following fields:
 
     <postreq>
       <p>After writing descriptions for all requests, generate the documentation. For
-        instructions, see <xref href="t_generate_documentation.dita"/>.</p>
+        instructions, see <xref href="t_generate_documentation.dita">Generate Documentation</xref>.</p>
     </postreq>
 
   </taskbody>

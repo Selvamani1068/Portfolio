@@ -13,7 +13,7 @@
       <p>Before you publish documentation, ensure that:</p>
       <ul>
         <li>You have reviewed the documentation preview and confirmed it is complete. For
-          instructions, see <xref href="t_generate_documentation.dita"/>.</li>
+          instructions, see <xref href="t_generate_documentation.dita">Generate Documentation</xref>.</li>
         <li>You are signed in to a Postman account with the collection saved to a
           workspace.</li>
       </ul>
@@ -30,11 +30,6 @@
       <step>
         <cmd>In the documentation preview panel, select
           <uicontrol>Publish</uicontrol> in the upper-right corner.</cmd>
-        <info>
-          <p>Alternatively, in the sidebar, hover over the collection name, select the
-            <uicontrol>...</uicontrol> (More Actions) icon, and select
-            <uicontrol>Publish docs</uicontrol>.</p>
-        </info>
         <stepresult>The <uicontrol>Publish Documentation</uicontrol> dialog opens.</stepresult>
       </step>
       <step>
