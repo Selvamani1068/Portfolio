@@ -659,7 +659,7 @@ function renderAuthorView(xmlString, file) {
 
   // Render <ul> / <ol>
  function renderList(listEl, listTag) {
-  let out = '<' + listTag + ' style="margin:4px 0 10px 20px;line-height:1.8">';
+  let out = '<' + listTag + ' style="margin:4px 0 10px 40px;line-height:1.8">';
   listEl.querySelectorAll(":scope > li").forEach(function(item) {
     out += "<li>" + renderInline(item) + "</li>";
   });
