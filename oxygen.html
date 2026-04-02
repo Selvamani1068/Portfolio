@@ -623,29 +623,38 @@ function renderAuthorView(xmlString, file) {
     return el ? el.textContent.trim() : "";
   }
 
-  // Render a single <p> node (handles inline <b>,<i>,<codeph>,<uicontrol>,<term>,<userinput>,<xref>)
-  function renderP(p) {
+// Render inline elements — shared by renderP, renderSteps, etc.
+  function renderInline(el) {
+    if (!el) return "";
     let out = "";
-    p.childNodes.forEach(function(n) {
-      if (n.nodeType === 3) { out += esc(n.textContent); }
-      else if (n.nodeType === 1) {
+    el.childNodes.forEach(function(n) {
+      if (n.nodeType === 3) {
+        out += esc(n.textContent);
+      } else if (n.nodeType === 1) {
         const tag = n.tagName.toLowerCase();
         const inner = esc(n.textContent);
-        if (tag === "b" || tag === "uicontrol")      out += "<strong>" + inner + "</strong>";
-        else if (tag === "i" || tag === "term")       out += "<em>" + inner + "</em>";
+        if (tag === "uicontrol")
+          out += '<span style="background:#e0f2fe;color:#0369a1;padding:1px 6px;border-radius:3px;border:1px solid #bae6fd;font-size:.88em">' + inner + '</span>';
+        else if (tag === "b")         out += "<strong>" + inner + "</strong>";
+        else if (tag === "i" || tag === "term") out += "<em>" + inner + "</em>";
         else if (tag === "codeph" || tag === "userinput") out += "<code>" + inner + "</code>";
-else if (tag === "xref") {
-  const href = n.getAttribute("href") || "";
-  const label = n.textContent.trim() || href;
-  const filename = href.split("/").pop();
-  out += '<a href="javascript:void(0)" onclick="loadXMLByHref(\'' + filename + '\')" '
-       + 'style="color:#0284c7;text-decoration:underline;cursor:pointer">'
-       + esc(label || filename) + '</a>';
-}
-        else                                          out += inner;
+        else if (tag === "xref") {
+          const href = n.getAttribute("href") || "";
+          const label = n.textContent.trim() || href;
+          const filename = href.split("/").pop();
+          out += '<a href="javascript:void(0)" onclick="loadXMLByHref(\'' + filename + '\')" '
+               + 'style="color:#0284c7;text-decoration:underline;cursor:pointer">'
+               + esc(label || filename) + '</a>';
+        }
+        else out += inner;
       }
     });
-    return "<p>" + out + "</p>";
+    return out;
+  }
+
+  // Render a single <p> node
+  function renderP(p) {
+    return "<p>" + renderInline(p) + "</p>";
   }
 
   // Render <ul> / <ol>
@@ -693,6 +702,26 @@ else if (tag === "xref") {
     return out + "</dl>";
   }
 
+// Render inline elements inside cmd, info, p etc.
+function renderInline(el) {
+  if (!el) return "";
+  let out = "";
+  el.childNodes.forEach(function(n) {
+    if (n.nodeType === 3) {
+      out += esc(n.textContent);
+    } else if (n.nodeType === 1) {
+      const tag = n.tagName.toLowerCase();
+      const inner = esc(n.textContent);
+      if (tag === "uicontrol")      out += '<span style="background:#e0f2fe;color:#0369a1;padding:1px 6px;border-radius:3px;border:1px solid #bae6fd;font-size:.88em">' + inner + '</span>';
+      else if (tag === "b")         out += "<strong>" + inner + "</strong>";
+      else if (tag === "i" || tag === "term") out += "<em>" + inner + "</em>";
+      else if (tag === "codeph" || tag === "userinput") out += "<code>" + inner + "</code>";
+      else                          out += inner;
+    }
+  });
+  return out;
+}
+
   // Render steps (task)
   function renderSteps(stepsEl) {
     let out = '<ol style="margin:8px 0 8px 20px;line-height:1.8">';
@@ -701,7 +730,7 @@ else if (tag === "xref") {
       const info = step.querySelector("info");
       const ex   = step.querySelector("stepxmp");
       const sr   = step.querySelector("stepresult");
-      let li = "<strong>" + esc(nodeText(cmd)) + "</strong>";
+      let li = "<strong>" + renderInline(cmd) + "</strong>";
       if (info) li += " <span style='color:#64748b;font-size:.88em'>" + esc(info.textContent.trim()) + "</span>";
       if (ex)   li += "<pre style='background:#f1f5f9;padding:8px;margin-top:6px;font-size:.82em;overflow:auto'>" + esc(ex.textContent.trim()) + "</pre>";
       if (sr)   li += "<div style='color:#0369a1;font-style:italic;font-size:.88em;margin-top:4px'>Result: " + esc(nodeText(sr)) + "</div>";

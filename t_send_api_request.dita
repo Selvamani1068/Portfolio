@@ -10,7 +10,7 @@
 
     <prereq>
       <p>Before you send an API request, ensure that you have created a collection to save the
-        request to. For instructions, see <xref href="t_create_collection.dita"/>.</p>
+        request to. For instructions, see <xref href="t_create_collection.dita">Create a Collection</xref>.</p>
     </prereq>
 
     <context>

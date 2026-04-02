@@ -69,7 +69,7 @@
         consists of a descriptive name and an assertion function.</p>
       <p>Postman also provides a <b>Snippets</b> panel in the Tests tab that inserts commonly
         used test patterns with a single click. For a complete list of available snippets, see
-        <xref href="../reference/r_test_snippets.dita"/>.</p>
+        <xref href="../reference/r_test_snippets.dita">Test Snippets</xref>.</p>
     </section>
 
   </conbody>

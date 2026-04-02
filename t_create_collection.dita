@@ -75,7 +75,7 @@
 
     <postreq>
       <p>Add API requests to the collection. For instructions, see
-        <xref href="t_send_api_request.dita"/>.</p>
+        <xref href="t_send_api_request.dita">Send API Request</xref>.</p>
     </postreq>
 
   </taskbody>
