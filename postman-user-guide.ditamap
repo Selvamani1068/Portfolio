@@ -42,6 +42,5 @@
     <topicref href="tasks/t_generate_documentation.dita" type="task"/>
     <topicref href="tasks/t_publish_documentation.dita" type="task"/>
     <topicref href="tasks/t_customize_documentation.dita" type="task"/>
-    <topicref href="reference/r_documentation_elements.dita" type="reference"/>
   </topichead>
 </map>
