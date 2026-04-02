@@ -95,7 +95,7 @@ pm.test("Response time is acceptable", function () {
 
     <postreq>
       <p>After adding tests to individual requests, run the entire collection to execute all
-        tests in sequence. For instructions, see <xref href="t_run_collection.dita"/>.</p>
+        tests in sequence. For instructions, see <xref href="t_run_collection.dita">Run a Collection</xref>.</p>
     </postreq>
 
   </taskbody>
