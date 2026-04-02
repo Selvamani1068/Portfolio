@@ -572,13 +572,11 @@ let editor = CodeMirror(document.getElementById("xml-editor"), {
 
 <script>
 // loadXML now accepts the clicked element to mark it active
-function loadXML(file, clickedEl){
-
-  // ── Update active sidebar highlight ──
+function loadXML(file, clickedEl, switchToAuthor) {
   document.querySelectorAll('.tree-item').forEach(function(el){
     el.classList.remove('active');
   });
-  if(clickedEl) clickedEl.classList.add('active');
+  if (clickedEl) clickedEl.classList.add('active');
 
   const base = "https://raw.githubusercontent.com/Selvamani1068/Portfolio/main/";
 
@@ -587,18 +585,22 @@ function loadXML(file, clickedEl){
     .then(data => {
       editor.setValue(data);
       renderAuthorView(data, file);
+      // Auto-switch to Author view if triggered from xref click
+      if (switchToAuthor) {
+        var authorTab = document.querySelector('.vtab-rendered');
+        if (authorTab) switchView('author', authorTab);
+      }
     })
     .catch(err => {
       editor.setValue("// Error loading: " + file + "\n// " + err);
       console.error(err);
     });
-}
-</script>
+}</script>
 
 <script>          
 function loadXMLByHref(filename) {
   const sidebarItem = document.querySelector('[onclick*="' + filename + '"]');
-  loadXML(filename, sidebarItem);
+  loadXML(filename, sidebarItem, true); // pass true = switch to author view
 }
 </script>
 
@@ -932,12 +934,16 @@ if (tag !== "topicref") return;
 
   html += '</div>';
   av.innerHTML = html;
-    av.querySelectorAll('a[data-dita]').forEach(function(a) {
-    a.addEventListener('click', function() {
-      var filename = this.getAttribute('data-dita');
-      loadXMLByHref(filename);
-    });
+av.querySelectorAll('a[data-dita]').forEach(function(a) {
+  a.addEventListener('click', function() {
+    var filename = this.getAttribute('data-dita');
+    // Switch to Author view tab first
+    var authorTab = document.querySelector('.vtab-rendered');
+    if (authorTab) switchView('author', authorTab);
+    // Then load the file
+    loadXMLByHref(filename);
   });
+});
 }
 </script>
 
