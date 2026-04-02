@@ -764,7 +764,7 @@ function renderFig(fig) {
   const alt = img.getAttribute("alt") || "";
   const base = "https://raw.githubusercontent.com/Selvamani1068/Portfolio/main/";
   let out = '<figure style="margin:12px 0;text-align:left">';
-  out += '<img src="' + base + src + '" alt="' + esc(alt) + '" style="max-width:70%;border:1px solid #e2e8f0;border-radius:6px"/>';
+  out += '<img src="' + base + src + '" alt="' + esc(alt) + '" style="max-width:75%;border:1px solid #e2e8f0;border-radius:6px"/>';
   if (cap) out += '<figcaption style="font-size:.82em;color:#64748b;margin-top:4px">' + esc(nodeText(cap)) + '</figcaption>';
   out += '</figure>';
   return out;

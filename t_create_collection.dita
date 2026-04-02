@@ -35,9 +35,9 @@
       <step>
         <cmd>Type a name for the collection and press <uicontrol>Enter</uicontrol>.</cmd>
         <info>
-          <p>Use a descriptive name that reflects the API or feature set the collection
+          <Note>Use a descriptive name that reflects the API or feature set the collection
             covers. For example: <userinput>User Management API</userinput> or
-            <userinput>Payment Gateway — v2</userinput>.</p>
+            <userinput>Payment Gateway — v2</userinput>.</Note>
         </info>
       </step>
       <step>
