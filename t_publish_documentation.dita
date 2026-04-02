@@ -52,8 +52,8 @@
       <step>
         <cmd>Review the generated URL displayed in the
           <uicontrol>Documentation URL</uicontrol> field.</cmd>
-        <info><note>
-          <p>To use a custom domain, see <xref href="t_customize_documentation.dita"/>.</p></note>
+        <info> <note>
+          <p>To use a custom domain, see <xref href="t_customize_documentation.dita">Customize Documentation</xref>.</p></note>
         </info>
       </step>
       <step>
