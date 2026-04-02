@@ -27,7 +27,7 @@
           requests.</li>
         <li><b>Collection Runner</b> — Execute all requests in a collection in sequence to automate
           regression and integration testing.</li>
-        <li><b>API Documentation</b> — Generate human-readable API documentation directly from your
+        <li><b>API Documentation</b> — Generate API documentation directly from your
           collections and publish it to a public or private URL.</li>
         <li><b>Mock Servers</b> — Simulate API endpoints to test integrations before the API is
           fully developed.</li>
@@ -57,7 +57,7 @@
       <p>To use Postman, you need:</p>
       <ul>
         <li>A Postman account. Create a free account at
-          <xref href="https://www.postman.com" format="html" scope="external">postman.com</xref>.</li>
+          <xref href="https://www.postman.com" scope="external">postman.com</xref>.</li>
         <li>Postman installed on your system, or access to the Postman web app.</li>
         <li>Basic familiarity with HTTP request methods and API concepts.</li>
       </ul>

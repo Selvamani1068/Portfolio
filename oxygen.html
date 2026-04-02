@@ -755,6 +755,21 @@ function renderInline(el) {
          + esc(cb.textContent) + "</pre>";
   }
 
+// Render <fig> with <image>
+function renderFig(fig) {
+  const img = fig.querySelector("image");
+  const cap = fig.querySelector("title");
+  if (!img) return "";
+  const src = img.getAttribute("href") || "";
+  const alt = img.getAttribute("alt") || "";
+  const base = "https://raw.githubusercontent.com/Selvamani1068/Portfolio/main/";
+  let out = '<figure style="margin:12px 0;text-align:center">';
+  out += '<img src="' + base + src + '" alt="' + esc(alt) + '" style="max-width:100%;border:1px solid #e2e8f0;border-radius:6px"/>';
+  if (cap) out += '<figcaption style="font-size:.82em;color:#64748b;margin-top:4px">' + esc(nodeText(cap)) + '</figcaption>';
+  out += '</figure>';
+  return out;
+}
+
   // Render a <section>
   function renderSection(sec) {
     let out = "";
@@ -771,6 +786,7 @@ function renderInline(el) {
       else if (tag === "simpletable") out += renderTable(n);
       else if (tag === "note")   out += renderNote(n);
       else if (tag === "codeblock") out += renderCode(n);
+      else if (tag === "fig") out += renderFig(n);
     });
     return out;
   }

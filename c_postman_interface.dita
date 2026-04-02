@@ -12,7 +12,10 @@
     <section id="main-areas">
       <title>Main Interface Areas</title>
       <p>The Postman desktop application is divided into the following areas:</p>
-
+        <fig>
+    <title>Postman Desktop Application</title>
+    <image href="postman.png" alt="Postman interface screenshot"/>
+  </fig>
       <dl>
         <dlentry>
           <dt>Sidebar</dt>
