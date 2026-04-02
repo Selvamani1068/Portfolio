@@ -10,7 +10,7 @@
 
     <prereq>
       <p>Before you customize documentation, ensure that the documentation is already
-        published. For instructions, see <xref href="t_publish_documentation.dita"/>.</p>
+        published. For instructions, see <xref href="t_publish_documentation.dita">Publish Documentation</xref>.</p>
       <p>Custom domain configuration requires a Postman Basic plan or higher.</p>
     </prereq>
 
@@ -37,9 +37,9 @@
       <step>
         <cmd>To add a logo, select <uicontrol>Upload logo</uicontrol> and upload a PNG or
           SVG image.</cmd>
-        <info>
+        <info><note>
           <p>The recommended logo size is 400 x 400 pixels or larger. Postman displays the
-            logo in the upper-left corner of the published documentation page.</p>
+            logo in the upper-left corner of the published documentation page.</p></note>
         </info>
       </step>
       <step>
@@ -58,10 +58,10 @@
       </step>
       <step>
         <cmd>Follow the DNS configuration instructions that Postman displays.</cmd>
-        <info>
+        <info><note>
           <p>You must add a CNAME record in your DNS provider that points your subdomain to
             the Postman documentation server. DNS changes can take up to 48 hours to
-            propagate.</p>
+            propagate.</p></note>
           <ol>
             <li>Log in to your DNS provider's control panel.</li>
             <li>Add a <codeph>CNAME</codeph> record with:

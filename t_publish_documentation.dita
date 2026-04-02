@@ -48,19 +48,12 @@
         <cmd>Under <uicontrol>Visibility</uicontrol>, select
           <uicontrol>Public</uicontrol> to allow anyone with the URL to view the
           documentation.</cmd>
-        <info>
-          <p>To restrict access to your team members only, select
-            <uicontrol>Private</uicontrol>. Private documentation requires viewers to sign
-            in to your Postman team.</p>
-        </info>
       </step>
       <step>
         <cmd>Review the generated URL displayed in the
           <uicontrol>Documentation URL</uicontrol> field.</cmd>
-        <info>
-          <p>The default URL is in the format:
-            <codeph>https://documenter.getpostman.com/view/&lt;teamId&gt;/&lt;collectionId&gt;</codeph></p>
-          <p>To use a custom domain, see <xref href="t_customize_documentation.dita"/>.</p>
+        <info><note type=important!>
+          <p>To use a custom domain, see <xref href="t_customize_documentation.dita"/>.</p></note>
         </info>
       </step>
       <step>
@@ -85,7 +78,7 @@
 
     <postreq>
       <p>Optionally, customize the documentation with a logo, color scheme, and custom
-        domain. For instructions, see <xref href="t_customize_documentation.dita"/>.</p>
+        domain. For instructions, see <xref href="t_customize_documentation.dita">Customize Documentation</xref>.</p>
     </postreq>
 
   </taskbody>
