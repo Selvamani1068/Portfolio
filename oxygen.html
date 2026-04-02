@@ -932,6 +932,12 @@ if (tag !== "topicref") return;
 
   html += '</div>';
   av.innerHTML = html;
+    av.querySelectorAll('a[data-dita]').forEach(function(a) {
+    a.addEventListener('click', function() {
+      var filename = this.getAttribute('data-dita');
+      loadXMLByHref(filename);
+    });
+  });
 }
 </script>
 
