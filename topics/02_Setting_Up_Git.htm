@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<!-- MadCap Flare Topic File (.htm) -->
+<!-- Project: Developer Documentation – Markdown & Git in MadCap Flare -->
+<!-- Conditions: UserRole=Author|Admin; Output=WebHelp|PDF -->
+<!-- Style Guide: Microsoft Writing Style Guide (MSTP) -->
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="5"
+  MadCap:lastHeight="1260"
+  MadCap:lastWidth="1208"
+  MadCap:searchable="True">
+
+<head>
+  <link href="../Resources/Stylesheets/DevDocs.css" rel="stylesheet" type="text/css" />
+  <meta name="description" content="How to initialize a Git repository and configure it for a MadCap Flare documentation project." />
+  <title>Setting Up Git – Developer Documentation with Markdown and Git</title>
+</head>
+
+<body>
+
+  <h1>Set up Git for a Flare project</h1>
+
+  <p class="shortdesc">
+    Initialize a Git repository for your MadCap Flare project so that all topic
+    files—including Markdown sources—are tracked under version control from day one.
+  </p>
+
+  <!-- ═══ BEFORE YOU BEGIN ═══ -->
+  <h2>Before you begin</h2>
+
+  <p>Confirm that the following software is installed and configured on the author workstation:</p>
+
+  <ul>
+    <li>Git 2.34 or later, available on the system <code>PATH</code></li>
+    <li>MadCap Flare 2019 R2 or later</li>
+    <li>An account with write access to a remote repository on GitHub, GitLab, or Azure DevOps</li>
+  </ul>
+
+  <div class="note-box">
+    <p>
+      <strong>Note</strong>&nbsp;&nbsp;To verify the Git installation, open a terminal and run
+      <code>git --version</code>. The output should display <code>git version 2.34.x</code> or later.
+    </p>
+  </div>
+
+  <!-- ═══ CREATE THE REMOTE REPOSITORY ═══ -->
+  <h2>Create the remote repository</h2>
+
+  <p>
+    Create an empty repository on your Git hosting platform before you initialize locally.
+    Do not add a <code>README</code>, <code>.gitignore</code>, or license file during
+    creation—these are added in the steps that follow.
+  </p>
+
+  <ol>
+    <li>Sign in to your Git hosting platform (GitHub, GitLab, or Azure DevOps).</li>
+    <li>Create a new repository. Copy the HTTPS or SSH remote URL for use in a later step.</li>
+  </ol>
+
+  <!-- ═══ INITIALIZE THE LOCAL REPOSITORY ═══ -->
+  <h2>Initialize the local repository</h2>
+
+  <p>
+    Perform these steps in the root folder of the MadCap Flare project—the folder that
+    contains the <code>.flprj</code> file.
+  </p>
+
+  <ol>
+    <li>
+      Open a terminal in the Flare project root folder.
+    </li>
+    <li>
+      Initialize the local repository:
+      <pre>git init</pre>
+    </li>
+    <li>
+      Create a <code>.gitignore</code> file to exclude Flare build artifacts
+      (see <a href="#gitignore">Recommended .gitignore entries</a>).
+    </li>
+    <li>
+      Stage all project files:
+      <pre>git add .</pre>
+    </li>
+    <li>
+      Create the initial commit:
+      <pre>git commit -m "Initial commit: MadCap Flare project"</pre>
+    </li>
+    <li>
+      Link the remote repository:
+      <pre>git remote add origin &lt;remote-url&gt;</pre>
+    </li>
+    <li>
+      Push to the remote and set the upstream tracking branch:
+      <pre>git push -u origin main</pre>
+    </li>
+  </ol>
+
+  <div class="note-box">
+    <p>
+      <strong>Note</strong>&nbsp;&nbsp;If your default branch is named <code>master</code>,
+      rename it before pushing: <code>git branch -M main</code>.
+    </p>
+  </div>
+
+  <!-- ═══ GITIGNORE ═══ -->
+  <h2 id="gitignore">Recommended .gitignore entries</h2>
+
+  <p>
+    Add the following entries to your <code>.gitignore</code> file. These entries exclude
+    Flare build output and temporary files that should not be tracked in version control.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Entry</th>
+        <th>Reason</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Output/</code></td>
+        <td>Generated HTML and PDF build output—rebuilt by the CI/CD pipeline on every merge</td>
+      </tr>
+      <tr>
+        <td><code>*.mcbackup</code></td>
+        <td>Flare automatic backup files, not required in version control</td>
+      </tr>
+      <tr>
+        <td><code>.mclog</code></td>
+        <td>Flare session log files</td>
+      </tr>
+      <tr>
+        <td><code>*.flbkp</code></td>
+        <td>Flare project backup snapshots</td>
+      </tr>
+      <tr>
+        <td><code>*.bak</code></td>
+        <td>Generic editor backup files</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warning-box">
+    <p>
+      <strong>Important</strong>&nbsp;&nbsp;Never commit the <code>Output/</code> folder
+      to the repository. Committing build output inflates repository size and creates
+      misleading diffs in pull requests.
+    </p>
+  </div>
+
+  <!-- ═══ CONFIGURE BRANCH PROTECTION ═══ -->
+  <h2>Configure branch protection</h2>
+
+  <MadCap:conditionalText MadCap:conditions="UserRole.Admin">
+    <p>
+      After pushing the initial commit, configure branch protection rules on the remote
+      repository to prevent direct pushes to <code>main</code>:
+    </p>
+    <ol>
+      <li>In the repository settings, open <strong>Branches</strong> (GitHub) or <strong>Repository &gt; Protected branches</strong> (GitLab).</li>
+      <li>Add a protection rule for the <code>main</code> branch.</li>
+      <li>Enable <strong>Require a pull request before merging</strong>.</li>
+      <li>Set <strong>Required approvals</strong> to at least <code>1</code>.</li>
+      <li>Enable <strong>Require status checks to pass before merging</strong> and select the CI build check.</li>
+    </ol>
+    <div class="note-box">
+      <p>
+        <strong>Admin note</strong>&nbsp;&nbsp;Branch protection rules apply to all
+        contributors, including administrators. Use a hotfix branch process for
+        urgent corrections rather than bypassing protection.
+      </p>
+    </div>
+  </MadCap:conditionalText>
+
+  <!-- ═══ VERIFY THE SETUP ═══ -->
+  <h2>Verify the setup</h2>
+
+  <p>Confirm that the repository is correctly initialized:</p>
+
+  <ol>
+    <li>Run <code>git status</code>. The output should display <strong>nothing to commit, working tree clean</strong>.</li>
+    <li>Run <code>git log --oneline</code>. The initial commit should appear in the log.</li>
+    <li>Run <code>git remote -v</code>. The remote URL should be listed under <code>origin</code>.</li>
+  </ol>
+
+  <!-- ═══ RELATED TOPICS ═══ -->
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="01_Project_Overview.htm" />
+    <MadCap:relatedTopic src="04_Linking_Flare_Git.htm" />
+    <MadCap:relatedTopic src="05_Branching_Strategy.htm" />
+  </MadCap:relatedTopics>
+
+</body>
+</html>

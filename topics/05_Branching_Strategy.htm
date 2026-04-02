@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<!-- MadCap Flare Topic File (.htm) -->
+<!-- Project: Developer Documentation – Markdown & Git in MadCap Flare -->
+<!-- Conditions: UserRole=Author|Admin; Output=WebHelp|PDF -->
+<!-- Style Guide: Microsoft Writing Style Guide (MSTP) -->
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="5"
+  MadCap:lastHeight="1540"
+  MadCap:lastWidth="1208"
+  MadCap:searchable="True">
+
+<head>
+  <link href="../Resources/Stylesheets/DevDocs.css" rel="stylesheet" type="text/css" />
+  <meta name="description" content="Recommended Git branching strategy for MadCap Flare documentation projects." />
+  <title>Branching Strategy – Developer Documentation with Git</title>
+</head>
+
+<body>
+
+  <h1>Branching strategy for documentation projects</h1>
+
+  <p class="shortdesc">
+    A consistent branching model ensures that documentation changes are reviewed before
+    publication and that hotfixes can be applied independently of ongoing work. This topic
+    describes the recommended branch structure for MadCap Flare documentation projects.
+  </p>
+
+  <!-- ═══ OVERVIEW ═══ -->
+  <h2>Overview</h2>
+
+  <p>
+    The recommended branching model is a simplified trunk-based workflow with short-lived
+    feature branches. The <code>main</code> branch always represents the current published
+    state of the documentation. No author commits directly to <code>main</code>—all changes
+    enter through a pull request.
+  </p>
+
+  <MadCap:conditionalText MadCap:conditions="UserRole.Admin">
+    <div class="note-box">
+      <p>
+        <strong>Admin note</strong>&nbsp;&nbsp;Protect the <code>main</code> and
+        <code>release/*</code> branches in the remote repository before inviting
+        contributors. Require pull-request approval and a passing CI build before
+        any merge is allowed.
+      </p>
+    </div>
+  </MadCap:conditionalText>
+
+  <!-- ═══ BRANCH TYPES ═══ -->
+  <h2>Branch types and naming conventions</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Branch type</th>
+        <th>Naming pattern</th>
+        <th>Branched from</th>
+        <th>Merged into</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Main</td>
+        <td><code>main</code></td>
+        <td>—</td>
+        <td>—</td>
+        <td>Published state of documentation; protected</td>
+      </tr>
+      <tr>
+        <td>Feature</td>
+        <td><code>docs/&lt;topic-name&gt;</code></td>
+        <td><code>main</code></td>
+        <td><code>main</code></td>
+        <td>New topics or significant content updates</td>
+      </tr>
+      <tr>
+        <td>Hotfix</td>
+        <td><code>hotfix/&lt;issue-id&gt;</code></td>
+        <td><code>main</code></td>
+        <td><code>main</code></td>
+        <td>Urgent corrections to published content</td>
+      </tr>
+      <tr>
+        <td>Release</td>
+        <td><code>release/v&lt;major.minor&gt;</code></td>
+        <td><code>main</code></td>
+        <td><code>main</code></td>
+        <td>Stabilization branch for a versioned output</td>
+      </tr>
+      <tr>
+        <td>Experiment</td>
+        <td><code>exp/&lt;idea-name&gt;</code></td>
+        <td><code>main</code></td>
+        <td>Not merged (discard or cherry-pick)</td>
+        <td>Template, structure, or tooling experiments</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ FEATURE BRANCH WORKFLOW ═══ -->
+  <h2>Feature branch workflow</h2>
+
+  <p>Follow these steps to create and submit a documentation change:</p>
+
+  <ol>
+    <li>
+      Confirm that your local <code>main</code> branch is up to date:
+      <pre>git checkout main
+git pull origin main</pre>
+    </li>
+    <li>
+      Create a feature branch by using the <code>docs/</code> prefix:
+      <pre>git checkout -b docs/authentication-guide</pre>
+    </li>
+    <li>
+      Author or edit the Markdown or XML topic files on the feature branch.
+      Save all changes in Flare before committing.
+    </li>
+    <li>
+      Stage and commit the changes with a descriptive message:
+      <pre>git add .
+git commit -m "Add authentication guide topic and TOC entry"</pre>
+    </li>
+    <li>
+      Push the feature branch to the remote repository:
+      <pre>git push -u origin docs/authentication-guide</pre>
+    </li>
+    <li>
+      Open a pull request in the remote repository UI, targeting <code>main</code>.
+      Complete the pull-request description and request a reviewer.
+    </li>
+    <li>
+      After the pull request is approved and the CI build passes, merge the pull request.
+    </li>
+    <li>
+      Delete the feature branch from the remote repository after the merge is complete:
+      <pre>git push origin --delete docs/authentication-guide</pre>
+    </li>
+  </ol>
+
+  <div class="warning-box">
+    <p>
+      <strong>Important</strong>&nbsp;&nbsp;Never commit directly to <code>main</code>.
+      All changes must enter through a pull request to preserve a complete review history
+      and to ensure the CI build validates the output before publication.
+    </p>
+  </div>
+
+  <!-- ═══ HOTFIX WORKFLOW ═══ -->
+  <h2>Hotfix workflow</h2>
+
+  <p>
+    Use a hotfix branch when you must correct a critical error in the published documentation
+    without waiting for in-progress feature branches to complete:
+  </p>
+
+  <ol>
+    <li>
+      Branch from <code>main</code>:
+      <pre>git checkout main
+git checkout -b hotfix/GH-142</pre>
+    </li>
+    <li>Make the correction, commit, and push.</li>
+    <li>Open a pull request targeting <code>main</code> and mark it as a hotfix for expedited review.</li>
+    <li>After approval and merge, delete the hotfix branch.</li>
+  </ol>
+
+  <!-- ═══ COMMIT MESSAGE GUIDELINES ═══ -->
+  <h2>Commit message guidelines</h2>
+
+  <p>Write commit messages in the imperative present tense. Follow this format:</p>
+
+  <pre>&lt;verb&gt; &lt;summary of change&gt; [optional: issue reference]
+
+Examples:
+  Add API reference topic for authentication endpoints
+  Fix broken cross-reference in branching strategy topic
+  Update TOC to include new CI/CD publishing section  (closes #87)</pre>
+
+  <p>Keep the summary line under 72 characters. Add a blank line before the body if additional context is needed.</p>
+
+  <!-- ═══ RELATED TOPICS ═══ -->
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="04_Linking_Flare_Git.htm" />
+    <MadCap:relatedTopic src="06_Review_and_Merge.htm" />
+  </MadCap:relatedTopics>
+
+</body>
+</html>

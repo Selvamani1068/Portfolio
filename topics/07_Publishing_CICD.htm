@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<!-- MadCap Flare Topic File (.htm) -->
+<!-- Project: Developer Documentation – Markdown & Git in MadCap Flare -->
+<!-- Conditions: UserRole=Admin; Output=WebHelp|PDF -->
+<!-- Style Guide: Microsoft Writing Style Guide (MSTP) -->
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="5"
+  MadCap:lastHeight="1680"
+  MadCap:lastWidth="1208"
+  MadCap:searchable="True">
+
+<head>
+  <link href="../Resources/Stylesheets/DevDocs.css" rel="stylesheet" type="text/css" />
+  <meta name="description" content="How to automate MadCap Flare builds and publish developer documentation using a CI/CD pipeline." />
+  <title>Publishing and CI/CD – Developer Documentation with Git</title>
+</head>
+
+<body>
+
+  <h1>Publish documentation with CI/CD</h1>
+
+  <p class="shortdesc">
+    Automate your MadCap Flare build and deployment by using a CI/CD pipeline.
+    On every merge to <code>main</code>, the pipeline compiles the Flare project,
+    validates the output, and deploys the HTML5 WebHelp to the developer portal.
+  </p>
+
+  <!-- ═══ OVERVIEW ═══ -->
+  <h2>Overview</h2>
+
+  <p>
+    MadCap Flare includes a command-line build tool, <code>madbuild.exe</code>, that
+    compiles a Flare project without opening the Flare IDE. CI/CD platforms invoke
+    <code>madbuild.exe</code> on a Windows build agent whenever a pull request is opened
+    (to validate the build) or a merge to <code>main</code> completes (to deploy the output).
+  </p>
+
+  <div class="note-box">
+    <p>
+      <strong>Note</strong>&nbsp;&nbsp;<code>madbuild.exe</code> requires a licensed
+      installation of MadCap Flare on the build agent. The license must be activated on
+      the agent machine before the first build. Contact MadCap Software support for
+      information about CI/CD licensing options.
+    </p>
+  </div>
+
+  <!-- ═══ PIPELINE OVERVIEW ═══ -->
+  <h2>Pipeline stages</h2>
+
+  <p>The recommended pipeline includes the following stages in order:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Stage</th>
+        <th>Trigger</th>
+        <th>Action</th>
+        <th>On failure</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Validate</td>
+        <td>Pull request opened or updated</td>
+        <td>Compile the Flare project; report build errors as a PR status check</td>
+        <td>Block merge; notify author</td>
+      </tr>
+      <tr>
+        <td>Lint</td>
+        <td>Pull request opened or updated</td>
+        <td>Run <code>markdownlint</code> on all changed <code>.md</code> files</td>
+        <td>Block merge; list lint violations in PR comment</td>
+      </tr>
+      <tr>
+        <td>Link check</td>
+        <td>Pull request opened or updated</td>
+        <td>Scan the compiled output for broken hyperlinks</td>
+        <td>Block merge; list broken URLs</td>
+      </tr>
+      <tr>
+        <td>Deploy</td>
+        <td>Merge to <code>main</code></td>
+        <td>Upload the <code>Output/</code> folder to the hosting environment</td>
+        <td>Notify the team and roll back to the previous deployment</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ MADBUILD COMMAND ═══ -->
+  <h2>Run madbuild.exe</h2>
+
+  <p>Use the following command syntax to compile a Flare project from the command line:</p>
+
+  <pre>madbuild.exe -project "&lt;path-to-project.flprj&gt;" -target "&lt;target-name&gt;"</pre>
+
+  <p>Example:</p>
+
+  <pre>madbuild.exe -project "C:\repos\devdocs\DevDocs.flprj" -target "WebHelp"</pre>
+
+  <p>
+    <code>madbuild.exe</code> exits with code <code>0</code> on success and a non-zero code
+    on failure. CI/CD platforms use the exit code to determine whether the build stage passes.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>-project</code></td>
+        <td>Full path to the <code>.flprj</code> file</td>
+      </tr>
+      <tr>
+        <td><code>-target</code></td>
+        <td>Name of the Flare build target as defined in the Target Editor</td>
+      </tr>
+      <tr>
+        <td><code>-log</code></td>
+        <td>(Optional) Path to write the build log file</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ GITHUB ACTIONS ═══ -->
+  <h2>Configure GitHub Actions</h2>
+
+  <p>
+    The following YAML workflow file configures two jobs: a <strong>validate</strong> job
+    that runs on every pull request, and a <strong>deploy</strong> job that runs on merges
+    to <code>main</code>.
+  </p>
+
+  <pre>name: Flare Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Flare project
+        run: |
+          &amp; "C:\Program Files\MadCap Software\MadCap Flare\Flare.app\madbuild.exe" `
+            -project "${{ github.workspace }}\DevDocs.flprj" `
+            -target "WebHelp"
+
+  deploy:
+    runs-on: windows-latest
+    needs: validate
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Flare project
+        run: |
+          &amp; "C:\Program Files\MadCap Software\MadCap Flare\Flare.app\madbuild.exe" `
+            -project "${{ github.workspace }}\DevDocs.flprj" `
+            -target "WebHelp"
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: Output/WebHelp</pre>
+
+  <!-- ═══ CI/CD PLATFORMS ═══ -->
+  <h2>Supported CI/CD platforms</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Configuration file</th>
+        <th>Agent requirement</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GitHub Actions</td>
+        <td><code>.github/workflows/flare-build.yml</code></td>
+        <td><code>windows-latest</code> runner</td>
+        <td>Microsoft-hosted runners include PowerShell 7</td>
+      </tr>
+      <tr>
+        <td>Azure DevOps</td>
+        <td><code>azure-pipelines.yml</code></td>
+        <td><code>windows-latest</code> agent pool</td>
+        <td>Use the <strong>AzureStaticWebApp</strong> task for deployment</td>
+      </tr>
+      <tr>
+        <td>GitLab CI/CD</td>
+        <td><code>.gitlab-ci.yml</code></td>
+        <td>Self-hosted Windows runner</td>
+        <td>Register the runner with the GitLab instance before use</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ DEPLOYMENT TARGETS ═══ -->
+  <h2>Deployment targets</h2>
+
+  <p>
+    The compiled <code>Output/</code> folder contains static HTML, CSS, JavaScript, and
+    media files that can be hosted on any static file server. Common deployment targets
+    include:
+  </p>
+
+  <ul>
+    <li><strong>Azure Static Web Apps</strong> — Use the <code>Azure/static-web-apps-deploy</code> GitHub Action or the Azure DevOps task.</li>
+    <li><strong>Amazon S3 with CloudFront</strong> — Sync the output folder to an S3 bucket and invalidate the CloudFront cache after each deployment.</li>
+    <li><strong>GitHub Pages</strong> — Push the output folder to the <code>gh-pages</code> branch by using the <code>peaceiris/actions-gh-pages</code> Action.</li>
+    <li><strong>Self-hosted NGINX</strong> — Use SCP or rsync to transfer the output to the server document root.</li>
+  </ul>
+
+  <div class="warning-box">
+    <p>
+      <strong>Important</strong>&nbsp;&nbsp;Store all deployment credentials—API tokens,
+      connection strings, and access keys—as encrypted secrets in the CI/CD platform.
+      Never hard-code credentials in workflow YAML files or commit them to the repository.
+    </p>
+  </div>
+
+  <!-- ═══ RELATED TOPICS ═══ -->
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="05_Branching_Strategy.htm" />
+    <MadCap:relatedTopic src="06_Review_and_Merge.htm" />
+  </MadCap:relatedTopics>
+
+</body>
+</html>

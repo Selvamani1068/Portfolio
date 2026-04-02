@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<!-- MadCap Flare Topic File (.htm) -->
+<!-- Project: Developer Documentation – Markdown & Git in MadCap Flare -->
+<!-- Conditions: UserRole=Author|Admin; Output=WebHelp|PDF -->
+<!-- Style Guide: Microsoft Writing Style Guide (MSTP) -->
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="5"
+  MadCap:lastHeight="1380"
+  MadCap:lastWidth="1208"
+  MadCap:searchable="True">
+
+<head>
+  <link href="../Resources/Stylesheets/DevDocs.css" rel="stylesheet" type="text/css" />
+  <meta name="description" content="How to create and use Markdown topic files inside a MadCap Flare project." />
+  <title>Markdown in MadCap Flare – Developer Documentation</title>
+</head>
+
+<body>
+
+  <h1>Use Markdown in MadCap Flare</h1>
+
+  <p class="shortdesc">
+    MadCap Flare supports Markdown (<code>.md</code>) topic files natively alongside
+    XML-based <code>.htm</code> topics. This allows developer contributors to write
+    content in familiar Markdown syntax while Flare handles compilation and output generation.
+  </p>
+
+  <!-- ═══ OVERVIEW ═══ -->
+  <h2>Overview</h2>
+
+  <p>
+    When you add a <code>.md</code> file to a Flare project, Flare treats it as a
+    first-class topic. The file appears in the Content Explorer, can be added to the
+    Table of Contents (TOC), and is compiled into the output alongside <code>.htm</code>
+    topics. Flare converts the Markdown syntax to HTML at build time.
+  </p>
+
+  <div class="note-box">
+    <p>
+      <strong>Note</strong>&nbsp;&nbsp;Native Markdown support requires MadCap Flare
+      2019 R2 (v15.1) or later. Earlier versions require a third-party preprocessing tool.
+    </p>
+  </div>
+
+  <!-- ═══ ADD A MARKDOWN TOPIC ═══ -->
+  <h2>Add a Markdown topic</h2>
+
+  <p>To add a new Markdown topic to a Flare project, follow these steps:</p>
+
+  <ol>
+    <li>
+      In the <strong>Content Explorer</strong>, right-click the folder where you want
+      to create the file.
+    </li>
+    <li>
+      Select <strong>Add &gt; New Topic</strong>.
+    </li>
+    <li>
+      In the <strong>Add File</strong> dialog, set <strong>File Type</strong> to
+      <strong>Markdown</strong>.
+    </li>
+    <li>
+      Enter a filename by using kebab-case—for example, <code>getting-started.md</code>.
+    </li>
+    <li>
+      Select a template if one is available, or leave the default blank template.
+    </li>
+    <li>
+      Select <strong>Add</strong>. Flare opens the file in the built-in text editor.
+    </li>
+  </ol>
+
+  <div class="note-box">
+    <p>
+      <strong>Note</strong>&nbsp;&nbsp;Markdown files are stored in the
+      <code>Content/</code> folder alongside <code>.htm</code> topics. Use consistent
+      folder organization for both file types to keep the project maintainable.
+    </p>
+  </div>
+
+  <!-- ═══ FILE NAMING CONVENTIONS ═══ -->
+  <h2>File naming conventions</h2>
+
+  <p>Follow these conventions when you name Markdown topic files:</p>
+
+  <ul>
+    <li>Use kebab-case: <code>api-reference.md</code>, not <code>API_Reference.md</code>.</li>
+    <li>Use descriptive, lowercase names that reflect the topic content.</li>
+    <li>Avoid spaces, underscores, and special characters in filenames.</li>
+    <li>Prefix related files with a shared identifier: <code>auth-overview.md</code>, <code>auth-tokens.md</code>.</li>
+  </ul>
+
+  <!-- ═══ SUPPORTED MARKDOWN ELEMENTS ═══ -->
+  <h2>Supported Markdown elements</h2>
+
+  <p>
+    Flare supports the CommonMark specification for Markdown. The following table
+    describes how key Markdown elements map to HTML output:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Element</th>
+        <th>Markdown syntax</th>
+        <th>Output (HTML)</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Heading 1</td>
+        <td><code># Title</code></td>
+        <td><code>&lt;h1&gt;</code></td>
+        <td>Used as the topic title in the TOC and breadcrumb</td>
+      </tr>
+      <tr>
+        <td>Headings 2–4</td>
+        <td><code>##</code> / <code>###</code> / <code>####</code></td>
+        <td><code>&lt;h2&gt;</code>–<code>&lt;h4&gt;</code></td>
+        <td>Maps to the corresponding heading tag</td>
+      </tr>
+      <tr>
+        <td>Fenced code block</td>
+        <td><code>```lang … ```</code></td>
+        <td><code>&lt;pre&gt;&lt;code class="lang"&gt;</code></td>
+        <td>Specify language for syntax highlighting</td>
+      </tr>
+      <tr>
+        <td>Inline code</td>
+        <td><code>`code`</code></td>
+        <td><code>&lt;code&gt;</code></td>
+        <td>Use for UI elements, file names, and commands</td>
+      </tr>
+      <tr>
+        <td>Blockquote callout</td>
+        <td><code>&gt; **Note:** …</code></td>
+        <td><code>&lt;blockquote&gt;</code></td>
+        <td>Style by using the <code>DevDocs.css</code> stylesheet</td>
+      </tr>
+      <tr>
+        <td>Unordered list</td>
+        <td><code>- item</code></td>
+        <td><code>&lt;ul&gt;&lt;li&gt;</code></td>
+        <td>Use for items without a required sequence</td>
+      </tr>
+      <tr>
+        <td>Ordered list</td>
+        <td><code>1. item</code></td>
+        <td><code>&lt;ol&gt;&lt;li&gt;</code></td>
+        <td>Use for procedures and sequential steps</td>
+      </tr>
+      <tr>
+        <td>Table</td>
+        <td>Pipe-delimited rows</td>
+        <td><code>&lt;table&gt;</code></td>
+        <td>Flare applies the project table style automatically</td>
+      </tr>
+      <tr>
+        <td>Hyperlink</td>
+        <td><code>[text](url)</code></td>
+        <td><code>&lt;a href="url"&gt;</code></td>
+        <td>Use relative paths for cross-topic links</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ LIMITATIONS ═══ -->
+  <h2>Limitations</h2>
+
+  <p>
+    The following Flare features are not available in <code>.md</code> topic files.
+    Use standard <code>.htm</code> topics for content that requires these features:
+  </p>
+
+  <ul>
+    <li><strong>Conditions</strong> — <code>MadCap:conditions</code> attributes cannot be applied to Markdown elements.</li>
+    <li><strong>Snippets</strong> — <code>MadCap:snippetBlock</code> and <code>MadCap:snippetText</code> are not supported.</li>
+    <li><strong>Variables</strong> — <code>MadCap:variable</code> tags cannot be inserted in Markdown files.</li>
+    <li><strong>Cross-references</strong> — <code>MadCap:xref</code> is not available; use standard Markdown hyperlinks instead.</li>
+  </ul>
+
+  <div class="warning-box">
+    <p>
+      <strong>Important</strong>&nbsp;&nbsp;If a topic requires conditions, snippets, or
+      variables, create it as an <code>.htm</code> file. Do not attempt to embed Flare XML
+      tags inside a Markdown file—Flare does not process them and outputs them as literal text.
+    </p>
+  </div>
+
+  <!-- ═══ ADD THE TOPIC TO THE TOC ═══ -->
+  <h2>Add the Markdown topic to the TOC</h2>
+
+  <p>A Markdown topic is not automatically included in the output. You must add it to the TOC manually:</p>
+
+  <ol>
+    <li>Open the project TOC file (<code>.fltoc</code>) in the TOC Editor.</li>
+    <li>Drag the <code>.md</code> file from the Content Explorer into the desired position in the TOC.</li>
+    <li>
+      Alternatively, right-click the target TOC node and select
+      <strong>Link to Topic</strong>, then browse to the <code>.md</code> file.
+    </li>
+    <li>Save the TOC file and commit the change to Git.</li>
+  </ol>
+
+  <!-- ═══ RELATED TOPICS ═══ -->
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="04_Linking_Flare_Git.htm" />
+    <MadCap:relatedTopic src="06_Review_and_Merge.htm" />
+  </MadCap:relatedTopics>
+
+</body>
+</html>

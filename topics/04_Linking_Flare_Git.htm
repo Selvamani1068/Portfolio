@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<!-- MadCap Flare Topic File (.htm) -->
+<!-- Project: Developer Documentation – Markdown & Git in MadCap Flare -->
+<!-- Conditions: UserRole=Author|Admin; Output=WebHelp|PDF -->
+<!-- Style Guide: Microsoft Writing Style Guide (MSTP) -->
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="6"
+  MadCap:lastHeight="1842"
+  MadCap:lastWidth="1208"
+  MadCap:searchable="True">
+
+<head>
+  <link href="../Resources/Stylesheets/DevDocs.css" rel="stylesheet" type="text/css" />
+  <meta name="description" content="How to bind a MadCap Flare project to a Git repository using the built-in Source Control integration." />
+  <title>Link Flare to Git – Developer Documentation</title>
+</head>
+
+<body>
+
+  <h1>Link a Flare project to a Git repository</h1>
+
+  <p class="shortdesc">
+    Bind your MadCap Flare project to a Git remote repository by using Flare's built-in
+    Source Control integration. After you bind the project, authors can commit, pull, push,
+    and create branches without leaving the Flare IDE.
+  </p>
+
+  <!-- ═══ BEFORE YOU BEGIN ═══ -->
+  <h2>Before you begin</h2>
+
+  <p>Confirm that the following conditions are met before you bind the project:</p>
+
+  <ul>
+    <li>Git is installed and available on the system <code>PATH</code> (run <code>git --version</code> to verify).</li>
+    <li>The Flare project has been saved to a local folder.</li>
+    <li>The local project folder does not already contain a <code>.git</code> directory.</li>
+    <li>The remote repository exists and you have write access to it.</li>
+    <li>You have completed the steps in <a href="02_Setting_Up_Git.htm">Set up Git for a Flare project</a>.</li>
+  </ul>
+
+  <div class="warning-box">
+    <p>
+      <strong>Important</strong>&nbsp;&nbsp;Do not bind a Flare project that already has a
+      <code>.git</code> folder in the project root. Binding overwrites the existing Git
+      configuration and can cause history loss. If a repository already exists, use
+      <strong>Source Control &gt; Get Latest</strong> to connect instead.
+    </p>
+  </div>
+
+  <!-- ═══ BIND THE PROJECT ═══ -->
+  <h2>Bind the Flare project to Git</h2>
+
+  <p>To bind a MadCap Flare project to a Git repository, follow these steps:</p>
+
+  <ol>
+    <li>Open the Flare project.</li>
+    <li>
+      On the menu bar, select <strong>Source Control &gt; Bind Project</strong>.
+      The <strong>Bind Project</strong> dialog opens.
+    </li>
+    <li>
+      In the <strong>Source Control</strong> list, select <strong>Git</strong>.
+    </li>
+    <li>
+      In the <strong>Remote</strong> field, enter the HTTPS or SSH URL of the remote repository.
+    </li>
+    <li>
+      Enter your credentials (username and personal access token, or SSH key passphrase).
+    </li>
+    <li>
+      Select <strong>OK</strong>. Flare initializes a local Git repository in the project
+      root, stages all project files, and performs an initial commit.
+    </li>
+    <li>
+      When prompted to push, select <strong>Push</strong> to upload the initial commit
+      to the remote repository.
+    </li>
+  </ol>
+
+  <div class="note-box">
+    <p>
+      <strong>Note</strong>&nbsp;&nbsp;Flare uses the system Git installation for all
+      source-control operations. If Flare cannot detect Git, verify that the Git binary
+      folder is on the system <code>PATH</code> and restart Flare.
+    </p>
+  </div>
+
+  <!-- ═══ VERIFY THE BINDING ═══ -->
+  <h2>Verify the binding</h2>
+
+  <p>After binding, confirm that the integration is working correctly:</p>
+
+  <ol>
+    <li>
+      Select <strong>Source Control &gt; View History</strong>. The initial commit should
+      appear in the history list.
+    </li>
+    <li>
+      Open a topic file and make a minor edit (for example, add a space). The file
+      icon in the Content Explorer should display a pending-change indicator.
+    </li>
+    <li>
+      Select <strong>Source Control &gt; Check In</strong>, enter a commit message,
+      and select <strong>Check In</strong>. Confirm that the commit appears in
+      <strong>View History</strong>.
+    </li>
+  </ol>
+
+  <!-- ═══ DAILY WORKFLOW ═══ -->
+  <h2>Daily workflow commands</h2>
+
+  <p>
+    The following table maps common daily tasks to their Flare menu path and the
+    equivalent Git command-line operation:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Flare menu path</th>
+        <th>Equivalent Git command</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pull the latest changes from the remote</td>
+        <td><strong>Source Control &gt; Get Latest</strong></td>
+        <td><code>git pull</code></td>
+      </tr>
+      <tr>
+        <td>Stage and commit changes</td>
+        <td><strong>Source Control &gt; Check In</strong></td>
+        <td><code>git add . &amp;&amp; git commit -m "message"</code></td>
+      </tr>
+      <tr>
+        <td>Push commits to the remote</td>
+        <td><strong>Source Control &gt; Push</strong></td>
+        <td><code>git push</code></td>
+      </tr>
+      <tr>
+        <td>Create a new branch</td>
+        <td><strong>Source Control &gt; Branch &gt; Create Branch</strong></td>
+        <td><code>git checkout -b branch-name</code></td>
+      </tr>
+      <tr>
+        <td>Switch to an existing branch</td>
+        <td><strong>Source Control &gt; Branch &gt; Switch Branch</strong></td>
+        <td><code>git checkout branch-name</code></td>
+      </tr>
+      <tr>
+        <td>View file change history</td>
+        <td><strong>Source Control &gt; View History</strong></td>
+        <td><code>git log --oneline</code></td>
+      </tr>
+      <tr>
+        <td>Discard local changes</td>
+        <td><strong>Source Control &gt; Undo Check Out</strong></td>
+        <td><code>git checkout -- file</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ TROUBLESHOOTING ═══ -->
+  <h2>Troubleshoot common issues</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Symptom</th>
+        <th>Likely cause</th>
+        <th>Resolution</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Flare cannot detect Git</td>
+        <td>Git not on system <code>PATH</code></td>
+        <td>Add the Git binary folder to <code>PATH</code> and restart Flare</td>
+      </tr>
+      <tr>
+        <td>Authentication fails on push</td>
+        <td>Expired personal access token</td>
+        <td>Generate a new token in the remote repository settings and update credentials</td>
+      </tr>
+      <tr>
+        <td>Source Control menu is unavailable</td>
+        <td>Project not bound to source control</td>
+        <td>Select <strong>Source Control &gt; Bind Project</strong> and complete the binding steps</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ RELATED TOPICS ═══ -->
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="02_Setting_Up_Git.htm" />
+    <MadCap:relatedTopic src="05_Branching_Strategy.htm" />
+    <MadCap:relatedTopic src="07_Publishing_CICD.htm" />
+  </MadCap:relatedTopics>
+
+</body>
+</html>

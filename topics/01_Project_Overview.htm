@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<!-- MadCap Flare Topic File (.htm) -->
+<!-- Project: Developer Documentation – Markdown & Git in MadCap Flare -->
+<!-- Conditions: Output=WebHelp|PDF -->
+<!-- Style Guide: Microsoft Writing Style Guide (MSTP) -->
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="4"
+  MadCap:lastHeight="980"
+  MadCap:lastWidth="1208"
+  MadCap:searchable="True">
+
+<head>
+  <link href="../Resources/Stylesheets/DevDocs.css" rel="stylesheet" type="text/css" />
+  <meta name="description" content="Overview of authoring developer documentation with Markdown and Git version control in MadCap Flare." />
+  <title>Project Overview – Developer Documentation with Markdown and Git</title>
+</head>
+
+<body>
+
+  <h1>Developer documentation with Markdown and Git in MadCap Flare</h1>
+
+  <p class="shortdesc">
+    Learn how to author, version, and publish developer documentation by
+    using Markdown files and Git version control inside a MadCap Flare project.
+    This guide covers project setup, authoring conventions, branching workflows,
+    and automated publishing.
+  </p>
+
+  <!-- ═══ OVERVIEW ═══ -->
+  <h2>Overview</h2>
+
+  <p>
+    MadCap Flare supports Markdown (<code>.md</code>) topic files natively alongside
+    XML-based <code>.htm</code> topics (Flare 2019 R2 and later). By combining
+    Flare's single-source publishing engine with Git version control, documentation
+    teams can:
+  </p>
+
+  <ul>
+    <li>Let developers contribute content in Markdown without learning Flare XML.</li>
+    <li>Track every change, review diffs, and attribute edits through Git history.</li>
+    <li>Compile Markdown and XML topics into a single, consistent HTML5 WebHelp output.</li>
+    <li>Trigger automated Flare builds on every merge by using a CI/CD pipeline.</li>
+  </ul>
+
+  <!-- ═══ PREREQUISITES ═══ -->
+  <h2>Prerequisites</h2>
+
+  <p>Before you begin, make sure the following requirements are met:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Requirement</th>
+        <th>Minimum version</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>MadCap Flare</td>
+        <td>2019 R2 (v15.1)</td>
+        <td>Required for native Markdown topic support</td>
+      </tr>
+      <tr>
+        <td>Git</td>
+        <td>2.34</td>
+        <td>Must be available on the system <code>PATH</code></td>
+      </tr>
+      <tr>
+        <td>Remote repository</td>
+        <td>Any</td>
+        <td>GitHub, GitLab, or Azure DevOps</td>
+      </tr>
+      <tr>
+        <td>Author permissions</td>
+        <td>—</td>
+        <td>Write access to the target repository branch</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ SUPPORTED OUTPUTS ═══ -->
+  <h2>Supported outputs</h2>
+
+  <MadCap:conditionalText MadCap:conditions="Output.WebHelp">
+    <div class="note-info">
+      <p>
+        <strong>WebHelp:</strong> Responsive HTML5 output that is optimized for
+        desktop and tablet browsers. This is the primary delivery channel for
+        developer portal documentation.
+      </p>
+    </div>
+  </MadCap:conditionalText>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Output type</th>
+        <th>Format</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Online help</td>
+        <td>HTML5 WebHelp</td>
+        <td>Primary delivery channel for developer portals</td>
+      </tr>
+      <tr>
+        <td>PDF guide</td>
+        <td>PDF</td>
+        <td>Generated from the same source by using Flare print targets</td>
+      </tr>
+      <tr>
+        <td>Context-sensitive help</td>
+        <td>CSH IDs</td>
+        <td>Linked from IDE or CLI tools by using help buttons</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ IN THIS GUIDE ═══ -->
+  <h2>In this guide</h2>
+
+  <p>This guide is organized into the following sections:</p>
+
+  <ul>
+    <li><strong>Setting up Git</strong> — Initialize a repository and configure the recommended <code>.gitignore</code> entries.</li>
+    <li><strong>Markdown in Flare</strong> — Create Markdown topic files and understand supported syntax elements.</li>
+    <li><strong>Linking Flare and Git</strong> — Bind the Flare project to a remote repository by using the built-in Source Control integration.</li>
+    <li><strong>Branching strategy</strong> — Follow a consistent branching model to keep review and release workflows separate.</li>
+    <li><strong>Review and merge</strong> — Conduct pull-request reviews and resolve merge conflicts.</li>
+    <li><strong>Publishing and CI/CD</strong> — Automate Flare builds and deploy the output on every merge.</li>
+  </ul>
+
+  <!-- ═══ RELATED TOPICS ═══ -->
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="02_Setting_Up_Git.htm" />
+    <MadCap:relatedTopic src="03_Markdown_in_Flare.htm" />
+  </MadCap:relatedTopics>
+
+</body>
+</html>

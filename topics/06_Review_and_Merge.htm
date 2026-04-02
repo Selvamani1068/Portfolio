@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<!-- MadCap Flare Topic File (.htm) -->
+<!-- Project: Developer Documentation – Markdown & Git in MadCap Flare -->
+<!-- Conditions: UserRole=Author|Admin; Output=WebHelp|PDF -->
+<!-- Style Guide: Microsoft Writing Style Guide (MSTP) -->
+<html
+  xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd"
+  MadCap:lastBlockDepth="5"
+  MadCap:lastHeight="1480"
+  MadCap:lastWidth="1208"
+  MadCap:searchable="True">
+
+<head>
+  <link href="../Resources/Stylesheets/DevDocs.css" rel="stylesheet" type="text/css" />
+  <meta name="description" content="How to conduct pull-request reviews and merge approved documentation changes in a MadCap Flare Git workflow." />
+  <title>Review and Merge – Developer Documentation with Git</title>
+</head>
+
+<body>
+
+  <h1>Review and merge documentation changes</h1>
+
+  <p class="shortdesc">
+    All documentation changes must pass a pull-request review before merging into the
+    <code>main</code> branch. This process ensures accuracy, consistency, and full
+    traceability across every release of the published output.
+  </p>
+
+  <!-- ═══ OVERVIEW ═══ -->
+  <h2>Overview</h2>
+
+  <p>
+    A pull request (PR) is the formal mechanism for proposing, discussing, and approving
+    documentation changes before they enter <code>main</code>. Every PR triggers a CI build
+    that compiles the Flare project and reports errors as a required status check. The
+    reviewer inspects both the raw file diff and the rendered preview before approving.
+  </p>
+
+  <!-- ═══ AUTHOR CHECKLIST ═══ -->
+  <h2>Author pre-review checklist</h2>
+
+  <p>
+    Complete the following checks before you open a pull request. Addressing these
+    items before review reduces the number of review cycles.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Check</th>
+        <th>How to verify</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Topic builds without Flare errors or warnings</td>
+        <td>Run a local Flare build (<strong>Build &gt; Build Primary</strong>) and review the Build Log</td>
+      </tr>
+      <tr>
+        <td>Markdown syntax is valid</td>
+        <td>Run <code>markdownlint</code> (or equivalent) on all changed <code>.md</code> files</td>
+      </tr>
+      <tr>
+        <td>New topics are added to the TOC</td>
+        <td>Open the <code>.fltoc</code> file and confirm the new topic node is present</td>
+      </tr>
+      <tr>
+        <td>Cross-references are not broken</td>
+        <td>Check the Flare Analyzer report (<strong>Tools &gt; Project Analysis &gt; Analyzer</strong>)</td>
+      </tr>
+      <tr>
+        <td>Content follows the style guide</td>
+        <td>Review the <a href="https://learn.microsoft.com/en-us/style-guide/welcome/" target="_blank">Microsoft Writing Style Guide</a> and the project style sheet</td>
+      </tr>
+      <tr>
+        <td>Commit messages follow the project convention</td>
+        <td>See <a href="05_Branching_Strategy.htm">Commit message guidelines</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ OPEN A PULL REQUEST ═══ -->
+  <h2>Open a pull request</h2>
+
+  <ol>
+    <li>Push the feature branch to the remote repository.</li>
+    <li>In the remote repository UI, select <strong>New pull request</strong> (GitHub) or <strong>Create merge request</strong> (GitLab).</li>
+    <li>Set the base branch to <code>main</code> and the compare branch to your feature branch.</li>
+    <li>
+      Complete the pull-request description using the project PR template. Include:
+      <ul>
+        <li>A summary of the documentation change and the reason for the change.</li>
+        <li>A link to the related issue or task (if applicable).</li>
+        <li>A screenshot or link to the rendered preview (if the change affects layout or formatting).</li>
+      </ul>
+    </li>
+    <li>Assign at least one reviewer and add relevant labels (for example, <code>content</code> or <code>hotfix</code>).</li>
+    <li>Select <strong>Create pull request</strong>.</li>
+  </ol>
+
+  <!-- ═══ REVIEWER CHECKLIST ═══ -->
+  <h2>Reviewer checklist</h2>
+
+  <p>As a reviewer, verify the following before approving a pull request:</p>
+
+  <ul>
+    <li>The content is factually accurate and complete for the stated scope.</li>
+    <li>Headings, steps, and tables follow Microsoft Writing Style Guide conventions.</li>
+    <li>Code samples are syntactically correct and use the correct language identifier in fenced code blocks.</li>
+    <li>All new topics are linked in the TOC and in at least one related-topics section.</li>
+    <li>No sensitive information (API keys, credentials, internal URLs) is included in the content.</li>
+    <li>The CI build status check is passing.</li>
+  </ul>
+
+  <div class="note-box">
+    <p>
+      <strong>Note</strong>&nbsp;&nbsp;Leave inline comments on specific lines for targeted
+      feedback. Use a general PR comment for overall observations. Mark comments as
+      <strong>Resolved</strong> after the author addresses them.
+    </p>
+  </div>
+
+  <!-- ═══ RESOLVE MERGE CONFLICTS ═══ -->
+  <h2>Resolve merge conflicts</h2>
+
+  <p>
+    Merge conflicts occur when two branches modify the same file in incompatible ways.
+    To resolve conflicts on a feature branch:
+  </p>
+
+  <ol>
+    <li>
+      Fetch and merge the latest <code>main</code> into the feature branch:
+      <pre>git checkout docs/your-feature-branch
+git fetch origin
+git merge origin/main</pre>
+    </li>
+    <li>
+      Open each conflicting file. Git marks conflicts with the following delimiters:
+      <pre>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+  (your changes)
+=======
+  (incoming changes from main)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</pre>
+    </li>
+    <li>
+      Edit the file to keep the correct content. Remove all conflict delimiter lines
+      (<code>&lt;&lt;&lt;</code>, <code>===</code>, <code>&gt;&gt;&gt;</code>).
+    </li>
+    <li>
+      Stage the resolved files:
+      <pre>git add &lt;resolved-file&gt;</pre>
+    </li>
+    <li>
+      Complete the merge commit:
+      <pre>git commit -m "Merge main into docs/your-feature-branch; resolve conflict in &lt;file&gt;"</pre>
+    </li>
+    <li>Push the updated branch and re-request review on the pull request.</li>
+  </ol>
+
+  <div class="warning-box">
+    <p>
+      <strong>Important</strong>&nbsp;&nbsp;Flare <code>.fltoc</code> and <code>.flprj</code>
+      files are XML and can produce complex merge conflicts. Coordinate with the project
+      administrator before making structural changes to these files, and resolve conflicts
+      carefully to avoid corrupting the project structure.
+    </p>
+  </div>
+
+  <!-- ═══ MERGE AND CLEAN UP ═══ -->
+  <h2>Merge and clean up</h2>
+
+  <ol>
+    <li>After the pull request is approved and all status checks pass, select <strong>Merge pull request</strong> (or <strong>Merge</strong>).</li>
+    <li>Use the <strong>Squash and merge</strong> strategy for feature branches to maintain a clean commit history on <code>main</code>.</li>
+    <li>Delete the feature branch from the remote repository.</li>
+    <li>
+      Update your local repository:
+      <pre>git checkout main
+git pull origin main
+git branch -d docs/your-feature-branch</pre>
+    </li>
+  </ol>
+
+  <!-- ═══ RELATED TOPICS ═══ -->
+  <MadCap:relatedTopics>
+    <MadCap:relatedTopic src="05_Branching_Strategy.htm" />
+    <MadCap:relatedTopic src="07_Publishing_CICD.htm" />
+  </MadCap:relatedTopics>
+
+</body>
+</html>
