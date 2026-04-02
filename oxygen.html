@@ -726,7 +726,18 @@ function renderInline(el) {
       else if (tag === "b")         out += "<strong>" + inner + "</strong>";
       else if (tag === "i" || tag === "term") out += "<em>" + inner + "</em>";
       else if (tag === "codeph" || tag === "userinput") out += "<code>" + inner + "</code>";
-      else                          out += inner;
+        else if (tag === "xref") {
+          const href = n.getAttribute("href") || "";
+          const scope = n.getAttribute("scope") || "";
+          const label = n.textContent.trim() || href;
+          if (scope === "external" || href.startsWith("http")) {
+            out += '<a href="' + esc(href) + '" target="_blank" style="color:#0284c7;text-decoration:underline;cursor:pointer">' + esc(label) + '</a>';
+          } else {
+            const filename = href.split("/").pop();
+            out += '<a href="javascript:void(0)" data-dita="' + esc(filename) + '" style="color:#0284c7;text-decoration:underline;cursor:pointer">' + esc(label || filename) + '</a>';
+          }
+        }
+        else out += inner;
     }
   });
   return out;
