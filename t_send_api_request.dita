@@ -74,7 +74,6 @@
       <step>
         <cmd>Review the response in the <uicontrol>Body</uicontrol> tab of the response
           viewer.</cmd>
-        <info>
       </step>
       <step>
         <cmd>To save the request to a collection, select <uicontrol>Save</uicontrol>, choose a
