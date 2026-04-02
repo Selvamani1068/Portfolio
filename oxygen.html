@@ -638,14 +638,25 @@ function renderAuthorView(xmlString, file) {
         else if (tag === "b")         out += "<strong>" + inner + "</strong>";
         else if (tag === "i" || tag === "term") out += "<em>" + inner + "</em>";
         else if (tag === "codeph" || tag === "userinput") out += "<code>" + inner + "</code>";
-        else if (tag === "xref") {
-          const href = n.getAttribute("href") || "";
-          const label = n.textContent.trim() || href;
-          const filename = href.split("/").pop();
-          out += '<a href="javascript:void(0)" onclick="loadXMLByHref(\'' + filename + '\')" '
-               + 'style="color:#0284c7;text-decoration:underline;cursor:pointer">'
-               + esc(label || filename) + '</a>';
-        }
+ else if (tag === "xref") {
+  const href = n.getAttribute("href") || "";
+  const scope = n.getAttribute("scope") || "";
+  const label = n.textContent.trim() || href;
+
+  if (scope === "external" || href.startsWith("http")) {
+    // External URL — open in new tab normally
+    out += '<a href="' + esc(href) + '" target="_blank" '
+         + 'style="color:#0284c7;text-decoration:underline;cursor:pointer">'
+         + esc(label) + '</a>';
+  } else {
+    // Internal DITA file — load in viewer
+    const filename = href.split("/").pop();
+    out += '<a href="javascript:void(0)" '
+         + 'data-dita="' + esc(filename) + '" '
+         + 'style="color:#0284c7;text-decoration:underline;cursor:pointer">'
+         + esc(label || filename) + '</a>';
+  }
+}
         else out += inner;
       }
     });
