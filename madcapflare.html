@@ -184,12 +184,12 @@
   <div class="sidebar">
     <div class="tree-title">&#128216; Dev Docs &middot; Markdown &amp; Git</div>
     <div class="tree-item active" onclick="loadTopic('overview',this)">&#9500;&#9472;&#9472; &#128196; Project Overview</div>
-    <div class="tree-item" onclick="loadTopic('setup',this)">&#9500;&#9472;&#9472; &#128196; Set up Git for your documentation project</div>
-    <div class="tree-item" onclick="loadTopic('markdown',this)">&#9500;&#9472;&#9472; &#128196; Create developer documentation in Markdown</div>
-    <div class="tree-item" onclick="loadTopic('linking',this)">&#9500;&#9472;&#9472; &#128196; Connect your Flare project to GitHub &amp; Git</div>
-    <div class="tree-item" onclick="loadTopic('branching',this)">&#9500;&#9472;&#9472; &#128196; Manage documentation changes with branches</div>
-    <div class="tree-item" onclick="loadTopic('review',this)">&#9500;&#9472;&#9472; &#128196; Review and merge documentation changes</div>
-    <div class="tree-item" onclick="loadTopic('publishing',this)">&#9492;&#9472;&#9472; &#128196; Automate builds and publish documentation with GitHub Actions</div>
+    <div class="tree-item" onclick="loadTopic('setup',this)">&#9500;&#9472;&#9472; &#128196; Set up Git</div>
+    <div class="tree-item" onclick="loadTopic('markdown',this)">&#9500;&#9472;&#9472; &#128196; Create Markdown Topics</div>
+    <div class="tree-item" onclick="loadTopic('linking',this)">&#9500;&#9472;&#9472; &#128196; Connect Flare to Github</div>
+    <div class="tree-item" onclick="loadTopic('branching',this)">&#9500;&#9472;&#9472; &#128196; Manage branches</div>
+    <div class="tree-item" onclick="loadTopic('review',this)">&#9500;&#9472;&#9472; &#128196; Review &amp; merge</div>
+    <div class="tree-item" onclick="loadTopic('publishing',this)">&#9492;&#9472;&#9472; &#128196; Publich with CI/CD</div>
   </div>
 
   <!-- VIEWER -->
@@ -234,7 +234,7 @@
           <div class="flare-toc-item sub" onclick="loadTopic('branching',null,this)">Manage Branches</div>
           <div class="flare-toc-item sub" onclick="loadTopic('review',null,this)">Review &amp; Merge</div>
           <div class="flare-toc-item" onclick="loadTopic('publishing',null,this)">Delivery</div>
-          <div class="flare-toc-item sub" onclick="loadTopic('publishing',null,this)">Publish with &amp; CI/CD</div>
+          <div class="flare-toc-item sub" onclick="loadTopic('publishing',null,this)">Publish with CI/CD</div>
         </div>
         <div class="flare-content-wrap">
           <div class="flare-content" id="flare-content-body">
@@ -267,7 +267,7 @@ const REGISTRY = {
   linking:    { file:'topics/04_Linking_Flare_Git.htm',  title:'Connect Flare to Github', breadcrumb:'Authoring &gt; <span>Connect Flare to Github</span>',       sidebarIdx:3, tocSet:[5] },
   branching:  { file:'topics/05_Branching_Strategy.htm', title:'Manage Branches',      breadcrumb:'Collaboration &gt; <span>Manage Branches</span>',        sidebarIdx:4, tocSet:[6,7] },
   review:     { file:'topics/06_Review_and_Merge.htm',   title:'Review &amp; Merge',      breadcrumb:'Collaboration &gt; <span>Review &amp; Merge</span>',        sidebarIdx:5, tocSet:[8] },
-  publishing: { file:'topics/07_Publishing_CICD.htm',    title:'Publish &amp; CI/CD',  breadcrumb:'Delivery &gt; <span>Publish &amp; CI/CD</span>',         sidebarIdx:6, tocSet:[9,10] }
+  publishing: { file:'topics/07_Publishing_CICD.htm',    title:'Publish with CI/CD',  breadcrumb:'Delivery &gt; <span>Publish &amp; CI/CD</span>',         sidebarIdx:6, tocSet:[9,10] }
 };
 
 const CACHE = {};  /* raw text cache */
@@ -287,7 +287,7 @@ const FILE_KEY_MAP = {
 const TITLES = {
   overview:'Project Overview', setup:'Set Up Git', markdown:'Create Markdown Topics',
   linking:'Connect Flare to GitHub', branching:'Manage Branches',
-  review:'Review & Merge', publishing:'Publish & CI/CD'
+  review:'Review & Merge', publishing:'Publish with CI/CD'
 };
 
 /* ─────────────────────────────────────────────
