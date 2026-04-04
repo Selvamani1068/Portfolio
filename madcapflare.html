@@ -183,10 +183,10 @@
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="tree-title">&#128216; Dev Docs &middot; Markdown &amp; Git</div>
-    <div class="tree-item" onclick="loadTopic('overview',this)">&#9500;&#9472;&#9472; &#128196; Project Overview</div>
+    <div class="tree-item active" onclick="loadTopic('overview',this)">&#9500;&#9472;&#9472; &#128196; Project Overview</div>
     <div class="tree-item" onclick="loadTopic('setup',this)">&#9500;&#9472;&#9472; &#128196; Set up Git for your documentation project</div>
     <div class="tree-item" onclick="loadTopic('markdown',this)">&#9500;&#9472;&#9472; &#128196; Create developer documentation in Markdown</div>
-    <div class="tree-item active" onclick="loadTopic('linking',this)">&#9500;&#9472;&#9472; &#128196; Connect your Flare project to GitHub &amp; Git</div>
+    <div class="tree-item" onclick="loadTopic('linking',this)">&#9500;&#9472;&#9472; &#128196; Connect your Flare project to GitHub &amp; Git</div>
     <div class="tree-item" onclick="loadTopic('branching',this)">&#9500;&#9472;&#9472; &#128196; Manage documentation changes with branches</div>
     <div class="tree-item" onclick="loadTopic('review',this)">&#9500;&#9472;&#9472; &#128196; Review and merge documentation changes</div>
     <div class="tree-item" onclick="loadTopic('publishing',this)">&#9492;&#9472;&#9472; &#128196; Automate builds and publish documentation with GitHub Actions</div>
@@ -477,8 +477,8 @@ function switchView(view, btn) {
    Auto-load on page ready
 ─────────────────────────────────────────────── */
 window.addEventListener('load', function() {
-  const linkingItem = document.querySelectorAll('.sidebar .tree-item')[0];
-  loadTopic('overview', linkingItem, null);
+  const overviewItem = document.querySelectorAll('.sidebar .tree-item')[0];
+  loadTopic('overview', overviewItem, null);
 });
 </script>
 
