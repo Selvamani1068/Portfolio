@@ -184,12 +184,12 @@
   <div class="sidebar">
     <div class="tree-title">&#128216; Dev Docs &middot; Markdown &amp; Git</div>
     <div class="tree-item" onclick="loadTopic('overview',this)">&#9500;&#9472;&#9472; &#128196; Project Overview</div>
-    <div class="tree-item" onclick="loadTopic('setup',this)">&#9500;&#9472;&#9472; &#128196; Setting Up Git</div>
-    <div class="tree-item" onclick="loadTopic('markdown',this)">&#9500;&#9472;&#9472; &#128196; Markdown in Flare</div>
-    <div class="tree-item active" onclick="loadTopic('linking',this)">&#9500;&#9472;&#9472; &#128196; Linking Flare &amp; Git</div>
-    <div class="tree-item" onclick="loadTopic('branching',this)">&#9500;&#9472;&#9472; &#128196; Branching Strategy</div>
-    <div class="tree-item" onclick="loadTopic('review',this)">&#9500;&#9472;&#9472; &#128196; Review &amp; Merge</div>
-    <div class="tree-item" onclick="loadTopic('publishing',this)">&#9492;&#9472;&#9472; &#128196; Publishing &amp; CI/CD</div>
+    <div class="tree-item" onclick="loadTopic('setup',this)">&#9500;&#9472;&#9472; &#128196; Set up Git for your documentation project</div>
+    <div class="tree-item" onclick="loadTopic('markdown',this)">&#9500;&#9472;&#9472; &#128196; Create developer documentation in Markdown</div>
+    <div class="tree-item active" onclick="loadTopic('linking',this)">&#9500;&#9472;&#9472; &#128196; Connect your Flare project to GitHub &amp; Git</div>
+    <div class="tree-item" onclick="loadTopic('branching',this)">&#9500;&#9472;&#9472; &#128196; Manage documentation changes with branches</div>
+    <div class="tree-item" onclick="loadTopic('review',this)">&#9500;&#9472;&#9472; &#128196; Review and merge documentation changes</div>
+    <div class="tree-item" onclick="loadTopic('publishing',this)">&#9492;&#9472;&#9472; &#128196; Automate builds and publish documentation with GitHub Actions</div>
   </div>
 
   <!-- VIEWER -->
@@ -198,7 +198,7 @@
       <div class="hero-grid"></div><div class="hero-glow"></div>
       <div class="toolbar-left">
         <div class="toolbar-eyebrow">MadCap Flare &middot; Topic Viewer</div>
-        <div class="toolbar-title" id="toolbar-topic-title">Linking Flare &amp; Git</div>
+        <div class="toolbar-title" id="toolbar-topic-title">Project Overview &amp; Git</div>
       </div>
       <div class="toolbar-right">
         <div class="viewer-tabs">
@@ -285,9 +285,9 @@ const FILE_KEY_MAP = {
   '07_publishing_cicd.htm':    'publishing'
 };
 const TITLES = {
-  overview:'Project Overview', setup:'Setting Up Git', markdown:'Markdown in Flare',
-  linking:'Linking Flare & Git', branching:'Branching Strategy',
-  review:'Review & Merge', publishing:'Publishing & CI/CD'
+  overview:'Project Overview', setup:'Set Up Git', markdown:'Create Markdown Topics',
+  linking:'Connect Flare to GitHub', branching:'Manage Branches',
+  review:'Review & Merge', publishing:'Publish & CI/CD'
 };
 
 /* ─────────────────────────────────────────────
